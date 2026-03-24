@@ -1,0 +1,27 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.env
+
+# Large data files
+data/raw/
+
+# API keys and credentials
+*.key
+credentials.json
+secrets.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Logs (keep structure, ignore contents)
+logs/*.log
+logs/*.csv
