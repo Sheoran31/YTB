@@ -17,16 +17,60 @@ BROKER = "zerodha"  # "zerodha" or "paper"
 # STOCKS TO TRACK (Nifty 50 subset)
 # ============================================================
 WATCHLIST = [
+    # Large Cap — Banking & Finance
     "RELIANCE.NS",
-    "TCS.NS",
-    "INFY.NS",
     "HDFCBANK.NS",
     "ICICIBANK.NS",
+    "SBIN.NS",
+    "KOTAKBANK.NS",
+    "AXISBANK.NS",
+    "BAJFINANCE.NS",
+    "BAJAJFINSV.NS",
+    "HDFCLIFE.NS",
+    "SBILIFE.NS",
+    # Large Cap — IT
+    "TCS.NS",
+    "INFY.NS",
+    "WIPRO.NS",
+    "HCLTECH.NS",
+    "TECHM.NS",
+    "LTIM.NS",
+    # Large Cap — Consumer & FMCG
     "HINDUNILVR.NS",
     "ITC.NS",
-    "SBIN.NS",
+    "NESTLEIND.NS",
+    "BRITANNIA.NS",
+    "TATACONSUM.NS",
+    # Large Cap — Auto
+    "MARUTI.NS",
+    "TATAMOTOR.NS",
+    "M&M.NS",
+    "BAJAJ-AUTO.NS",
+    "HEROMOTOCO.NS",
+    # Large Cap — Energy & Metals
     "BHARTIARTL.NS",
-    "KOTAKBANK.NS",
+    "NTPC.NS",
+    "POWERGRID.NS",
+    "ONGC.NS",
+    "COALINDIA.NS",
+    "TATASTEEL.NS",
+    "HINDALCO.NS",
+    "JSWSTEEL.NS",
+    # Large Cap — Pharma & Health
+    "SUNPHARMA.NS",
+    "DRREDDY.NS",
+    "CIPLA.NS",
+    "APOLLOHOSP.NS",
+    # Large Cap — Others
+    "ADANIENT.NS",
+    "ADANIPORTS.NS",
+    "TITAN.NS",
+    "ULTRACEMCO.NS",
+    "GRASIM.NS",
+    "ASIANPAINT.NS",
+    "DIVISLAB.NS",
+    "EICHERMOT.NS",
+    "INDUSINDBK.NS",
 ]
 
 # ============================================================
