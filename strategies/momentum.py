@@ -11,6 +11,7 @@ SELL when:
   - OR RSI < 45
 """
 import pandas as pd
+import numpy as np
 from data.signals import calculate_sma, calculate_rsi, calculate_volume_ratio, detect_crossover
 import config
 
@@ -37,6 +38,9 @@ def generate_signal(data: pd.DataFrame) -> str:
     vol_ratio = calculate_volume_ratio(volume)
 
     latest_rsi = rsi.iloc[-1]
+    if pd.isna(latest_rsi) or np.isinf(latest_rsi):
+        return "HOLD"
+
     latest_vol_ratio = vol_ratio.iloc[-1]
     crossover = detect_crossover(sma_fast, sma_slow)
     latest_crossover = crossover.iloc[-1]

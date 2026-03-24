@@ -66,7 +66,7 @@ class RiskManager:
             return 0
 
         quantity = int(risk_amount / risk_per_share)
-        return max(quantity, 1)
+        return quantity if quantity > 0 else 0
 
     def calculate_stop_loss(self, entry_price: float, atr: float) -> float:
         """Stop loss = Entry - (ATR x multiplier)."""
@@ -81,7 +81,14 @@ class RiskManager:
         else:
             self.consecutive_losses = 0
 
-    def reset_daily(self):
+    def update_peak(self, portfolio_value: float):
+        """Call after each trade to track high-water mark."""
+        if portfolio_value > self.peak_portfolio_value:
+            self.peak_portfolio_value = portfolio_value
+
+    def reset_daily(self, portfolio_value: float | None = None):
         """Call at the start of each trading day."""
         self.daily_pnl = 0.0
         self.trades_today = 0
+        if portfolio_value is not None:
+            self.update_peak(portfolio_value)

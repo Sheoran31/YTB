@@ -28,14 +28,11 @@ def test_rsi_falling_prices():
 
 
 def test_rsi_flat_prices():
-    """RSI on flat prices should be ~50."""
+    """RSI on flat prices should be 50 (no gains, no losses = neutral)."""
     prices = pd.Series([100.0] * 50)
     rsi = calculate_rsi(prices, period=14)
-    # Flat prices = no gains, no losses, RSI undefined but shouldn't crash
-    # With our implementation, gains=0 and losses=0, so RS=NaN -> RSI=NaN
-    # This is acceptable — flat prices don't generate signals
     last = rsi.iloc[-1]
-    assert np.isnan(last) or (40 <= last <= 60)
+    assert last == 50.0
 
 
 def test_rsi_range():
