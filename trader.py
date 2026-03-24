@@ -5,16 +5,16 @@ Usage:
     python trader.py                # Paper trading (default, safe)
     python trader.py --live         # Live trading via Zerodha (requires API keys)
     python trader.py --backtest     # Run backtest
-    python trader.py --screener     # Run screener only
+    python trader.py --screener     # Run screener only + Telegram alert
 
 Flow:
     9:15 AM  → Fetch live data for all tracked stocks
     9:20 AM  → Run screener → generate signals
     9:25 AM  → Apply risk rules (can we trade?)
-    9:30 AM  → Place trades for qualified signals
+    9:30 AM  → Place trades for qualified signals → Telegram alerts
     All day  → Monitor positions, update stop losses
     3:15 PM  → Square off all intraday positions
-    3:20 PM  → Log full trade day to trade_log.csv
+    3:20 PM  → Log full trade day to trade_log.csv → Daily summary alert
 """
 import sys
 from datetime import datetime, time
@@ -26,8 +26,10 @@ from strategies.momentum import generate_signal
 from risk.manager import RiskManager
 from execution.paper_trading import PaperTrader
 from monitoring.logger import setup_logger
+from monitoring.alerts import TelegramAlert
 
 logger = setup_logger()
+alert = TelegramAlert()
 
 
 def is_market_open() -> bool:
@@ -98,6 +100,9 @@ def run_trading_pipeline(live: bool = False):
             risk_mgr.update_peak(trader.get_portfolio_value({}))
             logger.info(f"  SOLD {ticker} @ {price:,.2f} | PnL: {pnl:+,.2f}")
 
+            # Telegram alert for SELL
+            alert.send_trade_alert("SELL", ticker, price, position["quantity"], pnl=pnl)
+
             # Mirror to live broker if connected
             if broker:
                 symbol = ticker.replace(".NS", "")
@@ -133,6 +138,7 @@ def run_trading_pipeline(live: bool = False):
 
         if not can_trade:
             logger.warning(f"  BLOCKED {ticker}: {reason}")
+            alert.send_blocked_alert(ticker, reason)
             continue
 
         # Place paper trade
@@ -141,6 +147,9 @@ def run_trading_pipeline(live: bool = False):
             f"  BOUGHT {ticker} @ {price:,.2f} | Qty: {quantity} | "
             f"Stop: {stop_loss:,.2f} | Status: {trade['status']}"
         )
+
+        # Telegram alert for BUY
+        alert.send_trade_alert("BUY", ticker, price, quantity, stop_loss=stop_loss)
 
         # Mirror to live broker if connected
         if broker:
@@ -157,6 +166,12 @@ def run_trading_pipeline(live: bool = False):
     logger.info(f"Trades today: {risk_mgr.trades_today}")
     logger.info(f"Daily PnL: INR {risk_mgr.daily_pnl:+,.2f}")
     logger.info(f"{'='*60}")
+
+    # Telegram daily summary
+    alert.send_daily_summary(
+        portfolio_value, risk_mgr.daily_pnl,
+        risk_mgr.trades_today, len(trader.positions)
+    )
 
     # Save trade log
     trader.save_trade_log()
@@ -175,6 +190,8 @@ if __name__ == "__main__":
         results = run_screener()
         print_results(results)
         save_results(results)
+        # Send screener results to Telegram
+        alert.send_screener_results(results)
     elif "--live" in sys.argv:
         print("WARNING: Live trading mode. Real money will be used.")
         confirm = input("Type 'YES' to confirm: ")
