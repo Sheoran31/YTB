@@ -18,40 +18,7 @@ from datetime import datetime
 import config
 from data.fetcher import fetch_stock_data
 from data.signals import calculate_sma, calculate_rsi, calculate_atr
-
-
-# ============================================================
-# STRATEGY FUNCTION (used by backtester)
-# ============================================================
-
-def momentum_strategy(data: pd.DataFrame) -> str:
-    """
-    Takes OHLCV data up to current day (NO future data).
-    Returns "BUY", "SELL", or "HOLD".
-    """
-    if len(data) < config.SMA_SLOW:
-        return "HOLD"
-
-    close = data["Close"].squeeze()
-
-    sma_fast = calculate_sma(close, config.SMA_FAST)
-    sma_slow = calculate_sma(close, config.SMA_SLOW)
-    rsi = calculate_rsi(close, config.RSI_PERIOD)
-
-    latest_rsi = rsi.iloc[-1]
-    if pd.isna(latest_rsi):
-        return "HOLD"
-
-    # BUY: fast SMA above slow SMA + RSI confirms momentum
-    if sma_fast.iloc[-1] > sma_slow.iloc[-1] and latest_rsi > config.RSI_BUY_THRESHOLD:
-        return "BUY"
-
-    # SELL: price drops below fast SMA or RSI weak
-    current_price = close.iloc[-1]
-    if current_price < sma_fast.iloc[-1] or latest_rsi < config.RSI_SELL_THRESHOLD:
-        return "SELL"
-
-    return "HOLD"
+from strategies.momentum import generate_signal as momentum_strategy
 
 
 # ============================================================

@@ -26,6 +26,13 @@ class PaperTrader:
         Returns:
             Trade record dict
         """
+        if action not in ("BUY", "SELL"):
+            raise ValueError(f"Invalid action: {action}. Must be BUY or SELL.")
+        if quantity <= 0:
+            raise ValueError(f"Invalid quantity: {quantity}. Must be > 0.")
+        if price <= 0:
+            raise ValueError(f"Invalid price: {price}. Must be > 0.")
+
         trade = {
             "timestamp": datetime.now().isoformat(),
             "symbol": symbol,

@@ -30,8 +30,13 @@ def calculate_rsi(prices: pd.Series, period: int = 14) -> pd.Series:
         avg_gain.iloc[i] = (avg_gain.iloc[i - 1] * (period - 1) + gains.iloc[i]) / period
         avg_loss.iloc[i] = (avg_loss.iloc[i - 1] * (period - 1) + losses.iloc[i]) / period
 
-    rs = avg_gain / avg_loss
+    # Handle division by zero: if no losses, RSI = 100; if no gains, RSI = 0
+    rs = np.where(avg_loss == 0, np.inf, avg_gain / avg_loss)
+    rs = pd.Series(rs, index=prices.index)
     rsi = 100 - (100 / (1 + rs))
+    # Where both gains and losses are 0 (flat prices), set RSI to 50
+    flat = (avg_gain == 0) & (avg_loss == 0)
+    rsi[flat] = 50.0
 
     return rsi
 

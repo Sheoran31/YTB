@@ -67,3 +67,21 @@ def test_ok_to_trade():
     can_trade, reason = rm.can_open_position(100_000, [], 4000)
     assert can_trade is True
     assert "OK" in reason
+
+
+def test_peak_tracking():
+    rm = RiskManager()
+    rm.update_peak(110_000)
+    assert rm.peak_portfolio_value == 110_000
+    rm.update_peak(105_000)  # Lower value shouldn't update peak
+    assert rm.peak_portfolio_value == 110_000
+
+
+def test_zero_quantity_not_forced_to_one():
+    rm = RiskManager()
+    # Very tight stop: risk_per_share = 0.5, risk_amount = 1000
+    # quantity = int(1000 / 0.5) = 2000 — OK
+    # But if capital is tiny: risk_amount = 1, risk_per_share = 20
+    # quantity = int(1/20) = 0 — should stay 0, not become 1
+    qty = rm.calculate_position_size(100, 1000, 980)  # 100 INR capital
+    assert qty == 0  # 100 * 0.01 = 1 INR risk / 20 per share = 0
