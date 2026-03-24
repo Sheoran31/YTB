@@ -42,18 +42,18 @@ def generate_signal(data: pd.DataFrame) -> str:
         return "HOLD"
 
     latest_vol_ratio = vol_ratio.iloc[-1]
-    crossover = detect_crossover(sma_fast, sma_slow)
-    latest_crossover = crossover.iloc[-1]
 
-    # BUY signal
-    if (latest_crossover == 1
+    current_price = close.iloc[-1]
+    current_sma_fast = sma_fast.iloc[-1]
+    current_sma_slow = sma_slow.iloc[-1]
+
+    # BUY signal: uptrend + momentum + volume
+    if (current_sma_fast > current_sma_slow
             and latest_rsi > config.RSI_BUY_THRESHOLD
             and latest_vol_ratio > config.VOLUME_RATIO_MIN):
         return "BUY"
 
-    # SELL signal
-    current_price = close.iloc[-1]
-    current_sma_fast = sma_fast.iloc[-1]
+    # SELL signal: downtrend or weak momentum
     if current_price < current_sma_fast or latest_rsi < config.RSI_SELL_THRESHOLD:
         return "SELL"
 

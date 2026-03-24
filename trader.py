@@ -2,15 +2,19 @@
 Main Trading Pipeline — connects all layers together.
 
 Usage:
-    python trader.py              # Run once (paper trading mode)
-    python trader.py --backtest   # Run backtest instead
+    python trader.py                # Paper trading (default, safe)
+    python trader.py --live         # Live trading via Zerodha (requires API keys)
+    python trader.py --backtest     # Run backtest
+    python trader.py --screener     # Run screener only
 
 Flow:
-    1. Fetch data for all watchlist stocks
-    2. Generate signals (momentum strategy)
-    3. Check risk rules (can we trade?)
-    4. Place paper trades for qualified signals
-    5. Log everything
+    9:15 AM  → Fetch live data for all tracked stocks
+    9:20 AM  → Run screener → generate signals
+    9:25 AM  → Apply risk rules (can we trade?)
+    9:30 AM  → Place trades for qualified signals
+    All day  → Monitor positions, update stop losses
+    3:15 PM  → Square off all intraday positions
+    3:20 PM  → Log full trade day to trade_log.csv
 """
 import sys
 from datetime import datetime, time
@@ -34,36 +38,39 @@ def is_market_open() -> bool:
     return market_open <= now <= market_close
 
 
-def is_new_positions_allowed() -> bool:
-    """Check if we're still in the window for new positions."""
-    now = datetime.now().time()
-    cutoff = time(config.NO_NEW_POSITIONS_AFTER_HOUR, config.NO_NEW_POSITIONS_AFTER_MINUTE)
-    return now < cutoff
-
-
-def run_trading_pipeline():
+def run_trading_pipeline(live: bool = False):
     """Execute one full cycle of the trading pipeline."""
+    mode = "LIVE" if live else "PAPER"
+
     logger.info("=" * 60)
     logger.info("TRADING PIPELINE STARTED")
     logger.info(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    logger.info(f"Mode: PAPER TRADING")
+    logger.info(f"Mode: {mode} TRADING")
+    logger.info(f"Capital: INR {config.INITIAL_CAPITAL:,.0f}")
     logger.info("=" * 60)
 
     # Initialize components
     risk_mgr = RiskManager()
     trader = PaperTrader(config.INITIAL_CAPITAL)
 
-    # Check market hours (log warning but continue for paper trading)
+    # If live mode, also init broker
+    broker = None
+    if live:
+        from execution.broker_api import ZerodhaBroker
+        broker = ZerodhaBroker()
+        if not broker.connect():
+            logger.error("Failed to connect to Zerodha. Falling back to paper trading.")
+            broker = None
+            mode = "PAPER (broker fallback)"
+
+    # Market hours check
     if not is_market_open():
-        logger.warning("Market is CLOSED. Running in simulation mode with latest available data.")
+        logger.warning("Market is CLOSED. Running with latest available data.")
 
-    if not is_new_positions_allowed():
-        logger.warning("Past new-positions cutoff time. No new trades will be placed.")
-
-    # Step 1: Fetch data and generate signals
+    # ── Step 1: Fetch data and generate signals ─────────────
     signals = {}
     for ticker in config.WATCHLIST:
-        logger.info(f"Fetching data for {ticker}...")
+        logger.info(f"Fetching {ticker}...")
         try:
             data = fetch_stock_data(ticker, period="6mo")
         except Exception as e:
@@ -74,14 +81,13 @@ def run_trading_pipeline():
         signals[ticker] = {"signal": signal, "data": data}
         logger.info(f"  {ticker}: {signal}")
 
-    # Step 2: Execute on BUY signals
     buy_signals = {t: s for t, s in signals.items() if s["signal"] == "BUY"}
     sell_signals = {t: s for t, s in signals.items() if s["signal"] == "SELL"}
+    hold_count = len(signals) - len(buy_signals) - len(sell_signals)
 
-    logger.info(f"\nSignal summary: {len(buy_signals)} BUY, {len(sell_signals)} SELL, "
-                f"{len(signals) - len(buy_signals) - len(sell_signals)} HOLD")
+    logger.info(f"\nSignals: {len(buy_signals)} BUY | {len(sell_signals)} SELL | {hold_count} HOLD")
 
-    # Process SELL signals first (free up capital)
+    # ── Step 2: Process SELL signals first (free up capital) ─
     for ticker, info in sell_signals.items():
         if ticker in trader.positions:
             price = float(info["data"]["Close"].squeeze().iloc[-1])
@@ -90,9 +96,14 @@ def run_trading_pipeline():
             pnl = trade.get("pnl", 0)
             risk_mgr.record_trade(pnl)
             risk_mgr.update_peak(trader.get_portfolio_value({}))
-            logger.info(f"  SOLD {ticker} @ {price:,.2f} | PnL: {pnl:+,.2f} | Status: {trade['status']}")
+            logger.info(f"  SOLD {ticker} @ {price:,.2f} | PnL: {pnl:+,.2f}")
 
-    # Process BUY signals
+            # Mirror to live broker if connected
+            if broker:
+                symbol = ticker.replace(".NS", "")
+                broker.place_order(symbol, "SELL", position["quantity"], price)
+
+    # ── Step 3: Process BUY signals ─────────────────────────
     for ticker, info in buy_signals.items():
         data = info["data"]
         close = data["Close"].squeeze()
@@ -108,12 +119,12 @@ def run_trading_pipeline():
         )
 
         if quantity == 0:
-            logger.warning(f"  SKIP {ticker}: position size = 0 (stop too tight or capital too low)")
+            logger.warning(f"  SKIP {ticker}: position size = 0")
             continue
 
         proposed_value = quantity * price
 
-        # Check risk rules
+        # Risk check (includes market hours, Friday rule, all circuit breakers)
         can_trade, reason = risk_mgr.can_open_position(
             trader.get_portfolio_value({}),
             list(trader.positions.keys()),
@@ -124,20 +135,25 @@ def run_trading_pipeline():
             logger.warning(f"  BLOCKED {ticker}: {reason}")
             continue
 
-        # Place the order
+        # Place paper trade
         trade = trader.place_order(ticker, "BUY", quantity, price)
         logger.info(
             f"  BOUGHT {ticker} @ {price:,.2f} | Qty: {quantity} | "
             f"Stop: {stop_loss:,.2f} | Status: {trade['status']}"
         )
 
-    # Step 3: Summary
+        # Mirror to live broker if connected
+        if broker:
+            symbol = ticker.replace(".NS", "")
+            broker.place_order(symbol, "BUY", quantity, price)
+
+    # ── Step 4: Summary ─────────────────────────────────────
     portfolio_value = trader.get_portfolio_value({})
     logger.info(f"\n{'='*60}")
-    logger.info(f"PIPELINE COMPLETE")
-    logger.info(f"Portfolio value: INR {portfolio_value:,.2f}")
+    logger.info(f"PIPELINE COMPLETE — {mode}")
+    logger.info(f"Portfolio: INR {portfolio_value:,.2f}")
     logger.info(f"Cash: INR {trader.capital:,.2f}")
-    logger.info(f"Open positions: {len(trader.positions)}")
+    logger.info(f"Positions: {len(trader.positions)}")
     logger.info(f"Trades today: {risk_mgr.trades_today}")
     logger.info(f"Daily PnL: INR {risk_mgr.daily_pnl:+,.2f}")
     logger.info(f"{'='*60}")
@@ -154,5 +170,17 @@ if __name__ == "__main__":
     if "--backtest" in sys.argv:
         from tests.backtest import main as run_backtest
         run_backtest()
+    elif "--screener" in sys.argv:
+        from screener import run_screener, print_results, save_results
+        results = run_screener()
+        print_results(results)
+        save_results(results)
+    elif "--live" in sys.argv:
+        print("WARNING: Live trading mode. Real money will be used.")
+        confirm = input("Type 'YES' to confirm: ")
+        if confirm == "YES":
+            run_trading_pipeline(live=True)
+        else:
+            print("Cancelled.")
     else:
-        run_trading_pipeline()
+        run_trading_pipeline(live=False)

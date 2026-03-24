@@ -1,7 +1,15 @@
 """
 Risk Manager — the layer between you and blowing up your account.
 Do not modify without understanding what each rule does.
+
+Circuit Breakers:
+    1. Daily loss limit: -2% → stop all new trades for the day
+    2. Max drawdown: -5% from peak → stop all trading, review system
+    3. Consecutive losses: 3 in a row → stop, re-evaluate
+    4. Pre-close cutoff: no new positions after 3:00 PM
+    5. Friday rule: no new positions after Friday 2:00 PM
 """
+from datetime import datetime, time
 import config
 
 
@@ -24,29 +32,44 @@ class RiskManager:
         portfolio_value: float,
         current_positions: list,
         proposed_position_value: float,
+        check_time: datetime | None = None,
     ) -> tuple[bool, str]:
-        """Returns (can_trade, reason)."""
-        # Check 1: Daily loss limit
+        """
+        Returns (can_trade, reason).
+        Pass check_time to override current time (useful for testing).
+        """
+        now = check_time or datetime.now()
+
+        # Check 1: Market hours — no new positions after cutoff
+        cutoff = time(config.NO_NEW_POSITIONS_AFTER_HOUR, config.NO_NEW_POSITIONS_AFTER_MINUTE)
+        if now.time() >= cutoff:
+            return False, f"Pre-close cutoff: no new positions after {cutoff}"
+
+        # Check 2: Friday rule — no new positions after Friday 2 PM
+        if now.weekday() == 4 and now.time() >= time(14, 0):
+            return False, "Friday rule: no new positions after Friday 2:00 PM"
+
+        # Check 3: Daily loss limit
         if portfolio_value > 0:
             daily_loss = self.daily_pnl / portfolio_value
             if daily_loss <= -self.max_daily_loss_pct:
                 return False, f"Daily loss limit hit: {daily_loss:.2%}"
 
-        # Check 2: Overall drawdown
+        # Check 4: Overall drawdown
         if self.peak_portfolio_value > 0:
             drawdown = (self.peak_portfolio_value - portfolio_value) / self.peak_portfolio_value
             if drawdown >= self.max_drawdown_pct:
                 return False, f"Max drawdown hit: {drawdown:.2%}"
 
-        # Check 3: Position count
+        # Check 5: Position count
         if len(current_positions) >= self.max_total_positions:
             return False, f"Max positions reached: {len(current_positions)}"
 
-        # Check 4: Position size
+        # Check 6: Position size
         if portfolio_value > 0 and proposed_position_value / portfolio_value > self.max_position_pct:
             return False, f"Position too large: {proposed_position_value / portfolio_value:.2%}"
 
-        # Check 5: Consecutive losses circuit breaker
+        # Check 7: Consecutive losses circuit breaker
         if self.consecutive_losses >= config.CONSECUTIVE_LOSS_LIMIT:
             return False, f"Circuit breaker: {self.consecutive_losses} consecutive losses"
 
