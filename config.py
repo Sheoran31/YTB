@@ -43,7 +43,7 @@ WATCHLIST = [
     "TATACONSUM.NS",
     # Large Cap — Auto
     "MARUTI.NS",
-    "TATAMOTOR.NS",
+    "SHRIRAMFIN.NS",
     "M&M.NS",
     "BAJAJ-AUTO.NS",
     "HEROMOTOCO.NS",
