@@ -219,28 +219,73 @@ def print_regime_results(results: list[dict]):
         print("FAIL — Strategy only works in bull markets. Not robust enough.")
 
 
+def run_multi_stock_backtest(tickers: list[str] | None = None):
+    """Run backtest across multiple stocks and all regimes."""
+    tickers = tickers or config.WATCHLIST[:5]  # Top 5 from watchlist
+
+    print(f"\n{'='*80}")
+    print(f"MULTI-STOCK BACKTEST REPORT")
+    print(f"Strategy: Momentum (SMA crossover + RSI)")
+    print(f"Initial capital: INR {config.INITIAL_CAPITAL:,.0f} per stock")
+    print(f"{'='*80}")
+
+    all_results = {}
+    for ticker in tickers:
+        print(f"\n--- {ticker} ---")
+        results = []
+        for regime_name, (start, end) in REGIMES.items():
+            result = run_regime_test(ticker, regime_name, start, end)
+            results.append(result)
+        all_results[ticker] = results
+        print_regime_results(results)
+
+    # Summary table across all stocks
+    print(f"\n{'='*80}")
+    print(f"SUMMARY: Average performance across all stocks")
+    print(f"{'='*80}")
+    print(f"{'Ticker':<15} {'COVID':>10} {'Bull':>10} {'Sideways':>10} {'Avg':>10} {'Pass?':>8}")
+    print("-" * 65)
+
+    for ticker, results in all_results.items():
+        returns = []
+        for r in results:
+            ret = r.get("total_return", 0)
+            returns.append(ret)
+
+        avg = sum(returns) / len(returns) if returns else 0
+        profitable = sum(1 for r in returns if r > 0)
+        passed = "PASS" if profitable >= 2 else "FAIL"
+
+        ret_strs = [f"{r:>+9.1f}%" for r in returns]
+        print(f"{ticker.replace('.NS',''):<15} {ret_strs[0]} {ret_strs[1]} {ret_strs[2]} {avg:>+9.1f}% {passed:>8}")
+
+
 def main():
-    ticker = "RELIANCE.NS"
-    print(f"\nBacktesting momentum strategy on {ticker}")
-    print(f"Initial capital: INR {config.INITIAL_CAPITAL:,.0f}")
+    import sys
+    if "--multi" in sys.argv:
+        run_multi_stock_backtest()
+    else:
+        ticker = "RELIANCE.NS"
+        print(f"\nBacktesting momentum strategy on {ticker}")
+        print(f"Initial capital: INR {config.INITIAL_CAPITAL:,.0f}")
 
-    results = []
-    for regime_name, (start, end) in REGIMES.items():
-        print(f"\nRunning: {regime_name}...")
-        result = run_regime_test(ticker, regime_name, start, end)
-        results.append(result)
+        results = []
+        for regime_name, (start, end) in REGIMES.items():
+            print(f"\nRunning: {regime_name}...")
+            result = run_regime_test(ticker, regime_name, start, end)
+            results.append(result)
 
-    print_regime_results(results)
+        print_regime_results(results)
 
-    # Print detailed trade log for the most recent regime
-    last = results[-1]
-    if "trade_log" in last and last["trade_log"]:
-        print(f"\nDetailed trades for {last['regime']}:")
-        print(f"{'Action':<18} {'Price':>10} {'Qty':>6} {'PnL':>10} {'Date'}")
-        print("-" * 65)
-        for t in last["trade_log"]:
-            pnl_str = f"{t.get('pnl', 0):>+10,.0f}" if "pnl" in t else "          "
-            print(f"{t['action']:<18} {t['price']:>10,.2f} {t['quantity']:>6} {pnl_str} {t['date'][:10]}")
+        # Print detailed trade log for the most recent regime
+        last = results[-1]
+        if "trade_log" in last and last["trade_log"]:
+            print(f"\nDetailed trades for {last['regime']}:")
+            print(f"{'Action':<18} {'Price':>10} {'Qty':>6} {'PnL':>10} {'Date'}")
+            print("-" * 65)
+            for t in last["trade_log"]:
+                pnl_str = f"{t.get('pnl', 0):>+10,.0f}" if "pnl" in t else "          "
+                print(f"{t['action']:<18} {t['price']:>10,.2f} {t['quantity']:>6} {pnl_str} {t['date'][:10]}")
 
 
 if __name__ == "__main__":
