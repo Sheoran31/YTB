@@ -1,7 +1,9 @@
 """
 Paper trading — simulate order fills without real money.
+Portfolio state persists across sessions via JSON file.
 """
 import csv
+import json
 import os
 from datetime import datetime
 import config
@@ -90,3 +92,37 @@ class PaperTrader:
             writer = csv.DictWriter(f, fieldnames=self.trade_log[0].keys())
             writer.writeheader()
             writer.writerows(self.trade_log)
+
+    def save_state(self, filepath=None, risk_state=None):
+        """Save portfolio state to JSON. Persists capital & positions across sessions."""
+        filepath = filepath or config.PORTFOLIO_STATE_FILE
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        state = {
+            "capital": self.capital,
+            "positions": self.positions,
+            "last_saved": datetime.now().isoformat(),
+        }
+        if risk_state:
+            state["risk"] = risk_state
+        with open(filepath, "w") as f:
+            json.dump(state, f, indent=2, default=str)
+
+    @classmethod
+    def load_state(cls, filepath=None):
+        """
+        Load portfolio state from file.
+        Returns (PaperTrader with loaded state, risk_state dict).
+        If no file or corrupted, returns fresh PaperTrader.
+        """
+        filepath = filepath or config.PORTFOLIO_STATE_FILE
+        if not os.path.exists(filepath):
+            return cls(), {}
+        try:
+            with open(filepath) as f:
+                state = json.load(f)
+            trader = cls(state.get("capital", config.INITIAL_CAPITAL))
+            trader.positions = state.get("positions", {})
+            risk_state = state.get("risk", {})
+            return trader, risk_state
+        except (json.JSONDecodeError, KeyError, TypeError):
+            return cls(), {}

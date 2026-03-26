@@ -14,9 +14,11 @@ Usage:
     alert.send("BUY signal: RELIANCE @ 1,411")
 """
 import os
+import time as time_module
 import requests
 from datetime import datetime
 
+import config
 from monitoring.logger import setup_logger
 
 logger = setup_logger("alerts")
@@ -95,17 +97,22 @@ class TelegramAlert:
         self.send(msg)
 
     def send_trade_alert(self, action: str, ticker: str, price: float, quantity: int,
-                         stop_loss: float = 0, pnl: float = 0):
+                         stop_loss: float = 0, target: float = 0, pnl: float = 0):
         """Send alert when a trade is placed."""
         symbol = ticker.replace(".NS", "")
         now = datetime.now().strftime("%H:%M:%S")
 
         if action == "BUY":
+            risk = price - stop_loss if stop_loss else 0
+            reward = target - price if target else 0
+            rr = f"{reward / risk:.1f}" if risk > 0 else "—"
             msg = (
                 f"🟢 <b>BUY ORDER</b> — {now}\n"
                 f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
                 f"Qty: {quantity} | Value: ₹{quantity * price:,.0f}\n"
-                f"Stop Loss: ₹{stop_loss:,.2f}"
+                f"Stop Loss: ₹{stop_loss:,.2f}\n"
+                f"Target: ₹{target:,.2f}\n"
+                f"R:R = 1:{rr}"
             )
         elif action == "SELL":
             emoji = "🟢" if pnl >= 0 else "🔴"
@@ -138,3 +145,64 @@ class TelegramAlert:
             f"Open Positions: {positions}"
         )
         self.send(msg)
+
+    def ask_trading_mode(self, timeout_seconds=None):
+        """
+        Ask user via Telegram to select Paper or Live mode.
+        Polls getUpdates for a reply. Returns 'paper' or 'live'.
+        Defaults to 'paper' if no reply or Telegram not configured.
+        """
+        timeout = timeout_seconds or config.MODE_REPLY_TIMEOUT
+
+        if not self.enabled:
+            logger.info("Telegram not configured — defaulting to PAPER mode")
+            return "paper"
+
+        # Get latest update_id to skip old messages
+        url = f"https://api.telegram.org/bot{self.bot_token}/getUpdates"
+        offset = 0
+        try:
+            resp = requests.get(url, params={"offset": -1, "timeout": 1}, timeout=5)
+            data = resp.json()
+            if data.get("ok") and data.get("result"):
+                offset = data["result"][-1]["update_id"] + 1
+        except Exception:
+            pass
+
+        # Send mode selection message
+        self.send(
+            "🤖 <b>Good Morning! Trading Bot Ready</b>\n\n"
+            "Select mode for today:\n"
+            "  Reply <b>paper</b> — Simulated trades\n"
+            "  Reply <b>live</b> — Real money (Dhan)\n\n"
+            f"⏳ Waiting {timeout // 60} min for reply...\n"
+            "Default: <b>PAPER</b> (if no reply)"
+        )
+
+        # Poll for response
+        start = time_module.time()
+        while time_module.time() - start < timeout:
+            try:
+                resp = requests.get(url, params={
+                    "offset": offset,
+                    "timeout": 30,
+                    "allowed_updates": ["message"],
+                }, timeout=35)
+                data = resp.json()
+
+                for update in data.get("result", []):
+                    offset = update["update_id"] + 1
+                    msg = update.get("message", {})
+                    chat_id = str(msg.get("chat", {}).get("id", ""))
+                    text = (msg.get("text") or "").strip().lower()
+
+                    if chat_id == self.chat_id and text in ("paper", "live"):
+                        self.send(f"✅ Selected: <b>{text.upper()}</b> trading for today")
+                        return text
+            except Exception:
+                time_module.sleep(5)
+
+        # Timeout — default to paper
+        self.send("⏰ No reply received. Defaulting to <b>PAPER</b> trading.")
+        logger.info("Mode selection timeout — defaulting to PAPER")
+        return "paper"

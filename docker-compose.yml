@@ -1,0 +1,28 @@
+services:
+  # ── DEFAULT: Auto Mode (ask paper/live on Telegram, trade all day) ──
+  # Just start this — it handles everything:
+  #   Morning: asks Paper/Live on Telegram → loads portfolio → scans till close
+  #   Evening: saves state → sleeps → repeats next trading day
+  autotrade:
+    build: .
+    container_name: autotrade-bot
+    env_file: .env
+    environment:
+      - TZ=Asia/Kolkata
+    volumes:
+      - ./logs:/app/logs
+      - ./screener_results.csv:/app/screener_results.csv
+    restart: unless-stopped
+
+  # ── Screener Only (one-shot scan, sends Telegram, exits) ──
+  screener:
+    build: .
+    container_name: autotrade-screener
+    env_file: .env
+    environment:
+      - TZ=Asia/Kolkata
+    volumes:
+      - ./logs:/app/logs
+      - ./screener_results.csv:/app/screener_results.csv
+    command: ["python", "trader.py", "--screener"]
+    profiles: ["screener"]

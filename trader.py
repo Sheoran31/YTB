@@ -1,95 +1,374 @@
 """
-Main Trading Pipeline — connects all layers together.
+Main Trading Pipeline — Indian Stock Market (NSE/BSE) Auto Trading Bot.
 
 Usage:
-    python trader.py                # Paper trading (default, safe)
-    python trader.py --live         # Live trading via Zerodha (requires API keys)
-    python trader.py --backtest     # Run backtest
-    python trader.py --screener     # Run screener only + Telegram alert
+    python trader.py               # DEFAULT: Auto mode — ask paper/live on Telegram,
+                                   #   scan + trade 9:15 AM to 3:30 PM, repeat daily
+    python trader.py --screener    # Run screener only + Telegram alert
+    python trader.py --backtest    # Run backtest
+    python trader.py --astro       # Show today's astro report only
 
-Flow:
-    9:15 AM  → Fetch live data for all tracked stocks
-    9:20 AM  → Run screener → generate signals
-    9:25 AM  → Apply risk rules (can we trade?)
-    9:30 AM  → Place trades for qualified signals → Telegram alerts
-    All day  → Monitor positions, update stop losses
-    3:15 PM  → Square off all intraday positions
-    3:20 PM  → Log full trade day to trade_log.csv → Daily summary alert
+Daily Flow (default):
+    1. Wait for market open (skip holidays/weekends)
+    2. Ask PAPER or LIVE mode via Telegram (5 min to reply, default: paper)
+    3. Load previous portfolio state (capital, positions carry forward)
+    4. Send astro daily report → Telegram
+    5. Scan every 15 min → signals → trades → Telegram alerts
+    6. 3:00 PM → no new positions | 3:30 PM → market close
+    7. Save portfolio state + daily summary → Telegram
+    8. Sleep until next trading day → repeat from step 1
 """
+import os
 import sys
-from datetime import datetime, time
+import time as time_module
+import traceback
+from datetime import datetime, time, timedelta
 
 import config
-from data.fetcher import fetch_stock_data
+from data.fetcher import fetch_stock_data, fetch_live_prices
 from data.signals import calculate_atr
 from strategies.momentum import generate_signal
 from risk.manager import RiskManager
 from execution.paper_trading import PaperTrader
+from astro.filter import AstroFilter
 from monitoring.logger import setup_logger
 from monitoring.alerts import TelegramAlert
 
 logger = setup_logger()
 alert = TelegramAlert()
+astro = AstroFilter()
+
+
+def is_market_holiday(check_date=None) -> tuple:
+    """
+    Check if a given date is an NSE holiday.
+    Returns (is_holiday: bool, holiday_name: str or None).
+
+    Two-layer detection:
+      1. Hardcoded NSE_HOLIDAYS calendar in config.py (instant, works anytime)
+      2. Live check via yfinance — if no NIFTY data for today after 9:30 AM,
+         market is likely closed (catches unlisted holidays)
+    """
+    if check_date is None:
+        check_date = datetime.now().date()
+
+    date_str = check_date.strftime("%Y-%m-%d")
+
+    # Layer 1: Hardcoded calendar
+    if date_str in config.NSE_HOLIDAYS:
+        return True, config.NSE_HOLIDAYS[date_str]
+
+    # Layer 2: Live detection (only after 9:30 AM on weekdays)
+    now = datetime.now()
+    if check_date == now.date() and check_date.weekday() < 5 and now.hour >= 9 and now.minute >= 30:
+        try:
+            import yfinance as yf
+            nifty = yf.download("^NSEI", period="5d", progress=False)
+            if not nifty.empty:
+                trading_dates = set(nifty.index.date)
+                if check_date not in trading_dates:
+                    return True, "Unlisted Holiday (no market data)"
+        except Exception:
+            pass  # yfinance failed, rely on calendar only
+
+    return False, None
+
+
+def get_next_trading_day(from_date=None):
+    """Find the next trading day (skips weekends + holidays)."""
+    if from_date is None:
+        from_date = datetime.now().date()
+
+    next_day = from_date + timedelta(days=1)
+    while True:
+        if next_day.weekday() >= 5:  # Weekend
+            next_day += timedelta(days=1)
+            continue
+        is_hol, _ = is_market_holiday(next_day)
+        if is_hol:
+            next_day += timedelta(days=1)
+            continue
+        return next_day
 
 
 def is_market_open() -> bool:
     """Check if Indian stock market is currently open (IST)."""
-    now = datetime.now().time()
+    now = datetime.now()
+
+    # Weekend check
+    if now.weekday() >= 5:
+        return False
+
+    # Holiday check
+    is_hol, _ = is_market_holiday(now.date())
+    if is_hol:
+        return False
+
     market_open = time(config.MARKET_OPEN_HOUR, config.MARKET_OPEN_MINUTE)
     market_close = time(config.MARKET_CLOSE_HOUR, config.MARKET_CLOSE_MINUTE)
-    return market_open <= now <= market_close
+    return market_open <= now.time() <= market_close
 
 
-def run_trading_pipeline(live: bool = False):
-    """Execute one full cycle of the trading pipeline."""
-    mode = "LIVE" if live else "PAPER"
+def wait_for_market_open():
+    """Wait until market opens. Skips weekends and holidays with Telegram alerts."""
+    now = datetime.now()
 
-    logger.info("=" * 60)
-    logger.info("TRADING PIPELINE STARTED")
-    logger.info(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    logger.info(f"Mode: {mode} TRADING")
-    logger.info(f"Capital: INR {config.INITIAL_CAPITAL:,.0f}")
-    logger.info("=" * 60)
+    # ── Check if today is a holiday ────────────────────────
+    is_hol, hol_name = is_market_holiday(now.date())
+    if is_hol:
+        next_day = get_next_trading_day(now.date())
+        next_open = datetime.combine(next_day, time(config.MARKET_OPEN_HOUR, config.MARKET_OPEN_MINUTE))
+        wait_seconds = (next_open - now).total_seconds()
+        wait_hours = int(wait_seconds / 3600)
+        wait_min = int((wait_seconds % 3600) / 60)
 
-    # Initialize components
-    risk_mgr = RiskManager()
-    trader = PaperTrader(config.INITIAL_CAPITAL)
+        # Check for upcoming holidays this week
+        upcoming = []
+        check = now.date() + timedelta(days=1)
+        for _ in range(7):
+            h, name = is_market_holiday(check)
+            if h:
+                upcoming.append(f"  {check.strftime('%d %b')} — {name}")
+            check += timedelta(days=1)
+        upcoming_text = "\n".join(upcoming) if upcoming else "  None"
 
-    # If live mode, also init broker
-    broker = None
-    if live:
-        from execution.broker_api import ZerodhaBroker
-        broker = ZerodhaBroker()
-        if not broker.connect():
-            logger.error("Failed to connect to Zerodha. Falling back to paper trading.")
-            broker = None
-            mode = "PAPER (broker fallback)"
+        logger.info(f"TODAY IS A HOLIDAY: {hol_name}. Next trading day: {next_day}")
+        alert.send(
+            f"📅 <b>MARKET HOLIDAY — {hol_name}</b>\n\n"
+            f"Date: {now.strftime('%A, %d %B %Y')}\n"
+            f"NSE/BSE closed today.\n\n"
+            f"<b>Next Trading Day:</b> {next_day.strftime('%A, %d %B %Y')}\n"
+            f"Bot will auto-resume at 9:15 AM\n"
+            f"Sleeping {wait_hours}h {wait_min}m\n\n"
+            f"<b>Upcoming Holidays (7 days):</b>\n{upcoming_text}"
+        )
 
-    # Market hours check
-    if not is_market_open():
-        logger.warning("Market is CLOSED. Running with latest available data.")
+        time_module.sleep(wait_seconds)
+        # After waking up, re-check (in case of consecutive holidays)
+        return wait_for_market_open()
 
-    # ── Step 1: Fetch data and generate signals ─────────────
-    signals = {}
-    for ticker in config.WATCHLIST:
-        logger.info(f"Fetching {ticker}...")
-        try:
-            data = fetch_stock_data(ticker, period="6mo")
-        except Exception as e:
-            logger.error(f"Failed to fetch {ticker}: {e}")
+    # ── Check if today is weekend ──────────────────────────
+    if now.weekday() >= 5:
+        next_day = get_next_trading_day(now.date())
+        next_open = datetime.combine(next_day, time(config.MARKET_OPEN_HOUR, config.MARKET_OPEN_MINUTE))
+        wait_seconds = (next_open - now).total_seconds()
+        wait_hours = int(wait_seconds / 3600)
+        wait_min = int((wait_seconds % 3600) / 60)
+
+        day_name = "Saturday" if now.weekday() == 5 else "Sunday"
+        logger.info(f"Weekend ({day_name}). Next trading day: {next_day}")
+        alert.send(
+            f"📅 <b>Weekend — {day_name}</b>\n"
+            f"Market closed.\n"
+            f"Next trading day: {next_day.strftime('%A, %d %B')}\n"
+            f"Sleeping {wait_hours}h {wait_min}m"
+        )
+
+        time_module.sleep(wait_seconds)
+        return wait_for_market_open()
+
+    # ── Market closed for today (past 3:30 PM) ────────────
+    market_open = time(config.MARKET_OPEN_HOUR, config.MARKET_OPEN_MINUTE)
+
+    if now.time() >= time(config.MARKET_CLOSE_HOUR, config.MARKET_CLOSE_MINUTE):
+        next_day = get_next_trading_day(now.date())
+        next_open = datetime.combine(next_day, time(config.MARKET_OPEN_HOUR, config.MARKET_OPEN_MINUTE))
+        wait_seconds = (next_open - now).total_seconds()
+        wait_hours = int(wait_seconds / 3600)
+        wait_min = int((wait_seconds % 3600) / 60)
+
+        logger.info(f"Market closed for today. Sleeping until {next_open.strftime('%Y-%m-%d %H:%M')} ({wait_hours}h {wait_min}m)")
+        alert.send(
+            f"⏰ Market closed for today.\n"
+            f"Sleeping until {next_open.strftime('%Y-%m-%d %H:%M')} ({wait_hours}h {wait_min}m)"
+        )
+        time_module.sleep(wait_seconds)
+        return wait_for_market_open()
+
+    # ── Before market open — wait for 9:15 AM ─────────────
+    if now.time() < market_open:
+        open_dt = now.replace(
+            hour=config.MARKET_OPEN_HOUR,
+            minute=config.MARKET_OPEN_MINUTE,
+            second=0, microsecond=0,
+        )
+        wait_seconds = (open_dt - now).total_seconds()
+        wait_min = int(wait_seconds / 60)
+
+        logger.info(f"Market opens at {market_open}. Waiting {wait_min} minutes...")
+        alert.send(
+            f"⏰ <b>Bot Started — Waiting for Market</b>\n"
+            f"Market opens at {market_open.strftime('%H:%M')}\n"
+            f"Waiting {wait_min} minutes...\n"
+            f"Will auto-scan every {config.SCAN_INTERVAL_MINUTES} min until 3:30 PM"
+        )
+
+        # Sleep until market opens (check every 30 seconds)
+        while datetime.now().time() < market_open:
+            time_module.sleep(30)
+
+    return True
+
+
+def monitor_positions(trader, broker, risk_mgr):
+    """
+    Real-time position monitoring — checks SL, target, and trailing stop.
+    Runs every POSITION_CHECK_SECONDS between scan cycles.
+    Only fetches prices for held positions (max 5 stocks).
+    """
+    if not trader.positions:
+        return
+
+    # Fetch live prices (lightweight — only held stocks)
+    tickers = list(trader.positions.keys())
+    if broker and broker.connected:
+        symbols = [t.replace(".NS", "") for t in tickers]
+        ltp_map = broker.get_multiple_ltp(symbols)
+        prices = {f"{sym}.NS": p for sym, p in ltp_map.items()}
+    else:
+        prices = fetch_live_prices(tickers)
+
+    if not prices:
+        return
+
+    for ticker in tickers:
+        pos = trader.positions.get(ticker)
+        if not pos or ticker not in prices:
             continue
 
-        signal = generate_signal(data)
-        signals[ticker] = {"signal": signal, "data": data}
-        logger.info(f"  {ticker}: {signal}")
+        current_price = prices[ticker]
+        entry = pos["entry_price"]
+        stop_loss = pos.get("stop_loss", 0)
+        target = pos.get("target", 0)
+        trailing_high = pos.get("trailing_high", entry)
+
+        # ── Update trailing high & trailing stop ──────
+        if current_price > trailing_high:
+            pos["trailing_high"] = current_price
+
+            if config.TRAILING_STOP_ENABLED and stop_loss > 0:
+                original_risk = entry - stop_loss  # 2×ATR at entry
+                profit = current_price - entry
+
+                # Activate trailing once profit >= original risk (1:1 achieved)
+                if profit >= original_risk:
+                    new_sl = current_price - original_risk
+                    if new_sl > stop_loss:
+                        old_sl = stop_loss
+                        pos["stop_loss"] = new_sl
+                        logger.info(
+                            f"  TRAILING SL {ticker.replace('.NS','')}: "
+                            f"₹{old_sl:,.2f} → ₹{new_sl:,.2f} (price: ₹{current_price:,.2f})"
+                        )
+
+        # ── Check STOP LOSS ───────────────────────────
+        if stop_loss > 0 and current_price <= stop_loss:
+            qty = pos["quantity"]
+            trade = trader.place_order(ticker, "SELL", qty, current_price)
+            pnl = trade.get("pnl", 0)
+            risk_mgr.record_trade(pnl)
+            risk_mgr.update_peak(trader.get_portfolio_value({}))
+
+            logger.info(f"  🔴 SL HIT {ticker} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+            alert.send(
+                f"🔴 <b>STOP LOSS HIT</b>\n"
+                f"<b>{ticker.replace('.NS', '')}</b> @ ₹{current_price:,.2f}\n"
+                f"Entry: ₹{entry:,.2f} | SL: ₹{stop_loss:,.2f}\n"
+                f"PnL: ₹{pnl:+,.0f}"
+            )
+
+            if broker and broker.connected:
+                broker.place_order(
+                    ticker.replace(".NS", ""), "SELL", qty, current_price,
+                    order_type="MARKET", product=config.ORDER_PRODUCT
+                )
+            continue
+
+        # ── Check TARGET ──────────────────────────────
+        if target > 0 and current_price >= target:
+            qty = pos["quantity"]
+            trade = trader.place_order(ticker, "SELL", qty, current_price)
+            pnl = trade.get("pnl", 0)
+            risk_mgr.record_trade(pnl)
+            risk_mgr.update_peak(trader.get_portfolio_value({}))
+
+            logger.info(f"  🟢 TARGET HIT {ticker} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+            alert.send(
+                f"🟢 <b>TARGET HIT — Profit Booked!</b>\n"
+                f"<b>{ticker.replace('.NS', '')}</b> @ ₹{current_price:,.2f}\n"
+                f"Entry: ₹{entry:,.2f} | Target: ₹{target:,.2f}\n"
+                f"PnL: ₹{pnl:+,.0f}"
+            )
+
+            if broker and broker.connected:
+                broker.place_order(
+                    ticker.replace(".NS", ""), "SELL", qty, current_price,
+                    order_type="MARKET", product=config.ORDER_PRODUCT
+                )
+            continue
+
+
+def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
+    """
+    Run one scan cycle: fetch data → signals → trades.
+    Returns current signals dict for comparison with next cycle.
+    """
+    now = datetime.now()
+    logger.info(f"\n{'─'*60}")
+    logger.info(f"SCAN #{cycle_num} — {now.strftime('%H:%M:%S')}")
+    logger.info(f"{'─'*60}")
+
+    # ── Fetch data and generate signals ─────────────────
+    signals = {}
+    errors = []
+
+    for ticker in config.WATCHLIST:
+        try:
+            data = fetch_stock_data(ticker, period="6mo")
+            signal = generate_signal(data)
+            signals[ticker] = {"signal": signal, "data": data}
+        except Exception as e:
+            errors.append(f"{ticker}: {e}")
+            continue
+
+    # Send error alerts if any
+    if errors:
+        error_msg = "\n".join(errors[:5])  # Max 5 errors to avoid spam
+        logger.error(f"Fetch errors:\n{error_msg}")
+        if cycle_num <= 2 or len(errors) > 5:  # Alert on first cycles or many errors
+            alert.send(f"⚠️ <b>Fetch Errors (Scan #{cycle_num})</b>\n{error_msg}")
 
     buy_signals = {t: s for t, s in signals.items() if s["signal"] == "BUY"}
     sell_signals = {t: s for t, s in signals.items() if s["signal"] == "SELL"}
     hold_count = len(signals) - len(buy_signals) - len(sell_signals)
 
-    logger.info(f"\nSignals: {len(buy_signals)} BUY | {len(sell_signals)} SELL | {hold_count} HOLD")
+    logger.info(f"Signals: {len(buy_signals)} BUY | {len(sell_signals)} SELL | {hold_count} HOLD")
 
-    # ── Step 2: Process SELL signals first (free up capital) ─
+    # ── Detect NEW signal changes since last scan ───────
+    new_buys = []
+    new_sells = []
+    for ticker, info in signals.items():
+        prev = prev_signals.get(ticker, {}).get("signal", "HOLD")
+        curr = info["signal"]
+        if curr == "BUY" and prev != "BUY":
+            new_buys.append(ticker)
+        elif curr == "SELL" and prev != "SELL":
+            new_sells.append(ticker)
+
+    if new_buys:
+        logger.info(f"NEW BUY triggers: {new_buys}")
+    if new_sells:
+        logger.info(f"NEW SELL triggers: {new_sells}")
+
+    # Send new trigger alerts
+    if new_buys and cycle_num > 1:
+        symbols = ", ".join([t.replace(".NS", "") for t in new_buys])
+        alert.send(f"🔔 <b>New BUY Triggers (Scan #{cycle_num})</b>\n{symbols}")
+    if new_sells and cycle_num > 1:
+        symbols = ", ".join([t.replace(".NS", "") for t in new_sells])
+        alert.send(f"🔔 <b>New SELL Triggers (Scan #{cycle_num})</b>\n{symbols}")
+
+    # ── Process SELL signals ────────────────────────────
     for ticker, info in sell_signals.items():
         if ticker in trader.positions:
             price = float(info["data"]["Close"].squeeze().iloc[-1])
@@ -100,16 +379,27 @@ def run_trading_pipeline(live: bool = False):
             risk_mgr.update_peak(trader.get_portfolio_value({}))
             logger.info(f"  SOLD {ticker} @ {price:,.2f} | PnL: {pnl:+,.2f}")
 
-            # Telegram alert for SELL
             alert.send_trade_alert("SELL", ticker, price, position["quantity"], pnl=pnl)
 
-            # Mirror to live broker if connected
             if broker:
                 symbol = ticker.replace(".NS", "")
-                broker.place_order(symbol, "SELL", position["quantity"], price)
+                broker.place_order(symbol, "SELL", position["quantity"], price,
+                                   product=config.ORDER_PRODUCT)
 
-    # ── Step 3: Process BUY signals ─────────────────────────
+    # ── Build current prices map for accurate portfolio value ──
+    current_prices = {}
+    for t, s in signals.items():
+        try:
+            current_prices[t] = float(s["data"]["Close"].squeeze().iloc[-1])
+        except Exception:
+            pass
+
+    # ── Process BUY signals (with Astro Filter) ─────────
     for ticker, info in buy_signals.items():
+        # Skip if we already hold this position
+        if ticker in trader.positions:
+            continue
+
         data = info["data"]
         close = data["Close"].squeeze()
         high = data["High"].squeeze()
@@ -117,11 +407,39 @@ def run_trading_pipeline(live: bool = False):
         price = float(close.iloc[-1])
         atr = float(calculate_atr(high, low, close).iloc[-1])
 
-        # Calculate stop loss and position size
-        stop_loss = risk_mgr.calculate_stop_loss(price, atr)
-        quantity = risk_mgr.calculate_position_size(
-            trader.get_portfolio_value({}), price, stop_loss
-        )
+        # Astro filter
+        astro_result = astro.evaluate(signal="BUY", price=price)
+
+        if astro_result["blocked"]:
+            reasons = " | ".join(astro_result["block_reasons"])
+            logger.warning(f"  ASTRO BLOCKED {ticker}: {reasons}")
+            alert.send_blocked_alert(ticker, f"Astro: {reasons}")
+            continue
+
+        # Stop loss (Gann vs ATR — use tighter)
+        gann_stop = astro_result.get("suggested_stop", 0)
+        atr_stop = risk_mgr.calculate_stop_loss(price, atr)
+        stop_loss = gann_stop if (gann_stop > 0 and gann_stop > atr_stop) else atr_stop
+
+        # Portfolio value using CURRENT prices (not entry prices)
+        portfolio_value = trader.get_portfolio_value(current_prices)
+
+        # Position size (risk-based)
+        quantity = risk_mgr.calculate_position_size(portfolio_value, price, stop_loss)
+        astro_qty = int(quantity * astro_result["quantity_multiplier"])
+        if astro_qty > 0:
+            quantity = astro_qty
+
+        # Cap quantity to max position size (5% of portfolio)
+        max_position_value = portfolio_value * config.MAX_POSITION_PCT
+        max_qty_by_size = int(max_position_value / price) if price > 0 else 0
+        if quantity > max_qty_by_size:
+            quantity = max_qty_by_size
+
+        # Cap quantity to available cash
+        max_qty_by_cash = int(trader.capital / price) if price > 0 else 0
+        if quantity > max_qty_by_cash:
+            quantity = max_qty_by_cash
 
         if quantity == 0:
             logger.warning(f"  SKIP {ticker}: position size = 0")
@@ -129,9 +447,9 @@ def run_trading_pipeline(live: bool = False):
 
         proposed_value = quantity * price
 
-        # Risk check (includes market hours, Friday rule, all circuit breakers)
+        # Risk check (circuit breakers)
         can_trade, reason = risk_mgr.can_open_position(
-            trader.get_portfolio_value({}),
+            portfolio_value,
             list(trader.positions.keys()),
             proposed_value,
         )
@@ -141,44 +459,243 @@ def run_trading_pipeline(live: bool = False):
             alert.send_blocked_alert(ticker, reason)
             continue
 
-        # Place paper trade
+        # Calculate target (Risk:Reward ratio)
+        risk_per_share = price - stop_loss
+        target = price + (risk_per_share * config.RISK_REWARD_RATIO)
+
+        # Execute trade
         trade = trader.place_order(ticker, "BUY", quantity, price)
+
+        # Store SL, target, trailing high on position for real-time monitoring
+        if ticker in trader.positions:
+            trader.positions[ticker]["stop_loss"] = stop_loss
+            trader.positions[ticker]["target"] = target
+            trader.positions[ticker]["trailing_high"] = price
+
         logger.info(
             f"  BOUGHT {ticker} @ {price:,.2f} | Qty: {quantity} | "
-            f"Stop: {stop_loss:,.2f} | Status: {trade['status']}"
+            f"SL: {stop_loss:,.2f} | Target: {target:,.2f} | R:R 1:{config.RISK_REWARD_RATIO} | "
+            f"Astro: {astro_result['astro_score']}/100"
         )
 
-        # Telegram alert for BUY
-        alert.send_trade_alert("BUY", ticker, price, quantity, stop_loss=stop_loss)
+        alert.send_trade_alert("BUY", ticker, price, quantity, stop_loss=stop_loss, target=target)
 
-        # Mirror to live broker if connected
         if broker:
             symbol = ticker.replace(".NS", "")
-            broker.place_order(symbol, "BUY", quantity, price)
+            broker.place_order(symbol, "BUY", quantity, price,
+                               product=config.ORDER_PRODUCT)
+            # Place SL order on exchange (instant execution, even gap downs)
+            broker.place_sl_order(symbol, quantity, trigger_price=stop_loss,
+                                  product=config.ORDER_PRODUCT)
 
-    # ── Step 4: Summary ─────────────────────────────────────
+    # ── Scan summary (every 4th scan or first scan) ─────
+    if cycle_num == 1 or cycle_num % 4 == 0:
+        portfolio_value = trader.get_portfolio_value({})
+        pos_list = ", ".join([t.replace(".NS", "") for t in trader.positions.keys()]) or "None"
+        alert.send(
+            f"📊 <b>Scan #{cycle_num} — {now.strftime('%H:%M')}</b>\n"
+            f"Signals: {len(buy_signals)} BUY | {len(sell_signals)} SELL | {hold_count} HOLD\n"
+            f"Positions: {pos_list}\n"
+            f"Portfolio: ₹{portfolio_value:,.0f} | PnL: ₹{risk_mgr.daily_pnl:+,.0f}\n"
+            f"Trades today: {risk_mgr.trades_today}"
+        )
+
+    return signals
+
+
+def run_auto_mode():
+    """
+    DEFAULT MODE — runs every trading day automatically.
+
+    Each morning:
+      1. Wait for market open (skip holidays/weekends)
+      2. Ask Paper/Live mode via Telegram
+      3. Load previous portfolio state
+      4. Scan + trade until market close
+      5. Save portfolio state
+      6. Sleep until next trading day → repeat
+    """
+    logger.info("=" * 60)
+    logger.info(f"AUTOTRADE BOT — {config.MARKET} MARKET")
+    logger.info(f"Scan interval: {config.SCAN_INTERVAL_MINUTES} min")
+    logger.info(f"Astro: {'ON' if config.ASTRO_ENABLED else 'OFF'}")
+    logger.info("=" * 60)
+
+    # ── Wait for market to open ─────────────────────────
+    if not wait_for_market_open():
+        return
+
+    # ── Ask trading mode via Telegram ──────────────────
+    mode_choice = alert.ask_trading_mode()
+    live = (mode_choice == "live")
+    mode = "LIVE" if live else "PAPER"
+
+    # ── Load previous portfolio state ──────────────────
+    trader, risk_state = PaperTrader.load_state()
+    risk_mgr = RiskManager()
+    risk_mgr.consecutive_losses = risk_state.get("consecutive_losses", 0)
+    risk_mgr.peak_portfolio_value = risk_state.get("peak_portfolio_value", trader.capital)
+    risk_mgr.reset_daily(trader.get_portfolio_value({}))
+
     portfolio_value = trader.get_portfolio_value({})
-    logger.info(f"\n{'='*60}")
-    logger.info(f"PIPELINE COMPLETE — {mode}")
-    logger.info(f"Portfolio: INR {portfolio_value:,.2f}")
-    logger.info(f"Cash: INR {trader.capital:,.2f}")
-    logger.info(f"Positions: {len(trader.positions)}")
-    logger.info(f"Trades today: {risk_mgr.trades_today}")
-    logger.info(f"Daily PnL: INR {risk_mgr.daily_pnl:+,.2f}")
-    logger.info(f"{'='*60}")
+    pos_count = len(trader.positions)
+    pos_list = ", ".join([t.replace(".NS", "") for t in trader.positions.keys()]) or "None"
 
-    # Telegram daily summary
-    alert.send_daily_summary(
-        portfolio_value, risk_mgr.daily_pnl,
-        risk_mgr.trades_today, len(trader.positions)
+    logger.info(f"Mode: {mode} | Capital: ₹{trader.capital:,.0f} | Positions: {pos_count}")
+
+    # ── Send startup alert with portfolio status ───────
+    alert.send(
+        f"🚀 <b>Trading Bot Started — {mode}</b>\n\n"
+        f"<b>Portfolio:</b> ₹{portfolio_value:,.0f}\n"
+        f"<b>Cash:</b> ₹{trader.capital:,.0f}\n"
+        f"<b>Open Positions:</b> {pos_list}\n"
+        f"<b>Watchlist:</b> {len(config.WATCHLIST)} stocks (NSE)\n"
+        f"<b>Scan interval:</b> {config.SCAN_INTERVAL_MINUTES} min\n"
+        f"<b>Astro Filter:</b> {'ON' if config.ASTRO_ENABLED else 'OFF'}\n"
+        f"Running until 3:30 PM IST"
     )
 
-    # Save trade log
+    # ── Send Astro daily report ─────────────────────────
+    if config.ASTRO_ENABLED:
+        report = astro.get_daily_report()
+        logger.info(f"\n{report}\n")
+        alert.send(f"<pre>{report}</pre>")
+
+    # ── Connect broker if live ──────────────────────────
+    broker = None
+    if live:
+        from execution.broker_api import DhanBroker
+        broker = DhanBroker()
+        if not broker.connect():
+            logger.error("Failed to connect to Dhan. Falling back to paper trading.")
+            alert.send("⚠️ <b>Dhan connection failed</b> — falling back to paper trading")
+            broker = None
+            mode = "PAPER (broker fallback)"
+
+    # ── Main auto loop ──────────────────────────────────
+    market_close = time(config.MARKET_CLOSE_HOUR, config.MARKET_CLOSE_MINUTE)
+    cycle_num = 0
+    prev_signals = {}
+
+    while True:
+        now = datetime.now()
+
+        # Check if market is closed
+        if now.time() >= market_close:
+            logger.info("Market closed. Stopping auto mode.")
+            break
+
+        # Check if it's a weekend
+        if now.weekday() >= 5:
+            logger.info("Weekend — market closed.")
+            alert.send("📅 Weekend — market is closed. Bot stopping.")
+            break
+
+        # Check if it's a holiday
+        is_hol, hol_name = is_market_holiday(now.date())
+        if is_hol:
+            logger.info(f"Holiday detected: {hol_name}")
+            alert.send(f"📅 <b>Holiday Detected — {hol_name}</b>\nStopping scans for today.")
+            break
+
+        cycle_num += 1
+
+        try:
+            prev_signals = run_scan_cycle(
+                risk_mgr, trader, broker, cycle_num, prev_signals
+            )
+        except Exception as e:
+            error_msg = f"{type(e).__name__}: {e}"
+            tb = traceback.format_exc()
+            logger.error(f"Scan #{cycle_num} FAILED:\n{tb}")
+
+            # Send error to Telegram
+            alert.send(
+                f"🔴 <b>ERROR — Scan #{cycle_num}</b>\n"
+                f"<code>{error_msg}</code>\n"
+                f"Bot will continue running and retry next scan."
+            )
+
+        # Save state after each cycle (crash protection)
+        trader.save_state(risk_state={
+            "consecutive_losses": risk_mgr.consecutive_losses,
+            "peak_portfolio_value": risk_mgr.peak_portfolio_value,
+        })
+
+        # ── Wait for next scan — monitor positions every 60s ──
+        next_scan = now + timedelta(minutes=config.SCAN_INTERVAL_MINUTES)
+
+        # Don't scan past market close
+        if next_scan.time() >= market_close:
+            logger.info(f"Next scan would be after market close. Waiting for 3:30 PM...")
+            while datetime.now().time() < market_close:
+                monitor_positions(trader, broker, risk_mgr)
+                time_module.sleep(config.POSITION_CHECK_SECONDS)
+            break
+
+        logger.info(f"Next scan at {next_scan.strftime('%H:%M:%S')} | Monitoring positions every {config.POSITION_CHECK_SECONDS}s")
+        while datetime.now() < next_scan:
+            try:
+                monitor_positions(trader, broker, risk_mgr)
+            except Exception as e:
+                logger.error(f"Position monitor error: {e}")
+            remaining = (next_scan - datetime.now()).total_seconds()
+            if remaining > config.POSITION_CHECK_SECONDS:
+                time_module.sleep(config.POSITION_CHECK_SECONDS)
+            elif remaining > 0:
+                time_module.sleep(remaining)
+                break
+            else:
+                break
+
+    # ── Market Close — Save state + Daily Summary ──────
+    portfolio_value = trader.get_portfolio_value({})
+
+    # Save final state (persists for tomorrow)
+    trader.save_state(risk_state={
+        "consecutive_losses": risk_mgr.consecutive_losses,
+        "peak_portfolio_value": risk_mgr.peak_portfolio_value,
+    })
+    logger.info(f"Portfolio state saved to {config.PORTFOLIO_STATE_FILE}")
+
+    logger.info(f"\n{'='*60}")
+    logger.info(f"AUTO MODE COMPLETE — {mode}")
+    logger.info(f"Total scans: {cycle_num}")
+    logger.info(f"Portfolio: INR {portfolio_value:,.2f}")
+    logger.info(f"Trades today: {risk_mgr.trades_today}")
+    logger.info(f"Daily PnL: INR {risk_mgr.daily_pnl:+,.2f}")
+    logger.info(f"Open positions: {len(trader.positions)}")
+    logger.info(f"{'='*60}")
+
+    # Active positions detail
+    pos_detail = ""
+    if trader.positions:
+        pos_detail = "\n<b>Open Positions:</b>\n"
+        for sym, pos in trader.positions.items():
+            symbol = sym.replace(".NS", "")
+            pos_detail += f"  {symbol}: {pos['quantity']} @ ₹{pos['entry_price']:,.2f}\n"
+
+    # Send detailed closing summary
+    alert.send(
+        f"🏁 <b>MARKET CLOSED — Daily Summary</b>\n\n"
+        f"Mode: {mode}\n"
+        f"Total Scans: {cycle_num}\n"
+        f"Portfolio: ₹{portfolio_value:,.0f}\n"
+        f"Daily PnL: {'🟢' if risk_mgr.daily_pnl >= 0 else '🔴'} ₹{risk_mgr.daily_pnl:+,.0f}\n"
+        f"Trades: {risk_mgr.trades_today}\n"
+        f"Open Positions: {len(trader.positions)}"
+        f"{pos_detail}\n"
+        f"See you tomorrow! 👋"
+    )
+
     trader.save_trade_log()
     if trader.trade_log:
         logger.info(f"Trade log saved to {config.TRADE_LOG_FILE}")
 
-    return trader, risk_mgr
+    # ── Wait for next market day and run again ─────────
+    logger.info("Waiting for next market day...")
+    wait_for_market_open()
+    return run_auto_mode()
 
 
 if __name__ == "__main__":
@@ -190,14 +707,9 @@ if __name__ == "__main__":
         results = run_screener()
         print_results(results)
         save_results(results)
-        # Send screener results to Telegram
         alert.send_screener_results(results)
-    elif "--live" in sys.argv:
-        print("WARNING: Live trading mode. Real money will be used.")
-        confirm = input("Type 'YES' to confirm: ")
-        if confirm == "YES":
-            run_trading_pipeline(live=True)
-        else:
-            print("Cancelled.")
+    elif "--astro" in sys.argv:
+        print(astro.get_daily_report())
     else:
-        run_trading_pipeline(live=False)
+        # Default: Auto mode — ask paper/live on Telegram, trade all day
+        run_auto_mode()

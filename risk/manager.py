@@ -4,10 +4,12 @@ Do not modify without understanding what each rule does.
 
 Circuit Breakers:
     1. Daily loss limit: -2% → stop all new trades for the day
-    2. Max drawdown: -5% from peak → stop all trading, review system
-    3. Consecutive losses: 3 in a row → stop, re-evaluate
-    4. Pre-close cutoff: no new positions after 3:00 PM
-    5. Friday rule: no new positions after Friday 2:00 PM
+    2. Daily profit target: +3% → stop trading, book profits
+    3. Max drawdown: -5% from peak → stop all trading, review system
+    4. Consecutive losses: 3 in a row → stop, re-evaluate
+    5. Pre-close cutoff: no new positions after 3:00 PM
+    6. Friday rule: no new positions after Friday 2:00 PM
+    7. Max loss per trade: don't risk more than X per single trade
 """
 from datetime import datetime, time
 import config
@@ -55,21 +57,27 @@ class RiskManager:
             if daily_loss <= -self.max_daily_loss_pct:
                 return False, f"Daily loss limit hit: {daily_loss:.2%}"
 
-        # Check 4: Overall drawdown
+        # Check 4: Daily profit target — book profits, stop trading
+        if portfolio_value > 0:
+            daily_gain = self.daily_pnl / portfolio_value
+            if daily_gain >= config.DAILY_PROFIT_TARGET_PCT:
+                return False, f"Daily profit target hit: {daily_gain:.2%} — booking profits"
+
+        # Check 5: Overall drawdown
         if self.peak_portfolio_value > 0:
             drawdown = (self.peak_portfolio_value - portfolio_value) / self.peak_portfolio_value
             if drawdown >= self.max_drawdown_pct:
                 return False, f"Max drawdown hit: {drawdown:.2%}"
 
-        # Check 5: Position count
+        # Check 6: Position count
         if len(current_positions) >= self.max_total_positions:
             return False, f"Max positions reached: {len(current_positions)}"
 
-        # Check 6: Position size
+        # Check 7: Position size
         if portfolio_value > 0 and proposed_position_value / portfolio_value > self.max_position_pct:
             return False, f"Position too large: {proposed_position_value / portfolio_value:.2%}"
 
-        # Check 7: Consecutive losses circuit breaker
+        # Check 8: Consecutive losses circuit breaker
         if self.consecutive_losses >= config.CONSECUTIVE_LOSS_LIMIT:
             return False, f"Circuit breaker: {self.consecutive_losses} consecutive losses"
 
@@ -81,12 +89,34 @@ class RiskManager:
         entry_price: float,
         stop_loss_price: float,
     ) -> int:
-        """How many shares to buy based on risk per trade."""
+        """
+        How many shares to buy. Depends on QUANTITY_MODE in config:
+          "auto"    — risk-based: (1% of capital) / (risk per share)
+          "fixed"   — always buy FIXED_QUANTITY shares
+          "capital" — invest CAPITAL_PER_TRADE amount: qty = amount / price
+        """
+        mode = config.QUANTITY_MODE
+
+        if mode == "fixed":
+            return config.FIXED_QUANTITY
+
+        if mode == "capital":
+            if entry_price <= 0:
+                return 0
+            qty = int(config.CAPITAL_PER_TRADE / entry_price)
+            return qty if qty > 0 else 0
+
+        # Default: "auto" — risk-based calculation
         risk_amount = portfolio_value * config.RISK_PER_TRADE_PCT
         risk_per_share = abs(entry_price - stop_loss_price)
 
         if risk_per_share == 0:
             return 0
+
+        # Cap risk_amount by MAX_LOSS_PER_TRADE
+        max_loss = config.MAX_LOSS_PER_TRADE
+        if risk_amount > max_loss:
+            risk_amount = max_loss
 
         quantity = int(risk_amount / risk_per_share)
         return quantity if quantity > 0 else 0

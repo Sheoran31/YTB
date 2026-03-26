@@ -36,3 +36,20 @@ def fetch_multiple_stocks(tickers: list[str], period: str = "2y") -> dict[str, p
         except Exception as e:
             print(f"Failed to fetch {ticker}: {e}")
     return results
+
+
+def fetch_live_prices(tickers: list[str]) -> dict[str, float]:
+    """
+    Fetch latest prices for a list of tickers (lightweight, for position monitoring).
+    Uses yfinance Ticker.fast_info for quick price lookups.
+    """
+    prices = {}
+    for ticker in tickers:
+        try:
+            t = yf.Ticker(ticker)
+            price = t.fast_info.get("last_price", 0)
+            if price and price > 0:
+                prices[ticker] = float(price)
+        except Exception:
+            pass
+    return prices

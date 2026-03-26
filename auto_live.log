@@ -1,0 +1,5 @@
+WARNING: AUTO + LIVE mode. Real money will be used all day.
+Type 'YES' to confirm: Traceback (most recent call last):
+  File "/Users/purushottam/YTB/trading-bot/trader.py", line 451, in <module>
+    confirm = input("Type 'YES' to confirm: ")
+EOFError: EOF when reading a line

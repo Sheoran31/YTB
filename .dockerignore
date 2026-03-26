@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.git/
+logs/
+*.log
+*.csv
+research/
+tests/
+prompts/
+*.md
+.env
