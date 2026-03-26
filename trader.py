@@ -242,70 +242,204 @@ def monitor_positions(trader, broker, risk_mgr):
         target = pos.get("target", 0)
         trailing_high = pos.get("trailing_high", entry)
 
-        # ── Update trailing high & trailing stop ──────
-        if current_price > trailing_high:
-            pos["trailing_high"] = current_price
+        half_booked = pos.get("half_booked", False)
+        original_sl = pos.get("original_sl", stop_loss)
+        original_risk = entry - original_sl
+        target_1 = pos.get("target_1", 0)
+        target_2 = pos.get("target_2", target)
+        name = ticker.replace('.NS', '')
 
-            if config.TRAILING_STOP_ENABLED and stop_loss > 0:
-                original_risk = entry - stop_loss  # 2×ATR at entry
-                profit = current_price - entry
+        # ── Phase 1: Full position, waiting for Target-1 ─
+        if config.HALF_BOOKING_ENABLED and not half_booked:
 
-                # Activate trailing once profit >= original risk (1:1 achieved)
-                if profit >= original_risk:
+            # Update trailing high (no trailing SL yet in phase 1)
+            if current_price > trailing_high:
+                pos["trailing_high"] = current_price
+
+            # SL hit — full loss on full qty
+            if stop_loss > 0 and current_price <= stop_loss:
+                qty = pos["quantity"]
+                trade = trader.place_order(ticker, "SELL", qty, current_price)
+                pnl = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl)
+                risk_mgr.update_peak(trader.get_portfolio_value({}))
+
+                logger.info(f"  🔴 SL HIT {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+                alert.send(
+                    f"🔴 <b>STOP LOSS HIT</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | SL: ₹{stop_loss:,.2f}\n"
+                    f"PnL: ₹{pnl:+,.0f}"
+                )
+                if broker and broker.connected:
+                    broker.place_order(name, "SELL", qty, current_price,
+                                       order_type="MARKET", product=config.ORDER_PRODUCT)
+                continue
+
+            # Target-1 hit (1:1 R:R) — book 50%, move SL to cost
+            if target_1 > 0 and current_price >= target_1:
+                total_qty = pos["quantity"]
+                half_qty = max(1, int(total_qty * config.HALF_BOOK_PCT))
+
+                if half_qty >= total_qty:
+                    # Only 1 share — full exit at Target-1
+                    trade = trader.place_order(ticker, "SELL", total_qty, current_price)
+                    pnl = trade.get("pnl", 0)
+                    risk_mgr.record_trade(pnl)
+                    risk_mgr.update_peak(trader.get_portfolio_value({}))
+                    logger.info(f"  🟡 T1 HIT {name} — full exit (qty=1) | PnL: ₹{pnl:+,.0f}")
+                    alert.send(
+                        f"🟡 <b>TARGET-1 HIT — Full Exit (qty=1)</b>\n"
+                        f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                        f"Entry: ₹{entry:,.2f} | PnL: ₹{pnl:+,.0f}"
+                    )
+                    if broker and broker.connected:
+                        broker.place_order(name, "SELL", total_qty, current_price,
+                                           order_type="MARKET", product=config.ORDER_PRODUCT)
+                    continue
+
+                # Partial sell — book 50%
+                trade = trader.place_order(ticker, "SELL", half_qty, current_price)
+                pnl_half = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl_half)
+
+                # Move SL to cost (breakeven) for remaining qty
+                pos["stop_loss"] = entry
+                pos["half_booked"] = True
+                pos["trailing_high"] = current_price
+
+                remaining = total_qty - half_qty
+                logger.info(
+                    f"  🟡 TARGET-1 HIT {name} @ ₹{current_price:,.2f} | "
+                    f"Booked {half_qty} qty (₹{pnl_half:+,.0f}) | "
+                    f"Remaining: {remaining} | SL → Cost (₹{entry:,.2f})"
+                )
+                alert.send(
+                    f"🟡 <b>TARGET-1 HIT — 50% Booked!</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f}\n"
+                    f"Sold: {half_qty} qty | PnL: ₹{pnl_half:+,.0f}\n"
+                    f"Remaining: {remaining} qty\n"
+                    f"SL moved to cost: ₹{entry:,.2f}\n"
+                    f"Target-2: ₹{target_2:,.2f}"
+                )
+                if broker and broker.connected:
+                    broker.place_order(name, "SELL", half_qty, current_price,
+                                       order_type="MARKET", product=config.ORDER_PRODUCT)
+                    # Cancel old SL order and place new one at cost
+                    broker.place_sl_order(name, remaining, trigger_price=entry,
+                                          product=config.ORDER_PRODUCT)
+                continue
+
+        # ── Phase 2: Half booked, trailing remaining qty ──
+        elif config.HALF_BOOKING_ENABLED and half_booked:
+
+            # Update trailing high & trailing SL
+            if current_price > trailing_high:
+                pos["trailing_high"] = current_price
+                if config.TRAILING_STOP_ENABLED and original_risk > 0:
                     new_sl = current_price - original_risk
                     if new_sl > stop_loss:
                         old_sl = stop_loss
                         pos["stop_loss"] = new_sl
                         logger.info(
-                            f"  TRAILING SL {ticker.replace('.NS','')}: "
-                            f"₹{old_sl:,.2f} → ₹{new_sl:,.2f} (price: ₹{current_price:,.2f})"
+                            f"  TRAILING SL {name}: ₹{old_sl:,.2f} → ₹{new_sl:,.2f}"
                         )
 
-        # ── Check STOP LOSS ───────────────────────────
-        if stop_loss > 0 and current_price <= stop_loss:
-            qty = pos["quantity"]
-            trade = trader.place_order(ticker, "SELL", qty, current_price)
-            pnl = trade.get("pnl", 0)
-            risk_mgr.record_trade(pnl)
-            risk_mgr.update_peak(trader.get_portfolio_value({}))
+            # SL hit (at cost or trailing) — breakeven or small profit
+            if stop_loss > 0 and current_price <= stop_loss:
+                qty = pos["quantity"]
+                trade = trader.place_order(ticker, "SELL", qty, current_price)
+                pnl = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl)
+                risk_mgr.update_peak(trader.get_portfolio_value({}))
 
-            logger.info(f"  🔴 SL HIT {ticker} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
-            alert.send(
-                f"🔴 <b>STOP LOSS HIT</b>\n"
-                f"<b>{ticker.replace('.NS', '')}</b> @ ₹{current_price:,.2f}\n"
-                f"Entry: ₹{entry:,.2f} | SL: ₹{stop_loss:,.2f}\n"
-                f"PnL: ₹{pnl:+,.0f}"
-            )
-
-            if broker and broker.connected:
-                broker.place_order(
-                    ticker.replace(".NS", ""), "SELL", qty, current_price,
-                    order_type="MARKET", product=config.ORDER_PRODUCT
+                exit_type = "BREAKEVEN" if abs(current_price - entry) < 1 else "TRAIL SL"
+                logger.info(f"  🟠 {exit_type} {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+                alert.send(
+                    f"🟠 <b>{exit_type} — Remaining Qty Exited</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | SL: ₹{stop_loss:,.2f}\n"
+                    f"PnL: ₹{pnl:+,.0f}"
                 )
-            continue
+                if broker and broker.connected:
+                    broker.place_order(name, "SELL", qty, current_price,
+                                       order_type="MARKET", product=config.ORDER_PRODUCT)
+                continue
 
-        # ── Check TARGET ──────────────────────────────
-        if target > 0 and current_price >= target:
-            qty = pos["quantity"]
-            trade = trader.place_order(ticker, "SELL", qty, current_price)
-            pnl = trade.get("pnl", 0)
-            risk_mgr.record_trade(pnl)
-            risk_mgr.update_peak(trader.get_portfolio_value({}))
+            # Target-2 hit (1:2 R:R) — book remaining
+            if target_2 > 0 and current_price >= target_2:
+                qty = pos["quantity"]
+                trade = trader.place_order(ticker, "SELL", qty, current_price)
+                pnl = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl)
+                risk_mgr.update_peak(trader.get_portfolio_value({}))
 
-            logger.info(f"  🟢 TARGET HIT {ticker} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
-            alert.send(
-                f"🟢 <b>TARGET HIT — Profit Booked!</b>\n"
-                f"<b>{ticker.replace('.NS', '')}</b> @ ₹{current_price:,.2f}\n"
-                f"Entry: ₹{entry:,.2f} | Target: ₹{target:,.2f}\n"
-                f"PnL: ₹{pnl:+,.0f}"
-            )
-
-            if broker and broker.connected:
-                broker.place_order(
-                    ticker.replace(".NS", ""), "SELL", qty, current_price,
-                    order_type="MARKET", product=config.ORDER_PRODUCT
+                logger.info(f"  🟢 TARGET-2 HIT {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+                alert.send(
+                    f"🟢 <b>TARGET-2 HIT — Full Profit!</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | Target-2: ₹{target_2:,.2f}\n"
+                    f"PnL: ₹{pnl:+,.0f}"
                 )
-            continue
+                if broker and broker.connected:
+                    broker.place_order(name, "SELL", qty, current_price,
+                                       order_type="MARKET", product=config.ORDER_PRODUCT)
+                continue
+
+        # ── Fallback: Half-booking disabled (original full-exit logic) ──
+        else:
+            # Update trailing high & trailing stop
+            if current_price > trailing_high:
+                pos["trailing_high"] = current_price
+                if config.TRAILING_STOP_ENABLED and stop_loss > 0:
+                    profit = current_price - entry
+                    if profit >= original_risk:
+                        new_sl = current_price - original_risk
+                        if new_sl > stop_loss:
+                            old_sl = stop_loss
+                            pos["stop_loss"] = new_sl
+                            logger.info(
+                                f"  TRAILING SL {name}: ₹{old_sl:,.2f} → ₹{new_sl:,.2f}"
+                            )
+
+            # SL hit
+            if stop_loss > 0 and current_price <= stop_loss:
+                qty = pos["quantity"]
+                trade = trader.place_order(ticker, "SELL", qty, current_price)
+                pnl = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl)
+                risk_mgr.update_peak(trader.get_portfolio_value({}))
+                logger.info(f"  🔴 SL HIT {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+                alert.send(
+                    f"🔴 <b>STOP LOSS HIT</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | SL: ₹{stop_loss:,.2f}\n"
+                    f"PnL: ₹{pnl:+,.0f}"
+                )
+                if broker and broker.connected:
+                    broker.place_order(name, "SELL", qty, current_price,
+                                       order_type="MARKET", product=config.ORDER_PRODUCT)
+                continue
+
+            # Target hit
+            if target > 0 and current_price >= target:
+                qty = pos["quantity"]
+                trade = trader.place_order(ticker, "SELL", qty, current_price)
+                pnl = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl)
+                risk_mgr.update_peak(trader.get_portfolio_value({}))
+                logger.info(f"  🟢 TARGET HIT {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+                alert.send(
+                    f"🟢 <b>TARGET HIT — Profit Booked!</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | Target: ₹{target:,.2f}\n"
+                    f"PnL: ₹{pnl:+,.0f}"
+                )
+                if broker and broker.connected:
+                    broker.place_order(name, "SELL", qty, current_price,
+                                       order_type="MARKET", product=config.ORDER_PRODUCT)
+                continue
 
 
 def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
@@ -459,22 +593,29 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
             alert.send_blocked_alert(ticker, reason)
             continue
 
-        # Calculate target (Risk:Reward ratio)
+        # Calculate targets (Risk:Reward ratio)
         risk_per_share = price - stop_loss
-        target = price + (risk_per_share * config.RISK_REWARD_RATIO)
+        target_1 = price + (risk_per_share * config.TARGET_1_RR)        # 1:1 R:R (half-book)
+        target_2 = price + (risk_per_share * config.RISK_REWARD_RATIO)  # 1:2 R:R (full exit)
+        target = target_2  # Main target for display
 
         # Execute trade
         trade = trader.place_order(ticker, "BUY", quantity, price)
 
-        # Store SL, target, trailing high on position for real-time monitoring
+        # Store SL, targets, trailing high on position for real-time monitoring
         if ticker in trader.positions:
             trader.positions[ticker]["stop_loss"] = stop_loss
-            trader.positions[ticker]["target"] = target
+            trader.positions[ticker]["original_sl"] = stop_loss
+            trader.positions[ticker]["target"] = target_2
+            trader.positions[ticker]["target_1"] = target_1
+            trader.positions[ticker]["target_2"] = target_2
             trader.positions[ticker]["trailing_high"] = price
+            trader.positions[ticker]["half_booked"] = False
+            trader.positions[ticker]["original_qty"] = quantity
 
         logger.info(
             f"  BOUGHT {ticker} @ {price:,.2f} | Qty: {quantity} | "
-            f"SL: {stop_loss:,.2f} | Target: {target:,.2f} | R:R 1:{config.RISK_REWARD_RATIO} | "
+            f"SL: {stop_loss:,.2f} | T1: {target_1:,.2f} | T2: {target_2:,.2f} | "
             f"Astro: {astro_result['astro_score']}/100"
         )
 

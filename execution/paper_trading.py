@@ -65,9 +65,22 @@ class PaperTrader:
                 self.trade_log.append(trade)
                 return trade
 
-            position = self.positions.pop(symbol)
-            pnl = (price - position["entry_price"]) * position["quantity"]
-            self.capital += position["quantity"] * price
+            position = self.positions[symbol]
+            held_qty = position["quantity"]
+
+            if quantity >= held_qty:
+                # Full exit — close entire position
+                self.positions.pop(symbol)
+                pnl = (price - position["entry_price"]) * held_qty
+                self.capital += held_qty * price
+                trade["quantity"] = held_qty
+                trade["value"] = held_qty * price
+            else:
+                # Partial exit — reduce quantity, keep position open
+                pnl = (price - position["entry_price"]) * quantity
+                self.capital += quantity * price
+                self.positions[symbol]["quantity"] = held_qty - quantity
+
             trade["pnl"] = pnl
             trade["status"] = "FILLED"
 
