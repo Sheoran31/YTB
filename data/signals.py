@@ -10,6 +10,52 @@ def calculate_sma(prices: pd.Series, period: int) -> pd.Series:
     return prices.rolling(window=period).mean()
 
 
+def calculate_ema(prices: pd.Series, period: int) -> pd.Series:
+    """Exponential Moving Average — reacts faster than SMA to price changes."""
+    return prices.ewm(span=period, adjust=False).mean()
+
+
+def calculate_macd(prices: pd.Series, fast: int = 12, slow: int = 26, signal: int = 9) -> tuple:
+    """
+    MACD (Moving Average Convergence Divergence).
+    Returns (macd_line, signal_line, histogram).
+    BUY when histogram turns positive (MACD crosses above signal).
+    SELL when histogram turns negative.
+    """
+    ema_fast = prices.ewm(span=fast, adjust=False).mean()
+    ema_slow = prices.ewm(span=slow, adjust=False).mean()
+    macd_line = ema_fast - ema_slow
+    signal_line = macd_line.ewm(span=signal, adjust=False).mean()
+    histogram = macd_line - signal_line
+    return macd_line, signal_line, histogram
+
+
+def calculate_adx(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) -> pd.Series:
+    """
+    Average Directional Index — measures trend STRENGTH (not direction).
+    ADX > 25 = strong trend (good for momentum). ADX < 20 = sideways (avoid).
+    """
+    plus_dm = high.diff()
+    minus_dm = -low.diff()
+
+    # +DM: positive when today's high > yesterday's high AND that move > down move
+    plus_dm = plus_dm.where((plus_dm > 0) & (plus_dm > minus_dm), 0.0)
+    # -DM: positive when today's low < yesterday's low AND that move > up move
+    minus_dm = minus_dm.where((minus_dm > 0) & (minus_dm > plus_dm), 0.0)
+
+    atr = calculate_atr(high, low, close, period)
+
+    # Smoothed +DI and -DI
+    plus_di = 100 * (plus_dm.ewm(span=period, adjust=False).mean() / atr)
+    minus_di = 100 * (minus_dm.ewm(span=period, adjust=False).mean() / atr)
+
+    # DX and ADX
+    dx = 100 * ((plus_di - minus_di).abs() / (plus_di + minus_di).replace(0, 1))
+    adx = dx.ewm(span=period, adjust=False).mean()
+
+    return adx
+
+
 def calculate_rsi(prices: pd.Series, period: int = 14) -> pd.Series:
     """
     Relative Strength Index (0-100).

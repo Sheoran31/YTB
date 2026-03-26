@@ -1,18 +1,24 @@
 """
-Momentum strategy — SMA crossover with RSI confirmation.
+Momentum strategy — supports two signal modes (set in config.SIGNAL_MODE):
 
-BUY when:
-  - 20-day SMA crosses above 50-day SMA (golden cross)
-  - RSI > 55 (momentum confirmed)
-  - Volume > 1.5x 20-day average (institutional interest)
+OLD mode (SMA only):
+  BUY:  SMA-20 > SMA-50 + RSI > 55 + Volume > 1.5x
+  SELL: Price < SMA-20 OR RSI < 45
 
-SELL when:
-  - Price crosses below 20-day SMA
-  - OR RSI < 45
+NEW mode (EMA + MACD + ADX + Crossover):
+  BUY:  EMA crossover (3-day window) + MACD histogram > 0 + RSI > 55
+        + Volume > 1.5x + ADX > 20 (trend strong enough)
+  SELL: Price < EMA-20 + (RSI < 45 OR MACD bearish)
+
+NEW mode advantages: fewer false entries (ADX filter), earlier signals (EMA),
+  MACD confirmation catches trend changes 2-3 days before SMA.
 """
 import pandas as pd
 import numpy as np
-from data.signals import calculate_sma, calculate_rsi, calculate_volume_ratio, detect_crossover
+from data.signals import (
+    calculate_sma, calculate_ema, calculate_rsi, calculate_volume_ratio,
+    detect_crossover, calculate_macd, calculate_adx,
+)
 import config
 
 
@@ -29,6 +35,15 @@ def generate_signal(data: pd.DataFrame) -> str:
     if len(data) < config.SMA_SLOW:
         return "HOLD"
 
+    mode = getattr(config, "SIGNAL_MODE", "old")
+
+    if mode == "new":
+        return _signal_new(data)
+    return _signal_old(data)
+
+
+def _signal_old(data: pd.DataFrame) -> str:
+    """Original SMA-based signal (v1)."""
     close = data["Close"].squeeze()
     volume = data["Volume"].squeeze()
 
@@ -41,20 +56,73 @@ def generate_signal(data: pd.DataFrame) -> str:
     if pd.isna(latest_rsi) or np.isinf(latest_rsi):
         return "HOLD"
 
-    latest_vol_ratio = vol_ratio.iloc[-1]
-
     current_price = close.iloc[-1]
     current_sma_fast = sma_fast.iloc[-1]
     current_sma_slow = sma_slow.iloc[-1]
+    latest_vol_ratio = vol_ratio.iloc[-1]
 
-    # BUY signal: uptrend + momentum + volume
     if (current_sma_fast > current_sma_slow
             and latest_rsi > config.RSI_BUY_THRESHOLD
             and latest_vol_ratio > config.VOLUME_RATIO_MIN):
         return "BUY"
 
-    # SELL signal: downtrend or weak momentum
     if current_price < current_sma_fast or latest_rsi < config.RSI_SELL_THRESHOLD:
+        return "SELL"
+
+    return "HOLD"
+
+
+def _signal_new(data: pd.DataFrame) -> str:
+    """Enhanced EMA + MACD + ADX + Crossover signal (v2)."""
+    close = data["Close"].squeeze()
+    high = data["High"].squeeze()
+    low = data["Low"].squeeze()
+    volume = data["Volume"].squeeze()
+
+    # Indicators
+    ema_fast = calculate_ema(close, config.SMA_FAST)
+    ema_slow = calculate_ema(close, config.SMA_SLOW)
+    rsi = calculate_rsi(close, config.RSI_PERIOD)
+    vol_ratio = calculate_volume_ratio(volume)
+    macd_line, signal_line, macd_hist = calculate_macd(close)
+    adx = calculate_adx(high, low, close)
+    crossover = detect_crossover(ema_fast, ema_slow)
+
+    # Latest values
+    latest_rsi = rsi.iloc[-1]
+    if pd.isna(latest_rsi) or np.isinf(latest_rsi):
+        return "HOLD"
+
+    latest_vol_ratio = vol_ratio.iloc[-1]
+    latest_macd_hist = macd_hist.iloc[-1]
+    latest_adx = adx.iloc[-1]
+    current_price = close.iloc[-1]
+    current_ema_fast = ema_fast.iloc[-1]
+    current_ema_slow = ema_slow.iloc[-1]
+
+    if pd.isna(latest_adx) or pd.isna(latest_macd_hist):
+        return "HOLD"
+
+    lookback = getattr(config, "CROSSOVER_LOOKBACK", 3)
+    adx_min = getattr(config, "ADX_MIN", 20)
+
+    # ── BUY ──
+    recent_crossover = crossover.iloc[-lookback:].max() >= 1
+    uptrend = current_ema_fast > current_ema_slow
+    macd_bullish = latest_macd_hist > 0
+    rsi_ok = latest_rsi > config.RSI_BUY_THRESHOLD
+    volume_ok = latest_vol_ratio > config.VOLUME_RATIO_MIN
+    trend_strong = latest_adx > adx_min
+
+    if (recent_crossover or uptrend) and macd_bullish and rsi_ok and volume_ok and trend_strong:
+        return "BUY"
+
+    # ── SELL ──
+    below_ema = current_price < current_ema_fast
+    rsi_weak = latest_rsi < config.RSI_SELL_THRESHOLD
+    macd_bearish = latest_macd_hist < 0
+
+    if below_ema and (rsi_weak or macd_bearish):
         return "SELL"
 
     return "HOLD"

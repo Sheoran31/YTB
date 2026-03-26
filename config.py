@@ -84,13 +84,16 @@ WATCHLIST = [
 # ============================================================
 # STRATEGY PARAMETERS
 # ============================================================
-SMA_FAST = 20          # Fast moving average period
-SMA_SLOW = 50          # Slow moving average period
-RSI_PERIOD = 14        # RSI calculation period
-RSI_BUY_THRESHOLD = 55  # Only buy when RSI > this
-RSI_SELL_THRESHOLD = 45  # Consider selling when RSI < this
-ATR_PERIOD = 14        # ATR calculation period
-VOLUME_RATIO_MIN = 1.5  # Minimum volume vs 20-day avg
+SIGNAL_MODE = "new"        # "old" = SMA only, "new" = EMA + MACD + ADX + Crossover
+SMA_FAST = 20              # Fast moving average period
+SMA_SLOW = 50              # Slow moving average period
+RSI_PERIOD = 14            # RSI calculation period
+RSI_BUY_THRESHOLD = 55     # Only buy when RSI > this
+RSI_SELL_THRESHOLD = 45    # Consider selling when RSI < this
+ATR_PERIOD = 14            # ATR calculation period
+VOLUME_RATIO_MIN = 1.5     # Minimum volume vs 20-day avg
+ADX_MIN = 20               # Min ADX for trend strength (new mode only)
+CROSSOVER_LOOKBACK = 3     # Days to look back for golden cross (new mode only)
 
 # ============================================================
 # QUANTITY MODE
@@ -151,13 +154,36 @@ MODE_REPLY_TIMEOUT = 300          # Seconds to wait for Telegram paper/live repl
 PORTFOLIO_STATE_FILE = "logs/portfolio_state.json"
 
 # ============================================================
-# BROKER COSTS (Dhan)
+# BROKER COSTS (Dhan — updated March 2026)
+# Source: dhan.co/charges, SEBI circular, NSE website
 # ============================================================
 BROKER_COSTS = {
-    "brokerage": 0.0003,  # 0.03% (Dhan intraday) — delivery is Rs 0
-    "stt": 0.0005,        # Securities Transaction Tax
-    "gst": 0.18,          # GST on brokerage
+    # ── Brokerage ──
+    "brokerage_delivery": 0.0,        # Rs 0 — Dhan delivery trades free
+    "brokerage_intraday": 0.0003,     # 0.03% or Rs 20/order (whichever lower)
+
+    # ── STT (Securities Transaction Tax) ──
+    "stt_delivery_buy":  0.001,       # 0.1% on buy side (delivery)
+    "stt_delivery_sell": 0.001,       # 0.1% on sell side (delivery)
+    "stt_intraday_sell": 0.00025,     # 0.025% on sell side only (intraday)
+
+    # ── Exchange & Regulatory ──
+    "exchange_txn":      0.0000325,   # NSE transaction charge: 0.00325%
+    "sebi_fee":          0.000001,    # Rs 10 per crore turnover
+    "stamp_duty_buy":    0.00015,     # 0.015% on buy side (Maharashtra)
+
+    # ── GST ──
+    "gst":               0.18,        # 18% on (brokerage + exchange txn + SEBI fee)
+
+    # ── DP Charges (Depository) ──
+    "dp_charges_per_sell": 15.93,     # Flat Rs 15.93 per delivery SELL transaction
 }
+
+# Shortcut: approximate total round-trip cost for delivery
+# Buy:  STT(0.1%) + stamp(0.015%) + exchange(0.003%) = ~0.118%
+# Sell: STT(0.1%) + exchange(0.003%) + DP(Rs 15.93 flat) = ~0.103% + Rs 16
+# Total round-trip: ~0.22% + Rs 16 (for 1L capital, that's ~Rs 236 per trade)
+APPROX_ROUND_TRIP_COST_PCT = 0.0022
 
 # ============================================================
 # ASTRO TRADING FILTERS
