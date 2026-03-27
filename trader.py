@@ -26,7 +26,7 @@ from datetime import datetime, time, timedelta
 
 import config
 from data.fetcher import fetch_stock_data, fetch_live_prices
-from data.signals import calculate_atr
+from data.signals import calculate_atr, calculate_rsi, calculate_adx, calculate_volume_ratio
 from strategies.momentum import generate_signal
 from risk.manager import RiskManager
 from execution.paper_trading import PaperTrader
@@ -214,29 +214,125 @@ def monitor_positions(trader, broker, risk_mgr):
     """
     Real-time position monitoring — checks SL, target, and trailing stop.
     Runs every POSITION_CHECK_SECONDS between scan cycles.
-    Only fetches prices for held positions (max 5 stocks).
+    Handles both LONG and SHORT (paper) positions.
     """
     if not trader.positions:
         return
 
     # Fetch live prices (lightweight — only held stocks)
     tickers = list(trader.positions.keys())
+    # For SHORT positions, fetch price using base ticker (without :SHORT suffix)
+    fetch_tickers = [t.replace(":SHORT", "") for t in tickers]
+    fetch_tickers = list(set(fetch_tickers))  # deduplicate
+
     if broker and broker.connected:
-        symbols = [t.replace(".NS", "") for t in tickers]
+        symbols = [t.replace(".NS", "") for t in fetch_tickers]
         ltp_map = broker.get_multiple_ltp(symbols)
         prices = {f"{sym}.NS": p for sym, p in ltp_map.items()}
     else:
-        prices = fetch_live_prices(tickers)
+        prices = fetch_live_prices(fetch_tickers)
 
     if not prices:
         return
 
     for ticker in tickers:
         pos = trader.positions.get(ticker)
-        if not pos or ticker not in prices:
+        if not pos:
             continue
 
-        current_price = prices[ticker]
+        # For SHORT positions, look up price using base ticker
+        price_key = ticker.replace(":SHORT", "")
+        if price_key not in prices:
+            continue
+
+        # ── SHORT position monitoring (paper only) ─────────
+        if pos.get("side") == "SHORT":
+            current_price = prices[price_key]
+            entry = pos["entry_price"]
+            stop_loss = pos.get("stop_loss", 0)
+            target_2 = pos.get("target_2", 0)
+            target_1 = pos.get("target_1", 0)
+            trailing_low = pos.get("trailing_low", entry)
+            half_booked = pos.get("half_booked", False)
+            original_sl = pos.get("original_sl", stop_loss)
+            original_risk = original_sl - entry  # risk per share for short
+            name = price_key.replace(".NS", "")
+            qty = pos["quantity"]
+
+            # Update trailing low (price going down = good for shorts)
+            if current_price < trailing_low:
+                pos["trailing_low"] = current_price
+                # Trailing SL for shorts: move SL down as price drops
+                if half_booked and config.TRAILING_STOP_ENABLED and original_risk > 0:
+                    new_sl = current_price + original_risk
+                    if new_sl < stop_loss:
+                        pos["stop_loss"] = new_sl
+                        logger.info(f"  TRAILING SL (SHORT) {name}: ₹{stop_loss:,.2f} → ₹{new_sl:,.2f}")
+
+            # SL hit — price went UP above stop loss
+            if stop_loss > 0 and current_price >= stop_loss:
+                trade = trader.place_order(price_key, "COVER", qty, current_price)
+                pnl = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl)
+                risk_mgr.update_peak(trader.get_portfolio_value({}))
+                logger.info(f"  🔴 SL HIT (SHORT) {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+                alert.send(
+                    f"🔴 <b>SHORT SL HIT (Paper)</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | SL: ₹{stop_loss:,.2f}\n"
+                    f"PnL: ₹{pnl:+,.0f}"
+                )
+                continue
+
+            # Target-1 hit (price went DOWN to target)
+            if not half_booked and target_1 > 0 and current_price <= target_1:
+                half_qty = max(1, int(qty * config.HALF_BOOK_PCT))
+                if half_qty >= qty:
+                    trade = trader.place_order(price_key, "COVER", qty, current_price)
+                    pnl = trade.get("pnl", 0)
+                    risk_mgr.record_trade(pnl)
+                    risk_mgr.update_peak(trader.get_portfolio_value({}))
+                    logger.info(f"  🟡 SHORT T1 HIT {name} — full cover (qty=1) | PnL: ₹{pnl:+,.0f}")
+                    alert.send_trade_alert("COVER", price_key, current_price, qty, pnl=pnl)
+                    continue
+
+                trade = trader.place_order(price_key, "COVER", half_qty, current_price)
+                pnl_half = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl_half)
+                pos["stop_loss"] = entry  # Move SL to cost (breakeven)
+                pos["half_booked"] = True
+                pos["trailing_low"] = current_price
+                remaining = qty - half_qty
+                logger.info(
+                    f"  🟡 SHORT T1 HIT {name} @ ₹{current_price:,.2f} | "
+                    f"Covered {half_qty} (₹{pnl_half:+,.0f}) | Remaining: {remaining}"
+                )
+                alert.send(
+                    f"🟡 <b>SHORT TARGET-1 HIT — 50% Covered (Paper)</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | PnL: ₹{pnl_half:+,.0f}\n"
+                    f"Remaining: {remaining} qty | SL → Cost: ₹{entry:,.2f}\n"
+                    f"Target-2: ₹{target_2:,.2f}"
+                )
+                continue
+
+            # Target-2 hit — full cover
+            if target_2 > 0 and current_price <= target_2:
+                trade = trader.place_order(price_key, "COVER", qty, current_price)
+                pnl = trade.get("pnl", 0)
+                risk_mgr.record_trade(pnl)
+                risk_mgr.update_peak(trader.get_portfolio_value({}))
+                logger.info(f"  🟢 SHORT TARGET-2 HIT {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
+                alert.send(
+                    f"🟢 <b>SHORT TARGET-2 — Full Profit! (Paper)</b>\n"
+                    f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
+                    f"Entry: ₹{entry:,.2f} | PnL: ₹{pnl:+,.0f}"
+                )
+                continue
+
+            continue  # Skip long position logic for shorts
+
+        current_price = prices[price_key]
         entry = pos["entry_price"]
         stop_loss = pos.get("stop_loss", 0)
         target = pos.get("target", 0)
@@ -504,6 +600,7 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
 
     # ── Process SELL signals ────────────────────────────
     for ticker, info in sell_signals.items():
+        # Exit long position if held
         if ticker in trader.positions:
             price = float(info["data"]["Close"].squeeze().iloc[-1])
             position = trader.positions[ticker]
@@ -528,12 +625,35 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
         except Exception:
             pass
 
-    # ── Process BUY signals (with Astro Filter) ─────────
+    # ── Score & sort BUY signals by momentum + R:R ──────
+    # Priority: best momentum (ADX + RSI) and best R:R ratio first
+    scored_buys = []
     for ticker, info in buy_signals.items():
-        # Skip if we already hold this position
         if ticker in trader.positions:
             continue
+        try:
+            data = info["data"]
+            close = data["Close"].squeeze()
+            high = data["High"].squeeze()
+            low = data["Low"].squeeze()
+            rsi = calculate_rsi(close).iloc[-1]
+            adx = calculate_adx(high, low, close).iloc[-1]
+            vol_ratio = calculate_volume_ratio(data["Volume"].squeeze()).iloc[-1]
+            atr = calculate_atr(high, low, close).iloc[-1]
+            price = float(close.iloc[-1])
+            # R:R score: higher ATR relative to price = more room for profit
+            rr_score = (atr / price * 100) if price > 0 else 0
+            # Momentum score: ADX (trend strength) + RSI (momentum) + volume
+            momentum_score = (adx * 0.4) + (rsi * 0.3) + (min(vol_ratio, 5) * 20 * 0.3)
+            total_score = momentum_score + (rr_score * 10)
+            scored_buys.append((ticker, info, total_score))
+        except Exception:
+            scored_buys.append((ticker, info, 0))
 
+    scored_buys.sort(key=lambda x: x[2], reverse=True)
+
+    # ── Process BUY signals (with Astro Filter) ─────────
+    for ticker, info, _score in scored_buys:
         data = info["data"]
         close = data["Close"].squeeze()
         high = data["High"].squeeze()
@@ -629,15 +749,168 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
             broker.place_sl_order(symbol, quantity, trigger_price=stop_loss,
                                   product=config.ORDER_PRODUCT)
 
-    # ── Scan summary (every 4th scan or first scan) ─────
-    if cycle_num == 1 or cycle_num % 4 == 0:
-        portfolio_value = trader.get_portfolio_value({})
-        pos_list = ", ".join([t.replace(".NS", "") for t in trader.positions.keys()]) or "None"
+    # ── Score & sort SHORT signals by momentum + R:R ────
+    # Priority: strongest bearish momentum (high ADX + low RSI) first
+    # No new shorts after 3:00 PM (square-off at 3:15, not worth it)
+    square_off_cutoff = time(config.NO_NEW_POSITIONS_AFTER_HOUR, config.NO_NEW_POSITIONS_AFTER_MINUTE)
+    if not broker and now.time() < square_off_cutoff:  # Paper mode only + before 3 PM
+        scored_shorts = []
+        for ticker, info in sell_signals.items():
+            short_key = f"{ticker}:SHORT"
+            if ticker in trader.positions or short_key in trader.positions:
+                continue
+            try:
+                data = info["data"]
+                close = data["Close"].squeeze()
+                high = data["High"].squeeze()
+                low = data["Low"].squeeze()
+                rsi = calculate_rsi(close).iloc[-1]
+                adx = calculate_adx(high, low, close).iloc[-1]
+                vol_ratio = calculate_volume_ratio(data["Volume"].squeeze()).iloc[-1]
+                atr = calculate_atr(high, low, close).iloc[-1]
+                price = float(close.iloc[-1])
+                rr_score = (atr / price * 100) if price > 0 else 0
+                # For shorts: lower RSI = stronger bearish, higher ADX = stronger trend
+                bearish_score = (adx * 0.4) + ((100 - rsi) * 0.3) + (min(vol_ratio, 5) * 20 * 0.3)
+                total_score = bearish_score + (rr_score * 10)
+                scored_shorts.append((ticker, info, total_score))
+            except Exception:
+                scored_shorts.append((ticker, info, 0))
+
+        scored_shorts.sort(key=lambda x: x[2], reverse=True)
+
+        for ticker, info, _score in scored_shorts:
+
+            data = info["data"]
+            close = data["Close"].squeeze()
+            high = data["High"].squeeze()
+            low = data["Low"].squeeze()
+            price = float(close.iloc[-1])
+            atr = float(calculate_atr(high, low, close).iloc[-1])
+
+            # Astro filter (same rules apply for shorts)
+            astro_result = astro.evaluate(signal="SELL", price=price)
+            if astro_result["blocked"]:
+                continue
+
+            # Stop loss for short = Entry + (ATR x multiplier) — price goes UP = loss
+            stop_loss = price + (atr * config.STOP_LOSS_ATR_MULT)
+
+            # Portfolio value using current prices
+            portfolio_value = trader.get_portfolio_value(current_prices)
+
+            # Position size (same risk-based logic)
+            risk_per_share = stop_loss - price
+            if risk_per_share <= 0:
+                continue
+            risk_amount = min(
+                portfolio_value * config.RISK_PER_TRADE_PCT,
+                config.MAX_LOSS_PER_TRADE,
+            )
+            quantity = int(risk_amount / risk_per_share)
+
+            # Astro quantity adjustment
+            astro_qty = int(quantity * astro_result["quantity_multiplier"])
+            if astro_qty > 0:
+                quantity = astro_qty
+
+            # Cap to max position size
+            max_position_value = portfolio_value * config.MAX_POSITION_PCT
+            max_qty = int(max_position_value / price) if price > 0 else 0
+            if quantity > max_qty:
+                quantity = max_qty
+
+            # Cap to available capital (margin)
+            max_qty_cash = int(trader.capital / price) if price > 0 else 0
+            if quantity > max_qty_cash:
+                quantity = max_qty_cash
+
+            if quantity == 0:
+                continue
+
+            # Risk check
+            proposed_value = quantity * price
+            can_trade, reason = risk_mgr.can_open_position(
+                portfolio_value,
+                list(trader.positions.keys()),
+                proposed_value,
+            )
+            if not can_trade:
+                logger.warning(f"  SHORT BLOCKED {ticker}: {reason}")
+                alert.send_blocked_alert(ticker, f"Short: {reason}")
+                continue
+
+            # Targets for short (price goes DOWN = profit)
+            target_1 = price - (risk_per_share * config.TARGET_1_RR)
+            target_2 = price - (risk_per_share * config.RISK_REWARD_RATIO)
+
+            # Execute paper short
+            trade = trader.place_order(ticker, "SHORT", quantity, price)
+            if trade.get("status") != "FILLED":
+                continue
+
+            # Store SL/targets on short position
+            if short_key in trader.positions:
+                trader.positions[short_key]["stop_loss"] = stop_loss
+                trader.positions[short_key]["original_sl"] = stop_loss
+                trader.positions[short_key]["target"] = target_2
+                trader.positions[short_key]["target_1"] = target_1
+                trader.positions[short_key]["target_2"] = target_2
+                trader.positions[short_key]["trailing_low"] = price
+                trader.positions[short_key]["half_booked"] = False
+                trader.positions[short_key]["original_qty"] = quantity
+
+            logger.info(
+                f"  SHORTED {ticker} @ {price:,.2f} | Qty: {quantity} | "
+                f"SL: {stop_loss:,.2f} | T1: {target_1:,.2f} | T2: {target_2:,.2f}"
+            )
+            alert.send_trade_alert("SHORT", ticker, price, quantity,
+                                   stop_loss=stop_loss, target=target_2)
+
+    # ── Scan summary (every 2nd scan = ~30 min, or first scan) ──
+    if cycle_num == 1 or cycle_num % 2 == 0:
+        portfolio_value = trader.get_portfolio_value(current_prices)
+
+        # Build detailed P&L per position
+        pnl_lines = []
+        total_unrealized = 0
+        for sym, pos in trader.positions.items():
+            is_short = pos.get("side") == "SHORT"
+            base_sym = sym.replace(":SHORT", "").replace(".NS", "")
+            price_key = sym.replace(":SHORT", "")
+            current = current_prices.get(price_key, pos["entry_price"])
+            entry = pos["entry_price"]
+            qty = pos["quantity"]
+
+            if is_short:
+                unrealized = (entry - current) * qty
+                direction = "S"
+            else:
+                unrealized = (current - entry) * qty
+                direction = "L"
+
+            total_unrealized += unrealized
+            emoji = "🟢" if unrealized >= 0 else "🔴"
+            pnl_lines.append(
+                f"  {emoji} {base_sym} [{direction}] ₹{unrealized:+,.0f}"
+            )
+
+        # Sort by P&L (best first)
+        pnl_lines.sort(key=lambda x: -1 if "🟢" in x else 1)
+
+        pos_detail = "\n".join(pnl_lines) if pnl_lines else "No positions"
+        realized_pnl = risk_mgr.daily_pnl
+        total_pnl = realized_pnl + total_unrealized
+
         alert.send(
-            f"📊 <b>Scan #{cycle_num} — {now.strftime('%H:%M')}</b>\n"
-            f"Signals: {len(buy_signals)} BUY | {len(sell_signals)} SELL | {hold_count} HOLD\n"
-            f"Positions: {pos_list}\n"
-            f"Portfolio: ₹{portfolio_value:,.0f} | PnL: ₹{risk_mgr.daily_pnl:+,.0f}\n"
+            f"📊 <b>P&L Report — {now.strftime('%H:%M')}</b>\n"
+            f"Scan #{cycle_num}\n\n"
+            f"<b>Open Positions ({len(trader.positions)}):</b>\n"
+            f"{pos_detail}\n\n"
+            f"<b>Unrealized P&L:</b> ₹{total_unrealized:+,.0f}\n"
+            f"<b>Realized P&L:</b> ₹{realized_pnl:+,.0f}\n"
+            f"<b>Total P&L:</b> {'🟢' if total_pnl >= 0 else '🔴'} ₹{total_pnl:+,.0f}\n"
+            f"<b>Portfolio:</b> ₹{portfolio_value:,.0f}\n"
             f"Trades today: {risk_mgr.trades_today}"
         )
 
@@ -673,7 +946,7 @@ def run_auto_mode():
 
     # ── Load previous portfolio state ──────────────────
     trader, risk_state = PaperTrader.load_state()
-    risk_mgr = RiskManager()
+    risk_mgr = RiskManager(paper_mode=not live)
     risk_mgr.consecutive_losses = risk_state.get("consecutive_losses", 0)
     risk_mgr.peak_portfolio_value = risk_state.get("peak_portfolio_value", trader.capital)
     risk_mgr.reset_daily(trader.get_portfolio_value({}))
@@ -789,6 +1062,37 @@ def run_auto_mode():
             else:
                 break
 
+    # ── 3:15 PM — Auto square-off all SHORT positions (intraday rule) ──
+    short_positions = {k: v for k, v in trader.positions.items() if v.get("side") == "SHORT"}
+    if short_positions:
+        logger.info(f"INTRADAY SQUARE-OFF: Covering {len(short_positions)} short positions")
+        # Fetch final prices for shorts
+        short_tickers = [k.replace(":SHORT", "") for k in short_positions]
+        final_prices = fetch_live_prices(short_tickers)
+
+        short_pnl_total = 0
+        short_detail = ""
+        for short_key, pos in list(short_positions.items()):
+            base_ticker = short_key.replace(":SHORT", "")
+            name = base_ticker.replace(".NS", "")
+            price = final_prices.get(base_ticker, pos["entry_price"])
+            qty = pos["quantity"]
+            trade = trader.place_order(base_ticker, "COVER", qty, price)
+            pnl = trade.get("pnl", 0)
+            risk_mgr.record_trade(pnl)
+            short_pnl_total += pnl
+            emoji = "🟢" if pnl >= 0 else "🔴"
+            short_detail += f"  {emoji} {name}: ₹{pnl:+,.0f}\n"
+            logger.info(f"  COVERED {name} @ ₹{price:,.2f} | PnL: ₹{pnl:+,.0f}")
+
+        risk_mgr.update_peak(trader.get_portfolio_value({}))
+        alert.send(
+            f"🔻 <b>INTRADAY SQUARE-OFF — 3:15 PM</b>\n\n"
+            f"Covered {len(short_positions)} short positions:\n"
+            f"{short_detail}\n"
+            f"<b>Short P&L:</b> {'🟢' if short_pnl_total >= 0 else '🔴'} ₹{short_pnl_total:+,.0f}"
+        )
+
     # ── Market Close — Save state + Daily Summary ──────
     portfolio_value = trader.get_portfolio_value({})
 
@@ -808,11 +1112,12 @@ def run_auto_mode():
     logger.info(f"Open positions: {len(trader.positions)}")
     logger.info(f"{'='*60}")
 
-    # Active positions detail
+    # Active positions detail (only LONG should remain — shorts already covered)
+    long_positions = {k: v for k, v in trader.positions.items() if v.get("side") != "SHORT"}
     pos_detail = ""
-    if trader.positions:
-        pos_detail = "\n<b>Open Positions:</b>\n"
-        for sym, pos in trader.positions.items():
+    if long_positions:
+        pos_detail = "\n<b>Carry Forward (LONG):</b>\n"
+        for sym, pos in long_positions.items():
             symbol = sym.replace(".NS", "")
             pos_detail += f"  {symbol}: {pos['quantity']} @ ₹{pos['entry_price']:,.2f}\n"
 
@@ -824,7 +1129,8 @@ def run_auto_mode():
         f"Portfolio: ₹{portfolio_value:,.0f}\n"
         f"Daily PnL: {'🟢' if risk_mgr.daily_pnl >= 0 else '🔴'} ₹{risk_mgr.daily_pnl:+,.0f}\n"
         f"Trades: {risk_mgr.trades_today}\n"
-        f"Open Positions: {len(trader.positions)}"
+        f"Shorts Covered: All (intraday square-off)\n"
+        f"LONG Positions: {len(long_positions)}"
         f"{pos_detail}\n"
         f"See you tomorrow! 👋"
     )

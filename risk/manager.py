@@ -16,12 +16,13 @@ import config
 
 
 class RiskManager:
-    def __init__(self):
+    def __init__(self, paper_mode=False):
         self.max_daily_loss_pct = config.MAX_DAILY_LOSS_PCT
         self.max_drawdown_pct = config.MAX_DRAWDOWN_PCT
         self.max_position_pct = config.MAX_POSITION_PCT
-        self.max_total_positions = config.MAX_TOTAL_POSITIONS
+        self.max_total_positions = config.MAX_TOTAL_POSITIONS_PAPER if paper_mode else config.MAX_TOTAL_POSITIONS
         self.stop_loss_atr_mult = config.STOP_LOSS_ATR_MULT
+        self.paper_mode = paper_mode
 
         # State
         self.daily_pnl = 0.0

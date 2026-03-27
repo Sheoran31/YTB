@@ -21,15 +21,15 @@ class PaperTrader:
 
         Args:
             symbol: Stock ticker
-            action: "BUY" or "SELL"
+            action: "BUY", "SELL", "SHORT", or "COVER"
             quantity: Number of shares
             price: Fill price
 
         Returns:
             Trade record dict
         """
-        if action not in ("BUY", "SELL"):
-            raise ValueError(f"Invalid action: {action}. Must be BUY or SELL.")
+        if action not in ("BUY", "SELL", "SHORT", "COVER"):
+            raise ValueError(f"Invalid action: {action}. Must be BUY, SELL, SHORT, or COVER.")
         if quantity <= 0:
             raise ValueError(f"Invalid quantity: {quantity}. Must be > 0.")
         if price <= 0:
@@ -84,15 +84,69 @@ class PaperTrader:
             trade["pnl"] = pnl
             trade["status"] = "FILLED"
 
+        elif action == "SHORT":
+            # Paper short: block margin from capital (equal to position value)
+            margin = quantity * price
+            if margin > self.capital:
+                trade["status"] = "REJECTED — insufficient capital for margin"
+                self.trade_log.append(trade)
+                return trade
+
+            self.capital -= margin
+            short_key = f"{symbol}:SHORT"
+            self.positions[short_key] = {
+                "quantity": quantity,
+                "entry_price": price,
+                "entry_date": datetime.now().isoformat(),
+                "side": "SHORT",
+                "margin_blocked": margin,
+            }
+            trade["status"] = "FILLED"
+
+        elif action == "COVER":
+            short_key = f"{symbol}:SHORT"
+            if short_key not in self.positions:
+                trade["status"] = "REJECTED — no short position"
+                self.trade_log.append(trade)
+                return trade
+
+            position = self.positions[short_key]
+            held_qty = position["quantity"]
+
+            if quantity >= held_qty:
+                # Full cover — close entire short
+                self.positions.pop(short_key)
+                pnl = (position["entry_price"] - price) * held_qty
+                self.capital += position["margin_blocked"] + pnl
+                trade["quantity"] = held_qty
+                trade["value"] = held_qty * price
+            else:
+                # Partial cover
+                pnl = (position["entry_price"] - price) * quantity
+                partial_margin = (quantity / held_qty) * position["margin_blocked"]
+                self.capital += partial_margin + pnl
+                self.positions[short_key]["quantity"] = held_qty - quantity
+                self.positions[short_key]["margin_blocked"] -= partial_margin
+
+            trade["pnl"] = pnl
+            trade["status"] = "FILLED"
+
         self.trade_log.append(trade)
         return trade
 
     def get_portfolio_value(self, current_prices: dict[str, float]) -> float:
-        """Total value = cash + sum of position values."""
-        position_value = sum(
-            pos["quantity"] * current_prices.get(sym, pos["entry_price"])
-            for sym, pos in self.positions.items()
-        )
+        """Total value = cash + sum of position values (long + short unrealized PnL)."""
+        position_value = 0
+        for sym, pos in self.positions.items():
+            if pos.get("side") == "SHORT":
+                # Short: margin + unrealized PnL (entry - current)
+                base_sym = sym.replace(":SHORT", "")
+                current = current_prices.get(base_sym, pos["entry_price"])
+                unrealized_pnl = (pos["entry_price"] - current) * pos["quantity"]
+                position_value += pos["margin_blocked"] + unrealized_pnl
+            else:
+                current = current_prices.get(sym, pos["entry_price"])
+                position_value += pos["quantity"] * current
         return self.capital + position_value
 
     def save_trade_log(self, filepath: str = config.TRADE_LOG_FILE):

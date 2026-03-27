@@ -111,7 +111,8 @@ CAPITAL_PER_TRADE = 10_000     # Used when QUANTITY_MODE = "capital" (INR per tr
 MAX_DAILY_LOSS_PCT = 0.02       # Stop trading if down 2% in a day
 MAX_DRAWDOWN_PCT = 0.05         # Stop trading if down 5% from peak
 MAX_POSITION_PCT = 0.20         # Max 20% of capital in one stock
-MAX_TOTAL_POSITIONS = 5         # Max 5 open positions at once
+MAX_TOTAL_POSITIONS = 5         # Max 5 open positions at once (live)
+MAX_TOTAL_POSITIONS_PAPER = 20  # Max 20 open positions (paper mode — more data for testing)
 RISK_PER_TRADE_PCT = 0.01      # Risk 1% of capital per trade
 STOP_LOSS_ATR_MULT = 2.0       # Stop loss = Entry - (2 × ATR)
 CONSECUTIVE_LOSS_LIMIT = 3     # Circuit breaker after 3 losses
@@ -141,6 +142,8 @@ MARKET_CLOSE_HOUR = 15
 MARKET_CLOSE_MINUTE = 30
 NO_NEW_POSITIONS_AFTER_HOUR = 15  # No new trades after 3:00 PM
 NO_NEW_POSITIONS_AFTER_MINUTE = 0
+INTRADAY_SQUARE_OFF_HOUR = 15    # Auto square-off SHORT positions at 3:15 PM
+INTRADAY_SQUARE_OFF_MINUTE = 15
 
 # ============================================================
 # AUTO MODE

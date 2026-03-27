@@ -121,6 +121,25 @@ class TelegramAlert:
                 f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
                 f"Qty: {quantity} | PnL: ₹{pnl:+,.0f}"
             )
+        elif action == "SHORT":
+            risk = stop_loss - price if stop_loss else 0
+            reward = price - target if target else 0
+            rr = f"{reward / risk:.1f}" if risk > 0 else "—"
+            msg = (
+                f"🔻 <b>SHORT ORDER (Paper)</b> — {now}\n"
+                f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
+                f"Qty: {quantity} | Margin: ₹{quantity * price:,.0f}\n"
+                f"Stop Loss: ₹{stop_loss:,.2f}\n"
+                f"Target: ₹{target:,.2f}\n"
+                f"R:R = 1:{rr}"
+            )
+        elif action == "COVER":
+            emoji = "🟢" if pnl >= 0 else "🔴"
+            msg = (
+                f"{emoji} <b>SHORT COVERED (Paper)</b> — {now}\n"
+                f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
+                f"Qty: {quantity} | PnL: ₹{pnl:+,.0f}"
+            )
         else:
             msg = f"⚠️ <b>{action}</b> — {symbol} @ ₹{price:,.2f}"
 
@@ -146,10 +165,39 @@ class TelegramAlert:
         )
         self.send(msg)
 
+    def _send_with_buttons(self, text: str, buttons: list[list[dict]]) -> bool:
+        """Send a message with inline keyboard buttons."""
+        if not self.enabled:
+            return False
+        url = f"https://api.telegram.org/bot{self.bot_token}/sendMessage"
+        payload = {
+            "chat_id": self.chat_id,
+            "text": text,
+            "parse_mode": "HTML",
+            "reply_markup": {"inline_keyboard": buttons},
+        }
+        try:
+            resp = requests.post(url, json=payload, timeout=10)
+            return resp.status_code == 200
+        except Exception as e:
+            logger.error(f"Telegram button send failed: {e}")
+            return False
+
+    def _answer_callback(self, callback_query_id: str, text: str):
+        """Acknowledge a button press (removes loading spinner)."""
+        url = f"https://api.telegram.org/bot{self.bot_token}/answerCallbackQuery"
+        try:
+            requests.post(url, json={
+                "callback_query_id": callback_query_id,
+                "text": text,
+            }, timeout=5)
+        except Exception:
+            pass
+
     def ask_trading_mode(self, timeout_seconds=None):
         """
-        Ask user via Telegram to select Paper or Live mode.
-        Polls getUpdates for a reply. Returns 'paper' or 'live'.
+        Ask user via Telegram to select Paper or Live mode using inline buttons.
+        User taps a button → bot confirms and starts. Returns 'paper' or 'live'.
         Defaults to 'paper' if no reply or Telegram not configured.
         """
         timeout = timeout_seconds or config.MODE_REPLY_TIMEOUT
@@ -169,40 +217,63 @@ class TelegramAlert:
         except Exception:
             pass
 
-        # Send mode selection message
-        self.send(
+        # Send mode selection with inline buttons
+        buttons = [[
+            {"text": "📝 PAPER TRADE", "callback_data": "mode_paper"},
+            {"text": "💰 LIVE TRADE", "callback_data": "mode_live"},
+        ]]
+        self._send_with_buttons(
             "🤖 <b>Good Morning! Trading Bot Ready</b>\n\n"
             "Select mode for today:\n"
-            "  Reply <b>paper</b> — Simulated trades\n"
-            "  Reply <b>live</b> — Real money (Dhan)\n\n"
+            "  📝 <b>PAPER</b> — Simulated trades (fake money)\n"
+            "  💰 <b>LIVE</b> — Real money via Dhan\n\n"
             f"⏳ Waiting {timeout // 60} min for reply...\n"
-            "Default: <b>PAPER</b> (if no reply)"
+            "Default: <b>PAPER</b> (if no reply)",
+            buttons,
         )
 
-        # Poll for response
+        # Poll for button press (callback_query) OR text reply
         start = time_module.time()
         while time_module.time() - start < timeout:
             try:
                 resp = requests.get(url, params={
                     "offset": offset,
                     "timeout": 30,
-                    "allowed_updates": ["message"],
+                    "allowed_updates": ["message", "callback_query"],
                 }, timeout=35)
                 data = resp.json()
 
                 for update in data.get("result", []):
                     offset = update["update_id"] + 1
+
+                    # Handle inline button press
+                    cb = update.get("callback_query")
+                    if cb:
+                        cb_chat_id = str(cb.get("message", {}).get("chat", {}).get("id", ""))
+                        cb_data = cb.get("data", "")
+                        if cb_chat_id == self.chat_id and cb_data in ("mode_paper", "mode_live"):
+                            mode = cb_data.replace("mode_", "")
+                            self._answer_callback(cb["id"], f"{mode.upper()} mode selected!")
+                            if mode == "live":
+                                self.send("✅ <b>LIVE MODE ON</b> 💰\nReal money trading via Dhan. Be careful!")
+                            else:
+                                self.send("✅ <b>PAPER TRADE MODE ON</b> 📝\nSimulated trading. No real money used.")
+                            return mode
+
+                    # Also accept text reply (backward compatible)
                     msg = update.get("message", {})
                     chat_id = str(msg.get("chat", {}).get("id", ""))
                     text = (msg.get("text") or "").strip().lower()
-
                     if chat_id == self.chat_id and text in ("paper", "live"):
-                        self.send(f"✅ Selected: <b>{text.upper()}</b> trading for today")
+                        if text == "live":
+                            self.send("✅ <b>LIVE MODE ON</b> 💰\nReal money trading via Dhan. Be careful!")
+                        else:
+                            self.send("✅ <b>PAPER TRADE MODE ON</b> 📝\nSimulated trading. No real money used.")
                         return text
             except Exception:
                 time_module.sleep(5)
 
         # Timeout — default to paper
-        self.send("⏰ No reply received. Defaulting to <b>PAPER</b> trading.")
+        self.send("⏰ No reply received. Defaulting to <b>PAPER TRADE MODE ON</b> 📝\nSimulated trading. No real money used.")
         logger.info("Mode selection timeout — defaulting to PAPER")
         return "paper"
