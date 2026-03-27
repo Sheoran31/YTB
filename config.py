@@ -124,7 +124,7 @@ MAX_LOSS_PER_TRADE = 1_000     # Max loss allowed per single trade (INR)
 # ============================================================
 RISK_REWARD_RATIO = 2.0           # Target-2 = Entry + (risk × 2). 1:2 R:R
 TRAILING_STOP_ENABLED = True      # Move stop loss up as price rises
-POSITION_CHECK_SECONDS = 60       # Check held positions every 60 sec (real-time SL/target)
+POSITION_CHECK_SECONDS = 120      # Check held positions every 2 min (bulk fetch, avoids rate limit)
 
 # ── Half-Booking (partial profit booking) ──
 # When Target-1 hits: sell 50% qty, move SL to cost (breakeven)
