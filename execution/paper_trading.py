@@ -155,8 +155,10 @@ class PaperTrader:
         if not self.trade_log:
             return
 
+        # Collect all keys across all trades (BUY lacks 'pnl', SELL/COVER have it)
+        all_keys = dict.fromkeys(k for trade in self.trade_log for k in trade)
         with open(filepath, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=self.trade_log[0].keys())
+            writer = csv.DictWriter(f, fieldnames=all_keys, extrasaction="ignore")
             writer.writeheader()
             writer.writerows(self.trade_log)
 
