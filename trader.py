@@ -210,6 +210,48 @@ def wait_for_market_open():
     return True
 
 
+def send_heartbeat(trader, risk_mgr):
+    """Send a quick position + P&L snapshot to Telegram between scans."""
+    now = datetime.now()
+    positions = trader.positions
+    if not positions:
+        alert.send(
+            f"💓 <b>Heartbeat — {now.strftime('%H:%M')}</b>\n"
+            f"No open positions\n"
+            f"Capital: ₹{trader.capital:,.0f} | Trades: {risk_mgr.trades_today}"
+        )
+        return
+
+    # Quick P&L snapshot
+    tickers = [t.replace(":SHORT", "") for t in positions]
+    prices = fetch_live_prices(list(set(tickers)))
+    lines = []
+    total_unreal = 0
+    for sym, pos in positions.items():
+        price_key = sym.replace(":SHORT", "")
+        current = prices.get(price_key, pos["entry_price"])
+        entry = pos["entry_price"]
+        qty = pos["quantity"]
+        is_short = pos.get("side") == "SHORT"
+        unreal = ((entry - current) if is_short else (current - entry)) * qty
+        total_unreal += unreal
+        name = price_key.replace(".NS", "")
+        d = "S" if is_short else "L"
+        e = "🟢" if unreal >= 0 else "🔴"
+        lines.append(f"  {e} {name} [{d}] ₹{unreal:+,.0f}")
+    lines.sort(key=lambda x: -1 if "🟢" in x else 1)
+
+    total_pnl = risk_mgr.daily_pnl + total_unreal
+    alert.send(
+        f"💓 <b>Heartbeat — {now.strftime('%H:%M')}</b>\n\n"
+        f"<b>Positions ({len(positions)}):</b>\n"
+        f"{chr(10).join(lines)}\n\n"
+        f"<b>Unrealized:</b> ₹{total_unreal:+,.0f}\n"
+        f"<b>Total P&L:</b> {'🟢' if total_pnl >= 0 else '🔴'} ₹{total_pnl:+,.0f}\n"
+        f"Capital: ₹{trader.capital:,.0f} | Trades: {risk_mgr.trades_today}"
+    )
+
+
 def monitor_positions(trader, broker, risk_mgr):
     """
     Real-time position monitoring — checks SL, target, and trailing stop.
@@ -867,8 +909,8 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
             alert.send_trade_alert("SHORT", ticker, price, quantity,
                                    stop_loss=stop_loss, target=target_2)
 
-    # ── Scan summary (every 2nd scan = ~30 min, or first scan) ──
-    if cycle_num == 1 or cycle_num % 2 == 0:
+    # ── Scan summary — send to Telegram every scan ──
+    if True:
         portfolio_value = trader.get_portfolio_value(current_prices)
 
         # Build detailed P&L per position
@@ -1036,14 +1078,19 @@ def run_auto_mode():
             "peak_portfolio_value": risk_mgr.peak_portfolio_value,
         })
 
-        # ── Wait for next scan — monitor positions every 60s ──
+        # ── Wait for next scan — monitor positions every 2 min, heartbeat every 5 min ──
         next_scan = now + timedelta(minutes=config.SCAN_INTERVAL_MINUTES)
+        last_heartbeat = datetime.now()
+        heartbeat_interval = 300  # 5 minutes
 
         # Don't scan past market close
         if next_scan.time() >= market_close:
             logger.info(f"Next scan would be after market close. Waiting for 3:30 PM...")
             while datetime.now().time() < market_close:
                 monitor_positions(trader, broker, risk_mgr)
+                if (datetime.now() - last_heartbeat).total_seconds() >= heartbeat_interval:
+                    send_heartbeat(trader, risk_mgr)
+                    last_heartbeat = datetime.now()
                 time_module.sleep(config.POSITION_CHECK_SECONDS)
             break
 
@@ -1053,6 +1100,9 @@ def run_auto_mode():
                 monitor_positions(trader, broker, risk_mgr)
             except Exception as e:
                 logger.error(f"Position monitor error: {e}")
+            if (datetime.now() - last_heartbeat).total_seconds() >= heartbeat_interval:
+                send_heartbeat(trader, risk_mgr)
+                last_heartbeat = datetime.now()
             remaining = (next_scan - datetime.now()).total_seconds()
             if remaining > config.POSITION_CHECK_SECONDS:
                 time_module.sleep(config.POSITION_CHECK_SECONDS)
