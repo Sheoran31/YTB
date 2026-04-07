@@ -19,7 +19,7 @@ ORDER_PRODUCT = "CNC"  # "CNC" = delivery, "INTRADAY" = intraday
 # Dhan credentials (set via environment variables, NOT here)
 # export DHAN_CLIENT_ID="your_client_id"
 # export DHAN_ACCESS_TOKEN="your_token"
-# Token validity: up to 30 days (set when generating at web.dhan.co)
+# Token validity: 24 hours (auto-refreshes via broker_api.py)
 
 # ============================================================
 # STOCKS TO TRACK (Nifty 50 subset)
@@ -42,7 +42,7 @@ WATCHLIST = [
     "WIPRO.NS",
     "HCLTECH.NS",
     "TECHM.NS",
-    "LTIM.NS",
+    # "LTIM.NS",  # removed — delisted/broken on Yahoo Finance
     # Large Cap — Consumer & FMCG
     "HINDUNILVR.NS",
     "ITC.NS",
@@ -113,6 +113,7 @@ MAX_DRAWDOWN_PCT = 0.05         # Stop trading if down 5% from peak
 MAX_POSITION_PCT = 0.20         # Max 20% of capital in one stock
 MAX_TOTAL_POSITIONS = 5         # Max 5 open positions at once (live)
 MAX_TOTAL_POSITIONS_PAPER = 20  # Max 20 open positions (paper mode — more data for testing)
+MAX_SHORT_POSITIONS = 3         # Max 3 simultaneous SHORT positions (intraday only)
 RISK_PER_TRADE_PCT = 0.01      # Risk 1% of capital per trade
 STOP_LOSS_ATR_MULT = 2.0       # Stop loss = Entry - (2 × ATR)
 CONSECUTIVE_LOSS_LIMIT = 3     # Circuit breaker after 3 losses
@@ -140,15 +141,15 @@ MARKET_OPEN_HOUR = 9
 MARKET_OPEN_MINUTE = 15
 MARKET_CLOSE_HOUR = 15
 MARKET_CLOSE_MINUTE = 30
-NO_NEW_POSITIONS_AFTER_HOUR = 15  # No new trades after 3:00 PM
-NO_NEW_POSITIONS_AFTER_MINUTE = 0
-INTRADAY_SQUARE_OFF_HOUR = 15    # Auto square-off SHORT positions at 3:15 PM
-INTRADAY_SQUARE_OFF_MINUTE = 15
+NO_NEW_POSITIONS_AFTER_HOUR = 14  # No new trades after 2:30 PM
+NO_NEW_POSITIONS_AFTER_MINUTE = 30
+INTRADAY_SQUARE_OFF_HOUR = 15    # Auto square-off SHORT positions at 3:00 PM
+INTRADAY_SQUARE_OFF_MINUTE = 0
 
 # ============================================================
 # AUTO MODE
 # ============================================================
-SCAN_INTERVAL_MINUTES = 15        # Scan every 15 minutes in auto mode
+SCAN_INTERVAL_MINUTES = 15        # Scan every 15 min — uses 1H candle data for analysis
 MODE_REPLY_TIMEOUT = 300          # Seconds to wait for Telegram paper/live reply (5 min)
 
 # ============================================================
@@ -203,26 +204,28 @@ ECLIPSE_BUFFER_DAYS = 3           # Days before/after eclipse to avoid
 # NSE HOLIDAYS (update yearly — source: nseindia.com)
 # ============================================================
 NSE_HOLIDAYS = {
-    # ── 2026 ──
+    # ── 2026 — Source: NSE Circular NSE/CMTR/71775 ──
+    "2026-01-15": "Municipal Corporation Election (Maharashtra)",
     "2026-01-26": "Republic Day",
-    "2026-02-17": "Maha Shivaratri",
-    "2026-03-10": "Holi",
-    "2026-03-26": "Jamat Ul-Vida",
-    "2026-03-31": "Id-Ul-Fitr (Eid)",
-    "2026-04-02": "Ram Navami",
+    "2026-03-03": "Holi",
+    "2026-03-26": "Shri Ram Navami",
+    "2026-03-31": "Shri Mahavir Jayanti",
     "2026-04-03": "Good Friday",
-    "2026-04-14": "Dr. Ambedkar Jayanti",
+    "2026-04-14": "Dr. Baba Saheb Ambedkar Jayanti",
     "2026-05-01": "Maharashtra Day",
-    "2026-05-25": "Buddha Purnima",
-    "2026-07-17": "Muharram",
-    "2026-08-15": "Independence Day",
-    "2026-08-28": "Janmashtami",
+    "2026-05-28": "Bakri Id (Eid ul-Adha)",
+    "2026-06-26": "Muharram",
+    "2026-09-14": "Ganesh Chaturthi",
     "2026-10-02": "Mahatma Gandhi Jayanti",
     "2026-10-20": "Dussehra",
-    "2026-11-09": "Diwali (Laxmi Puja)",
     "2026-11-10": "Diwali (Balipratipada)",
-    "2026-11-27": "Guru Nanak Jayanti",
+    "2026-11-24": "Prakash Gurpurb Sri Guru Nanak Dev Ji",
     "2026-12-25": "Christmas",
+    # Notes:
+    # - Maha Shivaratri (Feb 15) = Sunday, no weekday closure
+    # - Id-Ul-Fitr/Ramzan Eid (Mar 21) = Saturday, no weekday closure
+    # - Independence Day (Aug 15) = Saturday, no weekday closure
+    # - Diwali Laxmi Puja (Nov 8) = Sunday, only Muhurat trading session
     # ── 2027 (add when NSE publishes) ──
 }
 

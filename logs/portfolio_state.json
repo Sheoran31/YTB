@@ -1,9 +1,9 @@
 {
-  "capital": 100000,
+  "capital": 100238.63890075684,
   "positions": {},
-  "last_saved": "2026-03-27T15:31:38.728785",
+  "last_saved": "2026-04-07T10:58:46.757365",
   "risk": {
-    "consecutive_losses": 0,
-    "peak_portfolio_value": 100000
+    "consecutive_losses": 3,
+    "peak_portfolio_value": 101042.1404876709
   }
 }

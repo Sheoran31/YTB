@@ -33,10 +33,111 @@ from execution.paper_trading import PaperTrader
 from astro.filter import AstroFilter
 from monitoring.logger import setup_logger
 from monitoring.alerts import TelegramAlert
+from monitoring.commands import CommandHandler
 
 logger = setup_logger()
 alert = TelegramAlert()
 astro = AstroFilter()
+
+
+def fetch_nse_holidays_live() -> dict:
+    """
+    Fetch NSE trading holidays directly from NSE API.
+    Returns dict of {YYYY-MM-DD: holiday_name} or empty dict on failure.
+    Falls back silently — hardcoded calendar used if this fails.
+    """
+    import requests as req
+    from datetime import date
+
+    url = "https://www.nseindia.com/api/holiday-master?type=trading"
+    headers = {
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "application/json",
+        "Referer": "https://www.nseindia.com/",
+    }
+    try:
+        session = req.Session()
+        # Need to hit main page first to get cookies
+        session.get("https://www.nseindia.com", headers=headers, timeout=10)
+        resp = session.get(url, headers=headers, timeout=10)
+        data = resp.json()
+
+        holidays = {}
+        current_year = date.today().year
+        for segment, entries in data.items():
+            if "CM" not in segment and segment != "CM":  # CM = Capital Market (equity)
+                continue
+            for entry in entries:
+                try:
+                    # NSE returns date as "15-Jan-2026" format
+                    from datetime import datetime as dt
+                    raw = entry.get("tradingDate", "") or entry.get("trade_date", "")
+                    if not raw:
+                        continue
+                    parsed = dt.strptime(raw.strip(), "%d-%b-%Y").date()
+                    if parsed.year >= current_year:
+                        date_str = parsed.strftime("%Y-%m-%d")
+                        name = entry.get("description", entry.get("holidayName", "NSE Holiday"))
+                        holidays[date_str] = name
+                except Exception:
+                    continue
+        return holidays
+    except Exception as e:
+        logger.warning(f"NSE holiday fetch failed: {e} — using hardcoded calendar")
+        return {}
+
+
+HOLIDAY_CACHE_FILE = "logs/nse_holidays_cache.json"
+HOLIDAY_CACHE_DAYS = 0  # Always re-fetch from NSE on every startup
+
+
+def refresh_holidays():
+    """
+    Update config.NSE_HOLIDAYS with live NSE data.
+    Uses a local cache file — re-fetches from NSE API on every startup.
+    Falls back to hardcoded calendar if both cache and API fail.
+    """
+    import json
+    from datetime import date, datetime as dt
+
+    os.makedirs("logs", exist_ok=True)
+    cache_valid = False
+    cached_data = {}
+
+    # ── Try loading from local cache ──────────────────
+    if os.path.exists(HOLIDAY_CACHE_FILE):
+        try:
+            with open(HOLIDAY_CACHE_FILE) as f:
+                cache = json.load(f)
+            fetched_on = dt.fromisoformat(cache.get("fetched_on", "2000-01-01")).date()
+            age_days = (date.today() - fetched_on).days
+            if age_days < HOLIDAY_CACHE_DAYS:
+                cached_data = cache.get("holidays", {})
+                cache_valid = True
+                logger.info(f"NSE holidays loaded from cache ({age_days}d old, next refresh in {HOLIDAY_CACHE_DAYS - age_days}d)")
+        except Exception:
+            pass
+
+    # ── Fetch fresh from NSE API if cache is stale/missing ──
+    if not cache_valid:
+        logger.info("Fetching NSE holidays from live API...")
+        live = fetch_nse_holidays_live()
+        if live:
+            cached_data = live
+            try:
+                with open(HOLIDAY_CACHE_FILE, "w") as f:
+                    json.dump({"fetched_on": date.today().isoformat(), "holidays": live}, f, indent=2)
+                logger.info(f"NSE holidays fetched & cached: {len(live)} holidays")
+            except Exception:
+                pass
+        else:
+            logger.info("NSE API failed — using hardcoded calendar as fallback")
+
+    # ── Apply to config (live/cached takes priority over hardcoded) ──
+    if cached_data:
+        config.NSE_HOLIDAYS.update(cached_data)
+        return len(cached_data)
+    return 0
 
 
 def is_market_holiday(check_date=None) -> tuple:
@@ -44,32 +145,17 @@ def is_market_holiday(check_date=None) -> tuple:
     Check if a given date is an NSE holiday.
     Returns (is_holiday: bool, holiday_name: str or None).
 
-    Two-layer detection:
-      1. Hardcoded NSE_HOLIDAYS calendar in config.py (instant, works anytime)
-      2. Live check via yfinance — if no NIFTY data for today after 9:30 AM,
-         market is likely closed (catches unlisted holidays)
+    Detection source: NSE API only (fetched fresh on every startup via refresh_holidays()).
+    Falls back to hardcoded NSE_HOLIDAYS in config.py if API is unreachable.
+    yfinance is NOT used for holiday detection — it caused false positives at market open.
     """
     if check_date is None:
         check_date = datetime.now().date()
 
     date_str = check_date.strftime("%Y-%m-%d")
 
-    # Layer 1: Hardcoded calendar
     if date_str in config.NSE_HOLIDAYS:
         return True, config.NSE_HOLIDAYS[date_str]
-
-    # Layer 2: Live detection (only after 9:30 AM on weekdays)
-    now = datetime.now()
-    if check_date == now.date() and check_date.weekday() < 5 and now.hour >= 9 and now.minute >= 30:
-        try:
-            import yfinance as yf
-            nifty = yf.download("^NSEI", period="5d", progress=False)
-            if not nifty.empty:
-                trading_dates = set(nifty.index.date)
-                if check_date not in trading_dates:
-                    return True, "Unlisted Holiday (no market data)"
-        except Exception:
-            pass  # yfinance failed, rely on calendar only
 
     return False, None
 
@@ -256,7 +342,7 @@ def monitor_positions(trader, broker, risk_mgr):
     """
     Real-time position monitoring — checks SL, target, and trailing stop.
     Runs every POSITION_CHECK_SECONDS between scan cycles.
-    Handles both LONG and SHORT (paper) positions.
+    Handles both LONG and SHORT positions.
     """
     if not trader.positions:
         return
@@ -287,7 +373,7 @@ def monitor_positions(trader, broker, risk_mgr):
         if price_key not in prices:
             continue
 
-        # ── SHORT position monitoring (paper only) ─────────
+        # ── SHORT position monitoring ─────────────────────────
         if pos.get("side") == "SHORT":
             current_price = prices[price_key]
             entry = pos["entry_price"]
@@ -317,9 +403,11 @@ def monitor_positions(trader, broker, risk_mgr):
                 pnl = trade.get("pnl", 0)
                 risk_mgr.record_trade(pnl)
                 risk_mgr.update_peak(trader.get_portfolio_value({}))
+                if broker and broker.connected:
+                    broker.place_order(name, "BUY", qty, current_price, product="INTRADAY")
                 logger.info(f"  🔴 SL HIT (SHORT) {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
                 alert.send(
-                    f"🔴 <b>SHORT SL HIT (Paper)</b>\n"
+                    f"🔴 <b>SHORT SL HIT</b>\n"
                     f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
                     f"Entry: ₹{entry:,.2f} | SL: ₹{stop_loss:,.2f}\n"
                     f"PnL: ₹{pnl:+,.0f}"
@@ -334,6 +422,8 @@ def monitor_positions(trader, broker, risk_mgr):
                     pnl = trade.get("pnl", 0)
                     risk_mgr.record_trade(pnl)
                     risk_mgr.update_peak(trader.get_portfolio_value({}))
+                    if broker and broker.connected:
+                        broker.place_order(name, "BUY", qty, current_price, product="INTRADAY")
                     logger.info(f"  🟡 SHORT T1 HIT {name} — full cover (qty=1) | PnL: ₹{pnl:+,.0f}")
                     alert.send_trade_alert("COVER", price_key, current_price, qty, pnl=pnl)
                     continue
@@ -345,12 +435,14 @@ def monitor_positions(trader, broker, risk_mgr):
                 pos["half_booked"] = True
                 pos["trailing_low"] = current_price
                 remaining = qty - half_qty
+                if broker and broker.connected:
+                    broker.place_order(name, "BUY", half_qty, current_price, product="INTRADAY")
                 logger.info(
                     f"  🟡 SHORT T1 HIT {name} @ ₹{current_price:,.2f} | "
                     f"Covered {half_qty} (₹{pnl_half:+,.0f}) | Remaining: {remaining}"
                 )
                 alert.send(
-                    f"🟡 <b>SHORT TARGET-1 HIT — 50% Covered (Paper)</b>\n"
+                    f"🟡 <b>SHORT TARGET-1 HIT — 50% Covered</b>\n"
                     f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
                     f"Entry: ₹{entry:,.2f} | PnL: ₹{pnl_half:+,.0f}\n"
                     f"Remaining: {remaining} qty | SL → Cost: ₹{entry:,.2f}\n"
@@ -364,9 +456,11 @@ def monitor_positions(trader, broker, risk_mgr):
                 pnl = trade.get("pnl", 0)
                 risk_mgr.record_trade(pnl)
                 risk_mgr.update_peak(trader.get_portfolio_value({}))
+                if broker and broker.connected:
+                    broker.place_order(name, "BUY", qty, current_price, product="INTRADAY")
                 logger.info(f"  🟢 SHORT TARGET-2 HIT {name} @ ₹{current_price:,.2f} | PnL: ₹{pnl:+,.0f}")
                 alert.send(
-                    f"🟢 <b>SHORT TARGET-2 — Full Profit! (Paper)</b>\n"
+                    f"🟢 <b>SHORT TARGET-2 — Full Profit!</b>\n"
                     f"<b>{name}</b> @ ₹{current_price:,.2f}\n"
                     f"Entry: ₹{entry:,.2f} | PnL: ₹{pnl:+,.0f}"
                 )
@@ -580,7 +674,7 @@ def monitor_positions(trader, broker, risk_mgr):
                 continue
 
 
-def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
+def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals, cmd_handler=None):
     """
     Run one scan cycle: fetch data → signals → trades.
     Returns current signals dict for comparison with next cycle.
@@ -596,7 +690,7 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
 
     for ticker in config.WATCHLIST:
         try:
-            data = fetch_stock_data(ticker, period="6mo")
+            data = fetch_stock_data(ticker, period="730d", interval="1h")
             signal = generate_signal(data)
             signals[ticker] = {"signal": signal, "data": data}
         except Exception as e:
@@ -671,7 +765,8 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
     # Priority: best momentum (ADX + RSI) and best R:R ratio first
     scored_buys = []
     for ticker, info in buy_signals.items():
-        if ticker in trader.positions:
+        # Skip if already in any position (long or short) — no duplication
+        if ticker in trader.positions or f"{ticker}:SHORT" in trader.positions:
             continue
         try:
             data = info["data"]
@@ -693,6 +788,11 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
             scored_buys.append((ticker, info, 0))
 
     scored_buys.sort(key=lambda x: x[2], reverse=True)
+
+    # ── Pause check — skip new entries if paused via Telegram ──
+    if cmd_handler and cmd_handler.paused:
+        logger.info("Trading PAUSED via Telegram — skipping new entries")
+        return signals
 
     # ── Process BUY signals (with Astro Filter) ─────────
     for ticker, info, _score in scored_buys:
@@ -743,11 +843,12 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
 
         proposed_value = quantity * price
 
-        # Risk check (circuit breakers)
+        # Risk check — LONG is positional (hold overnight), intraday=False
         can_trade, reason = risk_mgr.can_open_position(
             portfolio_value,
             list(trader.positions.keys()),
             proposed_value,
+            intraday=False,
         )
 
         if not can_trade:
@@ -792,10 +893,14 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
                                   product=config.ORDER_PRODUCT)
 
     # ── Score & sort SHORT signals by momentum + R:R ────
-    # Priority: strongest bearish momentum (high ADX + low RSI) first
-    # No new shorts after 3:00 PM (square-off at 3:15, not worth it)
+    # SHORT = intraday only. Signal from generate_signal() already confirms:
+    # EMA20 < EMA50 + MACD bearish + RSI < 45 + ADX > 20 + Volume > 1.5x
+    # Same tools as BUY — symmetric strategy. No external filters needed.
     square_off_cutoff = time(config.NO_NEW_POSITIONS_AFTER_HOUR, config.NO_NEW_POSITIONS_AFTER_MINUTE)
-    if not broker and now.time() < square_off_cutoff:  # Paper mode only + before 3 PM
+
+    if now.time() < square_off_cutoff:
+        # Count current open SHORT positions
+        current_short_count = sum(1 for p in trader.positions.values() if p.get("side") == "SHORT")
         scored_shorts = []
         for ticker, info in sell_signals.items():
             short_key = f"{ticker}:SHORT"
@@ -804,15 +909,15 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
             try:
                 data = info["data"]
                 close = data["Close"].squeeze()
-                high = data["High"].squeeze()
-                low = data["Low"].squeeze()
-                rsi = calculate_rsi(close).iloc[-1]
-                adx = calculate_adx(high, low, close).iloc[-1]
+                high  = data["High"].squeeze()
+                low   = data["Low"].squeeze()
+
+                rsi      = calculate_rsi(close).iloc[-1]
+                adx      = calculate_adx(high, low, close).iloc[-1]
                 vol_ratio = calculate_volume_ratio(data["Volume"].squeeze()).iloc[-1]
-                atr = calculate_atr(high, low, close).iloc[-1]
-                price = float(close.iloc[-1])
+                atr      = calculate_atr(high, low, close).iloc[-1]
+                price    = float(close.iloc[-1])
                 rr_score = (atr / price * 100) if price > 0 else 0
-                # For shorts: lower RSI = stronger bearish, higher ADX = stronger trend
                 bearish_score = (adx * 0.4) + ((100 - rsi) * 0.3) + (min(vol_ratio, 5) * 20 * 0.3)
                 total_score = bearish_score + (rr_score * 10)
                 scored_shorts.append((ticker, info, total_score))
@@ -825,10 +930,10 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
 
             data = info["data"]
             close = data["Close"].squeeze()
-            high = data["High"].squeeze()
-            low = data["Low"].squeeze()
+            high  = data["High"].squeeze()
+            low   = data["Low"].squeeze()
             price = float(close.iloc[-1])
-            atr = float(calculate_atr(high, low, close).iloc[-1])
+            atr   = float(calculate_atr(high, low, close).iloc[-1])
 
             # Astro filter (same rules apply for shorts)
             astro_result = astro.evaluate(signal="SELL", price=price)
@@ -870,26 +975,37 @@ def run_scan_cycle(risk_mgr, trader, broker, cycle_num, prev_signals):
             if quantity == 0:
                 continue
 
-            # Risk check
+            # Risk check — SHORT is intraday only, must close same day
             proposed_value = quantity * price
             can_trade, reason = risk_mgr.can_open_position(
                 portfolio_value,
                 list(trader.positions.keys()),
                 proposed_value,
+                intraday=True,
             )
             if not can_trade:
                 logger.warning(f"  SHORT BLOCKED {ticker}: {reason}")
                 alert.send_blocked_alert(ticker, f"Short: {reason}")
                 continue
 
+            # Max short positions cap
+            if current_short_count >= config.MAX_SHORT_POSITIONS:
+                logger.warning(f"  SHORT BLOCKED {ticker}: Max short positions ({config.MAX_SHORT_POSITIONS}) reached")
+                break
+
             # Targets for short (price goes DOWN = profit)
             target_1 = price - (risk_per_share * config.TARGET_1_RR)
             target_2 = price - (risk_per_share * config.RISK_REWARD_RATIO)
 
-            # Execute paper short
+            # Execute short (paper tracker + real Dhan order if connected)
+            name = ticker.replace(".NS", "")
             trade = trader.place_order(ticker, "SHORT", quantity, price)
             if trade.get("status") != "FILLED":
                 continue
+
+            if broker and broker.connected:
+                broker.place_order(name, "SELL", quantity, price, product="INTRADAY")
+            current_short_count += 1
 
             # Store SL/targets on short position
             if short_key in trader.positions:
@@ -977,20 +1093,39 @@ def run_auto_mode():
     logger.info(f"Astro: {'ON' if config.ASTRO_ENABLED else 'OFF'}")
     logger.info("=" * 60)
 
+    # ── Fetch live NSE holidays from NSE API ────────────
+    n = refresh_holidays()
+    if n:
+        alert.send(f"📅 NSE holidays refreshed from live API ({n} holidays loaded)")
+
+    # ── Load portfolio state early (needed for pre-market phone commands) ──
+    trader, risk_state = PaperTrader.load_state()
+    risk_mgr = RiskManager(paper_mode=True)
+    risk_mgr.consecutive_losses = risk_state.get("consecutive_losses", 0)
+    risk_mgr.peak_portfolio_value = risk_state.get("peak_portfolio_value", trader.capital)
+
+    # ── Wait until 9:00 AM then start phone command handler ──
+    now = datetime.now()
+    phone_ready = now.replace(hour=9, minute=0, second=0, microsecond=0)
+    if now < phone_ready:
+        wait_sec = (phone_ready - now).total_seconds()
+        logger.info(f"Waiting {int(wait_sec/60)}m until 9:00 AM to start phone commands...")
+        time_module.sleep(wait_sec)
+
+    cmd_handler = CommandHandler(alert, trader, risk_mgr, broker=None)
+    cmd_handler.set_mode("paper")
+    cmd_handler.start()
+    alert.send("📱 <b>Phone commands active from 9:00 AM</b>\nType /help to control the bot.")
+
     # ── Wait for market to open ─────────────────────────
     if not wait_for_market_open():
+        cmd_handler.stop()
         return
 
     # ── Ask trading mode via Telegram ──────────────────
     mode_choice = alert.ask_trading_mode()
     live = (mode_choice == "live")
     mode = "LIVE" if live else "PAPER"
-
-    # ── Load previous portfolio state ──────────────────
-    trader, risk_state = PaperTrader.load_state()
-    risk_mgr = RiskManager(paper_mode=not live)
-    risk_mgr.consecutive_losses = risk_state.get("consecutive_losses", 0)
-    risk_mgr.peak_portfolio_value = risk_state.get("peak_portfolio_value", trader.capital)
     risk_mgr.reset_daily(trader.get_portfolio_value({}))
 
     portfolio_value = trader.get_portfolio_value({})
@@ -1027,11 +1162,92 @@ def run_auto_mode():
             alert.send("⚠️ <b>Dhan connection failed</b> — falling back to paper trading")
             broker = None
             mode = "PAPER (broker fallback)"
+        else:
+            # ── Sync Dhan actual positions → paper tracker (prevents duplicates on restart) ──
+            dhan_positions = broker.get_positions()
+            if dhan_positions:
+                synced = 0
+                for dp in dhan_positions:
+                    symbol = dp.get("tradingSymbol", "").replace("-EQ", "")
+                    net_qty = int(dp.get("netQty", 0))
+                    if net_qty == 0:
+                        continue
+                    is_short = net_qty < 0
+                    qty = abs(net_qty)
+                    avg_price = float(dp.get("sellAvg", 0) if is_short else dp.get("buyAvg", 0))
+                    ticker = f"{symbol}.NS"
+                    pos_key = f"{ticker}:SHORT" if is_short else ticker
+                    if pos_key in trader.positions or avg_price <= 0:
+                        continue
+
+                    # Calculate SL/T1/T2 from ATR so monitoring works after sync
+                    sl, t1, t2 = 0.0, 0.0, 0.0
+                    try:
+                        hist = fetch_stock_data(ticker)
+                        if hist is not None and not hist.empty:
+                            atr = float(calculate_atr(
+                                hist["High"].squeeze(),
+                                hist["Low"].squeeze(),
+                                hist["Close"].squeeze()
+                            ).iloc[-1])
+                            risk = atr * config.STOP_LOSS_ATR_MULT
+                            sl  = (avg_price + risk) if is_short else (avg_price - risk)
+                            t1  = (avg_price - risk * config.TARGET_1_RR) if is_short else (avg_price + risk * config.TARGET_1_RR)
+                            t2  = (avg_price - risk * config.RISK_REWARD_RATIO) if is_short else (avg_price + risk * config.RISK_REWARD_RATIO)
+                    except Exception:
+                        pass
+
+                    trader.positions[pos_key] = {
+                        "quantity": qty,
+                        "entry_price": avg_price,
+                        "entry_date": datetime.now().isoformat(),
+                        "side": "SHORT" if is_short else "LONG",
+                        "margin_blocked": qty * avg_price,
+                        "stop_loss": sl,
+                        "original_sl": sl,
+                        "target_1": t1,
+                        "target_2": t2,
+                        "target": t2,
+                        "trailing_high": avg_price,
+                        "trailing_low": avg_price,
+                        "half_booked": False,
+                        "original_qty": qty,
+                    }
+                    if is_short:
+                        trader.capital -= qty * avg_price
+                    synced += 1
+                    logger.info(f"Synced from Dhan: {symbol} {'SHORT' if is_short else 'LONG'} {qty}@{avg_price:.2f} | SL:{sl:.2f} T1:{t1:.2f} T2:{t2:.2f}")
+
+                if synced:
+                    alert.send(
+                        f"🔄 <b>Synced {synced} positions from Dhan</b>\n"
+                        f"Monitoring SL/T1/T2 — no new orders for these stocks."
+                    )
+
+    # ── Update command handler with final mode + broker ──
+    cmd_handler.set_mode("live" if live else "paper")
+    cmd_handler.set_broker(broker)
+    risk_mgr.paper_mode = not live
 
     # ── Main auto loop ──────────────────────────────────
     market_close = time(config.MARKET_CLOSE_HOUR, config.MARKET_CLOSE_MINUTE)
     cycle_num = 0
     prev_signals = {}
+
+    # Setup manual scan callback for Telegram /scan command
+    def manual_scan_callback():
+        """Allow Telegram /scan command to trigger immediate scan."""
+        nonlocal cycle_num, prev_signals
+        cycle_num += 1
+        try:
+            prev_signals = run_scan_cycle(
+                risk_mgr, trader, broker, cycle_num, prev_signals, cmd_handler
+            )
+        except Exception as e:
+            logger.error(f"Manual scan failed: {e}")
+            raise
+
+    cmd_handler.set_scan_callback(manual_scan_callback)
 
     while True:
         now = datetime.now()
@@ -1058,7 +1274,7 @@ def run_auto_mode():
 
         try:
             prev_signals = run_scan_cycle(
-                risk_mgr, trader, broker, cycle_num, prev_signals
+                risk_mgr, trader, broker, cycle_num, prev_signals, cmd_handler
             )
         except Exception as e:
             error_msg = f"{type(e).__name__}: {e}"
@@ -1091,6 +1307,9 @@ def run_auto_mode():
                 if (datetime.now() - last_heartbeat).total_seconds() >= heartbeat_interval:
                     send_heartbeat(trader, risk_mgr)
                     last_heartbeat = datetime.now()
+                sq_time = time(config.INTRADAY_SQUARE_OFF_HOUR, config.INTRADAY_SQUARE_OFF_MINUTE)
+                if datetime.now().time() >= sq_time:
+                    break
                 time_module.sleep(config.POSITION_CHECK_SECONDS)
             break
 
@@ -1103,6 +1322,10 @@ def run_auto_mode():
             if (datetime.now() - last_heartbeat).total_seconds() >= heartbeat_interval:
                 send_heartbeat(trader, risk_mgr)
                 last_heartbeat = datetime.now()
+            # ── 3:15 PM intraday square-off check (runs every 2 min loop) ──
+            sq_time = time(config.INTRADAY_SQUARE_OFF_HOUR, config.INTRADAY_SQUARE_OFF_MINUTE)
+            if datetime.now().time() >= sq_time:
+                break
             remaining = (next_scan - datetime.now()).total_seconds()
             if remaining > config.POSITION_CHECK_SECONDS:
                 time_module.sleep(config.POSITION_CHECK_SECONDS)
@@ -1131,6 +1354,8 @@ def run_auto_mode():
             pnl = trade.get("pnl", 0)
             risk_mgr.record_trade(pnl)
             short_pnl_total += pnl
+            if broker and broker.connected:
+                broker.place_order(name, "BUY", qty, price, product="INTRADAY")
             emoji = "🟢" if pnl >= 0 else "🔴"
             short_detail += f"  {emoji} {name}: ₹{pnl:+,.0f}\n"
             logger.info(f"  COVERED {name} @ ₹{price:,.2f} | PnL: ₹{pnl:+,.0f}")

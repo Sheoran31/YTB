@@ -14,8 +14,8 @@ if [ "$DOW" -gt 5 ]; then
     exit 0
 fi
 
-# Skip if already running
-if pgrep -f "python trader.py" > /dev/null; then
+# Skip if already running (match full path or just trader.py)
+if pgrep -f "trader.py" > /dev/null; then
     echo "$(date) — Already running, skipping" >> logs/launchd_out.log
     exit 0
 fi

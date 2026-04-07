@@ -1,5 +1,5 @@
 """
-Dhan broker integration.
+Dhan broker integration with 24-hour token refresh.
 
 Setup:
     1. pip install dhanhq
@@ -9,17 +9,17 @@ Setup:
         export DHAN_CLIENT_ID="your_client_id"
         export DHAN_ACCESS_TOKEN="your_token"
 
-    Token validity: up to 30 days (set when generating).
+    Token validity: 24 hours (auto-refreshes).
     No daily login like Zerodha — much simpler.
 
 Usage:
     broker = DhanBroker()
     broker.connect()
-    ltp = broker.get_ltp("RELIANCE")
+    ltp = broker.get_ltp("RELIANCE")      # auto-refreshes token if expired
     broker.place_order("RELIANCE", "BUY", 1, ltp)
 """
 import os
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 
 import config
 from monitoring.logger import setup_logger
@@ -104,11 +104,14 @@ def get_security_id(symbol: str) -> str | None:
 
 
 class DhanBroker:
+    TOKEN_VALIDITY_HOURS = 24  # Dhan tokens expire after 24 hours
+
     def __init__(self):
         self.client_id = os.getenv("DHAN_CLIENT_ID")
         self.access_token = os.getenv("DHAN_ACCESS_TOKEN")
         self.dhan = None
         self.connected = False
+        self.token_generated_at = None  # Track when token was created
 
     def connect(self) -> bool:
         """Connect to Dhan API. Returns True if successful."""
@@ -127,17 +130,43 @@ class DhanBroker:
 
         try:
             self.dhan = dhanhq(client_id=self.client_id, access_token=self.access_token)
+            self.token_generated_at = datetime.now()
             self.connected = True
-            logger.info(f"Connected to Dhan (client: {self.client_id})")
+            logger.info(f"Connected to Dhan (client: {self.client_id}), token valid until {self._token_expiry_time()}")
             return True
         except Exception as e:
             logger.error(f"Failed to connect to Dhan: {e}")
             return False
 
+    def _token_expiry_time(self) -> datetime:
+        """Calculate token expiry time (24 hours from generation)."""
+        if self.token_generated_at is None:
+            return None
+        return self.token_generated_at + timedelta(hours=self.TOKEN_VALIDITY_HOURS)
+
+    def _is_token_expired(self) -> bool:
+        """Check if token has expired."""
+        if self.token_generated_at is None:
+            return True
+        return datetime.now() >= self._token_expiry_time()
+
+    def _refresh_token(self) -> bool:
+        """Refresh the Dhan API token by reconnecting."""
+        logger.warning("Token expired. Refreshing...")
+        self.connected = False
+        return self.connect()
+
+    def _ensure_connected(self) -> bool:
+        """Ensure connection is active and token is valid. Refresh if needed."""
+        if not self.connected:
+            return self.connect()
+        if self._is_token_expired():
+            return self._refresh_token()
+        return True
+
     def get_ltp(self, symbol: str) -> float | None:
         """Get Last Traded Price for a symbol (e.g., 'RELIANCE' or 'RELIANCE.NS')."""
-        if not self.connected:
-            logger.error("Not connected. Call connect() first.")
+        if not self._ensure_connected():
             return None
 
         sec_id = get_security_id(symbol)
@@ -165,7 +194,7 @@ class DhanBroker:
 
     def get_multiple_ltp(self, symbols: list[str]) -> dict[str, float]:
         """Get LTP for multiple symbols."""
-        if not self.connected:
+        if not self._ensure_connected():
             return {}
 
         sec_ids = []
@@ -216,8 +245,7 @@ class DhanBroker:
         Returns:
             Order ID if successful, None on failure
         """
-        if not self.connected:
-            logger.error("Not connected. Call connect() first.")
+        if not self._ensure_connected():
             return None
 
         # Safety checks
@@ -287,8 +315,7 @@ class DhanBroker:
         Returns:
             Order ID if successful, None on failure
         """
-        if not self.connected:
-            logger.error("Not connected. Call connect() first.")
+        if not self._ensure_connected():
             return None
 
         sec_id = get_security_id(symbol)
@@ -324,7 +351,7 @@ class DhanBroker:
 
     def cancel_order(self, order_id: str) -> bool:
         """Cancel a pending order."""
-        if not self.connected:
+        if not self._ensure_connected():
             return False
 
         try:
@@ -341,7 +368,7 @@ class DhanBroker:
 
     def get_positions(self) -> list[dict]:
         """Get current open positions."""
-        if not self.connected:
+        if not self._ensure_connected():
             return []
 
         try:
@@ -355,7 +382,7 @@ class DhanBroker:
 
     def get_order_list(self) -> list[dict]:
         """Get all orders for today."""
-        if not self.connected:
+        if not self._ensure_connected():
             return []
 
         try:
@@ -369,7 +396,7 @@ class DhanBroker:
 
     def get_holdings(self) -> list[dict]:
         """Get delivery holdings."""
-        if not self.connected:
+        if not self._ensure_connected():
             return []
 
         try:

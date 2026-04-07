@@ -36,21 +36,32 @@ class RiskManager:
         current_positions: list,
         proposed_position_value: float,
         check_time: datetime | None = None,
+        intraday: bool = False,
     ) -> tuple[bool, str]:
         """
         Returns (can_trade, reason).
-        Pass check_time to override current time (useful for testing).
+
+        intraday=True  → SHORT trade: stricter 2:30 PM cutoff, must close same day.
+        intraday=False → LONG trade: positional, allowed until 3:00 PM (can hold overnight).
         """
         now = check_time or datetime.now()
 
-        # Check 1: Market hours — no new positions after cutoff
-        cutoff = time(config.NO_NEW_POSITIONS_AFTER_HOUR, config.NO_NEW_POSITIONS_AFTER_MINUTE)
+        # Check 1: Time cutoff
+        # SHORT (intraday): no new positions after 2:30 PM — need time for square-off
+        # LONG (positional): no new positions after 3:00 PM — last 1H candle
+        if intraday:
+            cutoff = time(config.NO_NEW_POSITIONS_AFTER_HOUR, config.NO_NEW_POSITIONS_AFTER_MINUTE)
+        else:
+            cutoff = time(15, 0)
         if now.time() >= cutoff:
-            return False, f"Pre-close cutoff: no new positions after {cutoff}"
+            return False, f"Pre-close cutoff ({'intraday' if intraday else 'positional'}): no new positions after {cutoff}"
 
-        # Check 2: Friday rule — no new positions after Friday 2 PM
-        if now.weekday() == 4 and now.time() >= time(14, 0):
-            return False, "Friday rule: no new positions after Friday 2:00 PM"
+        # Check 2: Friday rule
+        # SHORT: no new shorts on Friday after 2 PM (can't hold over weekend)
+        # LONG:  no new longs on Friday after 3 PM (market closes at 3:30)
+        friday_cutoff = time(14, 0) if intraday else time(15, 0)
+        if now.weekday() == 4 and now.time() >= friday_cutoff:
+            return False, f"Friday rule: no new {'intraday' if intraday else 'positional'} positions after {friday_cutoff}"
 
         # Check 3: Daily loss limit
         if portfolio_value > 0:

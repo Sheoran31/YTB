@@ -24,6 +24,9 @@ from monitoring.logger import setup_logger
 logger = setup_logger("alerts")
 
 
+TAG = "📊 YTB BOT"
+
+
 class TelegramAlert:
     def __init__(self):
         self.bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -69,7 +72,7 @@ class TelegramAlert:
         buy_stocks = [r for r in results if r["signal"] == "BUY"]
         sell_stocks = [r for r in results if r["signal"] != "BUY"]
 
-        msg = f"<b>📊 SCREENER REPORT — {now}</b>\n"
+        msg = f"━━━━━━━━━━━━━━━━━━━━\n<b>{TAG} | SCREENER REPORT</b>\n🕐 {now}\n━━━━━━━━━━━━━━━━━━━━\n"
         msg += f"Scanned: {len(results)} stocks\n\n"
 
         if buy_stocks:
@@ -102,53 +105,63 @@ class TelegramAlert:
         symbol = ticker.replace(".NS", "")
         now = datetime.now().strftime("%H:%M:%S")
 
+        header = f"━━━━━━━━━━━━━━━━━━━━\n<b>{TAG} | Trade Alert</b>\n━━━━━━━━━━━━━━━━━━━━\n"
+
         if action == "BUY":
             risk = price - stop_loss if stop_loss else 0
             reward = target - price if target else 0
             rr = f"{reward / risk:.1f}" if risk > 0 else "—"
             msg = (
+                f"{header}"
                 f"🟢 <b>BUY ORDER</b> — {now}\n"
                 f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
                 f"Qty: {quantity} | Value: ₹{quantity * price:,.0f}\n"
                 f"Stop Loss: ₹{stop_loss:,.2f}\n"
                 f"Target: ₹{target:,.2f}\n"
-                f"R:R = 1:{rr}"
+                f"R:R = 1:{rr}\n"
+                f"━━━━━━━━━━━━━━━━━━━━"
             )
         elif action == "SELL":
             emoji = "🟢" if pnl >= 0 else "🔴"
             msg = (
+                f"{header}"
                 f"{emoji} <b>SELL ORDER</b> — {now}\n"
                 f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
-                f"Qty: {quantity} | PnL: ₹{pnl:+,.0f}"
+                f"Qty: {quantity} | PnL: ₹{pnl:+,.0f}\n"
+                f"━━━━━━━━━━━━━━━━━━━━"
             )
         elif action == "SHORT":
             risk = stop_loss - price if stop_loss else 0
             reward = price - target if target else 0
             rr = f"{reward / risk:.1f}" if risk > 0 else "—"
             msg = (
+                f"{header}"
                 f"🔻 <b>SHORT ORDER (Paper)</b> — {now}\n"
                 f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
                 f"Qty: {quantity} | Margin: ₹{quantity * price:,.0f}\n"
                 f"Stop Loss: ₹{stop_loss:,.2f}\n"
                 f"Target: ₹{target:,.2f}\n"
-                f"R:R = 1:{rr}"
+                f"R:R = 1:{rr}\n"
+                f"━━━━━━━━━━━━━━━━━━━━"
             )
         elif action == "COVER":
             emoji = "🟢" if pnl >= 0 else "🔴"
             msg = (
+                f"{header}"
                 f"{emoji} <b>SHORT COVERED (Paper)</b> — {now}\n"
                 f"<b>{symbol}</b> @ ₹{price:,.2f}\n"
-                f"Qty: {quantity} | PnL: ₹{pnl:+,.0f}"
+                f"Qty: {quantity} | PnL: ₹{pnl:+,.0f}\n"
+                f"━━━━━━━━━━━━━━━━━━━━"
             )
         else:
-            msg = f"⚠️ <b>{action}</b> — {symbol} @ ₹{price:,.2f}"
+            msg = f"{header}⚠️ <b>{action}</b> — {symbol} @ ₹{price:,.2f}\n━━━━━━━━━━━━━━━━━━━━"
 
         self.send(msg)
 
     def send_blocked_alert(self, ticker: str, reason: str):
         """Alert when risk manager blocks a trade."""
         symbol = ticker.replace(".NS", "")
-        msg = f"⛔ <b>BLOCKED</b> — {symbol}\nReason: {reason}"
+        msg = f"━━━━━━━━━━━━━━━━━━━━\n<b>{TAG}</b>\n⛔ <b>BLOCKED</b> — {symbol}\nReason: {reason}\n━━━━━━━━━━━━━━━━━━━━"
         self.send(msg)
 
     def send_daily_summary(self, portfolio_value: float, daily_pnl: float,
@@ -157,11 +170,15 @@ class TelegramAlert:
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
         emoji = "🟢" if daily_pnl >= 0 else "🔴"
         msg = (
-            f"<b>📋 DAILY SUMMARY — {now}</b>\n\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n"
+            f"<b>{TAG} | Daily Summary</b>\n"
+            f"🕐 {now}\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n\n"
             f"Portfolio: ₹{portfolio_value:,.0f}\n"
             f"Daily PnL: {emoji} ₹{daily_pnl:+,.0f}\n"
             f"Trades: {trades_today}\n"
-            f"Open Positions: {positions}"
+            f"Open Positions: {positions}\n"
+            f"━━━━━━━━━━━━━━━━━━━━"
         )
         self.send(msg)
 
@@ -223,7 +240,9 @@ class TelegramAlert:
             {"text": "💰 LIVE TRADE", "callback_data": "mode_live"},
         ]]
         self._send_with_buttons(
-            "🤖 <b>Good Morning! Trading Bot Ready</b>\n\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n"
+            f"<b>{TAG} | Good Morning!</b>\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n\n"
             "Select mode for today:\n"
             "  📝 <b>PAPER</b> — Simulated trades (fake money)\n"
             "  💰 <b>LIVE</b> — Real money via Dhan\n\n"

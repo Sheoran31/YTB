@@ -1,5 +1,2172 @@
-WARNING: AUTO + LIVE mode. Real money will be used all day.
-Type 'YES' to confirm: Traceback (most recent call last):
-  File "/Users/purushottam/YTB/trading-bot/trader.py", line 451, in <module>
-    confirm = input("Type 'YES' to confirm: ")
-EOFError: EOF when reading a line
+2026-04-06 11:39:22,610 | INFO | ============================================================
+2026-04-06 11:39:22,610 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 11:39:22,610 | INFO | Scan interval: 15 min
+2026-04-06 11:39:22,610 | INFO | Astro: ON
+2026-04-06 11:39:22,610 | INFO | ============================================================
+2026-04-06 11:39:22,610 | INFO | Fetching NSE holidays from live API...
+2026-04-06 11:39:22,996 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 11:39:23,957 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 11:39:25,654 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 11:39:26,433 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 11:41:03,319 | INFO | Telegram alert sent: ✅ <b>LIVE MODE ON</b> 💰
+Real money trading via Dha...
+2026-04-06 11:41:03,325 | INFO | Mode: LIVE | Capital: ₹100,239 | Positions: 0
+2026-04-06 11:41:04,235 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:41:04,236 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-06 11:41:04,267 | INFO | Telegram alert sent: 🚀 <b>Trading Bot Started — LIVE</b>
+
+<b>Portfolio:...
+2026-04-06 11:41:04,275 | INFO | 
+==================================================
+ASTRO DAILY REPORT — 2026-04-06 11:41
+==================================================
+Moon Phase  : WANING_GIBBOUS (82.5% lit)
+  Bias      : BEARISH
+  Next New  : 11 days
+  Next Full : 25 days
+
+Mercury     : RETROGRADE
+  Mercury RETROGRADE (day 22) — reduce exposure 50%, skip new buys
+
+Nakshatra   : Anuradha (ruled by Saturn)
+  Sentiment : BULLISH
+  Research-based trading, long-term investments
+
+Vara (Day)  : Monday (ruled by Moon)
+  Sentiment : NEUTRAL
+
+Eclipse     : No eclipse nearby. Next: 2026-03-03 (Total Lunar)
+
+Rahu Kaal   : YAMAGANDAM active (10:30-12:00) — avoid new trades
+==================================================
+
+2026-04-06 11:41:05,377 | INFO | Telegram alert sent: <pre>=============================================...
+2026-04-06 11:41:05,393 | INFO | Connected to Dhan (client: 1100937226)
+2026-04-06 11:41:05,874 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 11:41:05,875 | INFO | SCAN #1 — 11:41:05
+2026-04-06 11:41:05,875 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 11:42:07,081 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 11:42:08,143 | INFO | Telegram alert sent: 📊 <b>P&L Report — 11:41</b>
+Scan #1
+
+<b>Open Posit...
+2026-04-06 11:42:08,145 | INFO | Next scan at 11:56:05 | Monitoring positions every 120s
+2026-04-06 11:48:09,592 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 11:48</b>
+No open positions
+Capit...
+2026-04-06 11:49:44,418 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:49:44,421 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-06 11:49:44,421 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-06 11:49:44,421 | INFO | Command received: /help
+2026-04-06 11:49:44,422 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 11:49:44,422 | INFO | Executing command: /help
+2026-04-06 11:49:45,249 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-06 11:49:45,250 | INFO | Command /help executed successfully
+2026-04-06 11:49:51,514 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:49:51,516 | INFO | DEBUG: Update - chat_id=7368296583, text=/postion, match=True
+2026-04-06 11:49:51,517 | INFO | DEBUG: Command matched! Handling: /postion
+2026-04-06 11:49:51,517 | INFO | Command received: /postion
+2026-04-06 11:49:51,517 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 11:49:52,528 | INFO | Telegram alert sent: Unknown command: <b>/postion</b>
+Type /help for al...
+2026-04-06 11:54:10,795 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 11:54</b>
+No open positions
+Capit...
+2026-04-06 11:56:05,874 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 11:56:05,877 | INFO | SCAN #2 — 11:56:05
+2026-04-06 11:56:05,877 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 11:56:47,928 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 11:56:48,808 | INFO | Telegram alert sent: 📊 <b>P&L Report — 11:56</b>
+Scan #2
+
+<b>Open Posit...
+2026-04-06 11:56:48,817 | INFO | Next scan at 12:11:05 | Monitoring positions every 120s
+2026-04-06 11:59:00,739 | INFO | ============================================================
+2026-04-06 11:59:00,739 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 11:59:00,739 | INFO | Scan interval: 15 min
+2026-04-06 11:59:00,739 | INFO | Astro: ON
+2026-04-06 11:59:00,739 | INFO | ============================================================
+2026-04-06 11:59:00,740 | INFO | Fetching NSE holidays from live API...
+2026-04-06 11:59:01,316 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 11:59:02,293 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 11:59:03,969 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 11:59:04,942 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 11:59:30,161 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:59:30,163 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-06 11:59:34,268 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:59:34,268 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-06 11:59:38,991 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:59:38,993 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-06 11:59:39,764 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:59:39,765 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-06 11:59:40,518 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 11:59:40,518 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-06 11:59:41,664 | INFO | Telegram alert sent: ✅ <b>PAPER TRADE MODE ON</b> 📝
+Simulated trading. ...
+2026-04-06 11:59:41,669 | INFO | Mode: PAPER | Capital: ₹100,239 | Positions: 0
+2026-04-06 11:59:42,656 | INFO | Telegram alert sent: 🚀 <b>Trading Bot Started — PAPER</b>
+
+<b>Portfolio...
+2026-04-06 11:59:42,665 | INFO | 
+==================================================
+ASTRO DAILY REPORT — 2026-04-06 11:59
+==================================================
+Moon Phase  : WANING_GIBBOUS (82.4% lit)
+  Bias      : BEARISH
+  Next New  : 11 days
+  Next Full : 25 days
+
+Mercury     : RETROGRADE
+  Mercury RETROGRADE (day 22) — reduce exposure 50%, skip new buys
+
+Nakshatra   : Anuradha (ruled by Saturn)
+  Sentiment : BULLISH
+  Research-based trading, long-term investments
+
+Vara (Day)  : Monday (ruled by Moon)
+  Sentiment : NEUTRAL
+
+Eclipse     : No eclipse nearby. Next: 2026-03-03 (Total Lunar)
+
+Rahu Kaal   : YAMAGANDAM active (10:30-12:00) — avoid new trades
+==================================================
+
+2026-04-06 11:59:43,652 | INFO | Telegram alert sent: <pre>=============================================...
+2026-04-06 11:59:43,657 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 11:59:43,657 | INFO | SCAN #1 — 11:59:43
+2026-04-06 11:59:43,657 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 12:00:00,734 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 12:00:00,735 | INFO | DEBUG: Update - chat_id=7368296583, text=/ help, match=True
+2026-04-06 12:00:00,735 | INFO | DEBUG: Command matched! Handling: / help
+2026-04-06 12:00:00,735 | INFO | Command received: / help
+2026-04-06 12:00:00,735 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:00:01,679 | INFO | Telegram alert sent: Unknown command: <b>/</b>
+Type /help for all comma...
+2026-04-06 12:00:03,585 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 12:00:03,585 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-06 12:00:03,585 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-06 12:00:03,586 | INFO | Command received: /help
+2026-04-06 12:00:03,586 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:00:03,586 | INFO | Executing command: /help
+2026-04-06 12:00:04,347 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-06 12:00:04,349 | INFO | Command /help executed successfully
+2026-04-06 12:00:09,024 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 12:00:09,024 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-06 12:00:09,024 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-06 12:00:09,024 | INFO | Command received: /scan
+2026-04-06 12:00:09,024 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:00:09,025 | INFO | Executing command: /scan
+2026-04-06 12:00:09,807 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-06 12:00:09,808 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 12:00:09,809 | INFO | SCAN #2 — 12:00:09
+2026-04-06 12:00:09,809 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 12:00:23,071 | ERROR | Fetch errors:
+SUNPHARMA.NS: Data must be 1-dimensional, got ndarray of shape (5063, 2) instead
+2026-04-06 12:00:24,298 | INFO | Telegram alert sent: ⚠️ <b>Fetch Errors (Scan #1)</b>
+SUNPHARMA.NS: Dat...
+2026-04-06 12:00:24,300 | INFO | Signals: 0 BUY | 0 SELL | 45 HOLD
+2026-04-06 12:00:25,862 | INFO | Telegram alert sent: 📊 <b>P&L Report — 11:59</b>
+Scan #1
+
+<b>Open Posit...
+2026-04-06 12:00:25,868 | INFO | Next scan at 12:14:43 | Monitoring positions every 120s
+2026-04-06 12:00:41,519 | ERROR | Fetch errors:
+KOTAKBANK.NS: Data must be 1-dimensional, got ndarray of shape (5063, 2) instead
+WIPRO.NS: Data must be 1-dimensional, got ndarray of shape (5064, 2) instead
+2026-04-06 12:00:42,386 | INFO | Telegram alert sent: ⚠️ <b>Fetch Errors (Scan #2)</b>
+KOTAKBANK.NS: Dat...
+2026-04-06 12:00:42,390 | INFO | Signals: 0 BUY | 0 SELL | 44 HOLD
+2026-04-06 12:00:43,271 | INFO | Telegram alert sent: 📊 <b>P&L Report — 12:00</b>
+Scan #2
+
+<b>Open Posit...
+2026-04-06 12:00:43,276 | INFO | Manual scan completed via Telegram command
+2026-04-06 12:00:43,277 | INFO | Command /scan executed successfully
+2026-04-06 12:01:06,361 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 12:01:06,363 | INFO | DEBUG: Update - chat_id=7368296583, text=/resume, match=True
+2026-04-06 12:01:06,364 | INFO | DEBUG: Command matched! Handling: /resume
+2026-04-06 12:01:06,364 | INFO | Command received: /resume
+2026-04-06 12:01:06,364 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:01:06,364 | INFO | Executing command: /resume
+2026-04-06 12:01:07,829 | INFO | Telegram alert sent: ▶️ <b>Trading RESUMED</b>
+Bot will open new positi...
+2026-04-06 12:01:07,831 | INFO | Command /resume executed successfully
+2026-04-06 12:03:43,997 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 12:03:44,000 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-06 12:03:44,000 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-06 12:03:44,000 | INFO | Command received: /help
+2026-04-06 12:03:44,000 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:03:44,000 | INFO | Executing command: /help
+2026-04-06 12:03:45,907 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-06 12:03:45,908 | INFO | Command /help executed successfully
+2026-04-06 12:03:52,241 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 12:03:52,241 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-06 12:03:52,241 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-06 12:03:52,241 | INFO | Command received: /scan
+2026-04-06 12:03:52,241 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:03:52,241 | INFO | Executing command: /scan
+2026-04-06 12:03:53,429 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-06 12:03:53,431 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 12:03:53,431 | INFO | SCAN #3 — 12:03:53
+2026-04-06 12:03:53,432 | INFO | ────────────────────────────────────────────────────────────
+
+1 Failed download:
+['HDFCBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['ICICIBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+2026-04-06 12:06:12,940 | ERROR | Fetch errors:
+HDFCBANK.NS: No data returned for HDFCBANK.NS
+ICICIBANK.NS: No data returned for ICICIBANK.NS
+2026-04-06 12:06:12,942 | INFO | Signals: 0 BUY | 0 SELL | 44 HOLD
+2026-04-06 12:06:14,010 | INFO | Telegram alert sent: 📊 <b>P&L Report — 12:03</b>
+Scan #3
+
+<b>Open Posit...
+2026-04-06 12:06:14,013 | INFO | Manual scan completed via Telegram command
+2026-04-06 12:06:14,013 | INFO | Command /scan executed successfully
+2026-04-06 12:06:26,942 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 12:06</b>
+No open positions
+Capit...
+2026-04-06 12:25:35,755 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 12:25:42,520 | INFO | DEBUG: Received 3 updates, expected chat: 7368296583
+2026-04-06 12:25:42,521 | INFO | DEBUG: Update - chat_id=7368296583, text=/, match=True
+2026-04-06 12:25:42,521 | INFO | DEBUG: Command matched! Handling: /
+2026-04-06 12:25:42,521 | INFO | Command received: /
+2026-04-06 12:25:42,521 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:25:45,125 | INFO | Telegram alert sent: Unknown command: <b>/</b>
+Type /help for all comma...
+2026-04-06 12:25:45,127 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-06 12:25:45,127 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-06 12:25:45,127 | INFO | Command received: /help
+2026-04-06 12:25:45,127 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:25:45,127 | INFO | Executing command: /help
+2026-04-06 12:25:48,320 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-06 12:25:48,322 | INFO | Command /help executed successfully
+2026-04-06 12:25:48,323 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-06 12:25:48,323 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-06 12:25:48,323 | INFO | Command received: /scan
+2026-04-06 12:25:48,323 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 12:25:48,323 | INFO | Executing command: /scan
+2026-04-06 12:25:54,461 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-06 12:25:54,465 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 12:25:54,465 | INFO | SCAN #4 — 12:25:54
+2026-04-06 12:25:54,465 | INFO | ────────────────────────────────────────────────────────────
+
+1 Failed download:
+['HDFCBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+2026-04-06 12:27:22,862 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 12:27:22,865 | INFO | SCAN #5 — 12:27:22
+2026-04-06 12:27:22,865 | INFO | ────────────────────────────────────────────────────────────
+
+1 Failed download:
+['ITC.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['ITC.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['RELIANCE.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+
+2 Failed downloads:
+['NESTLEIND.NS', 'HDFCBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['NESTLEIND.NS', 'HDFCBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['BRITANNIA.NS', 'ICICIBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['TATACONSUM.NS', 'SBIN.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['TATACONSUM.NS', 'SBIN.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['KOTAKBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+
+2 Failed downloads:
+['MARUTI.NS', 'AXISBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+
+2 Failed downloads:
+['BAJFINANCE.NS', 'SHRIRAMFIN.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['BAJFINANCE.NS', 'SHRIRAMFIN.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['M&M.NS', 'BAJAJFINSV.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+
+2 Failed downloads:
+['BAJAJ-AUTO.NS', 'HDFCLIFE.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+
+2 Failed downloads:
+['HEROMOTOCO.NS', 'SBILIFE.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+
+2 Failed downloads:
+['TCS.NS', 'BHARTIARTL.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['TCS.NS', 'BHARTIARTL.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['INFY.NS', 'NTPC.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['INFY.NS', 'NTPC.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['WIPRO.NS', 'POWERGRID.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['HCLTECH.NS', 'ONGC.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['HCLTECH.NS', 'ONGC.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['TECHM.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['TECHM.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+
+2 Failed downloads:
+['HINDUNILVR.NS', 'COALINDIA.NS']: TypeError("'NoneType' object is not subscriptable")
+['HINDUNILVR.NS', 'COALINDIA.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['ITC.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+
+2 Failed downloads:
+['HINDALCO.NS', 'NESTLEIND.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['HINDALCO.NS', 'NESTLEIND.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['JSWSTEEL.NS', 'BRITANNIA.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['SUNPHARMA.NS', 'TATACONSUM.NS']: TypeError("'NoneType' object is not subscriptable")
+
+2 Failed downloads:
+['SUNPHARMA.NS', 'TATACONSUM.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+['MARUTI.NS']: TypeError("'NoneType' object is not subscriptable")
+
+1 Failed download:
+
+2 Failed downloads:
+['DRREDDY.NS', 'SHRIRAMFIN.NS']: TypeError("'NoneType' object is not subscriptable")
+2026-04-06 12:29:35,596 | ERROR | Fetch errors:
+HDFCBANK.NS: No data returned for HDFCBANK.NS
+ITC.NS: No objects to concatenate
+NESTLEIND.NS: No data returned for NESTLEIND.NS
+BRITANNIA.NS: No data returned for BRITANNIA.NS
+TATACONSUM.NS: No data returned for TATACONSUM.NS
+2026-04-06 12:29:39,729 | INFO | ============================================================
+2026-04-06 12:29:39,729 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 12:29:39,729 | INFO | Scan interval: 15 min
+2026-04-06 12:29:39,729 | INFO | Astro: ON
+2026-04-06 12:29:39,729 | INFO | ============================================================
+2026-04-06 12:29:39,730 | INFO | Fetching NSE holidays from live API...
+2026-04-06 12:29:40,642 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 12:29:41,859 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 12:29:42,787 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 12:29:44,045 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 12:30:17,105 | INFO | ============================================================
+2026-04-06 12:30:17,105 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 12:30:17,105 | INFO | Scan interval: 15 min
+2026-04-06 12:30:17,105 | INFO | Astro: ON
+2026-04-06 12:30:17,105 | INFO | ============================================================
+2026-04-06 12:30:17,105 | INFO | Fetching NSE holidays from live API...
+2026-04-06 12:30:18,033 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 12:30:19,252 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 12:30:21,395 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 12:30:22,790 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 12:31:24,402 | INFO | ============================================================
+2026-04-06 12:31:24,402 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 12:31:24,402 | INFO | Scan interval: 15 min
+2026-04-06 12:31:24,402 | INFO | Astro: ON
+2026-04-06 12:31:24,402 | INFO | ============================================================
+2026-04-06 12:31:24,402 | INFO | Fetching NSE holidays from live API...
+2026-04-06 12:31:25,778 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 12:31:27,176 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 12:31:29,557 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 12:31:30,904 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 12:36:38,339 | INFO | Telegram alert sent: ⏰ No reply received. Defaulting to <b>PAPER TRADE ...
+2026-04-06 12:36:38,343 | INFO | Mode selection timeout — defaulting to PAPER
+2026-04-06 12:36:38,345 | INFO | Mode: PAPER | Capital: ₹100,239 | Positions: 0
+2026-04-06 12:36:39,345 | INFO | Telegram alert sent: 🚀 <b>Trading Bot Started — PAPER</b>
+
+<b>Portfolio...
+2026-04-06 12:36:39,358 | INFO | 
+==================================================
+ASTRO DAILY REPORT — 2026-04-06 12:36
+==================================================
+Moon Phase  : WANING_GIBBOUS (82.2% lit)
+  Bias      : BEARISH
+  Next New  : 11 days
+  Next Full : 25 days
+
+Mercury     : RETROGRADE
+  Mercury RETROGRADE (day 22) — reduce exposure 50%, skip new buys
+
+Nakshatra   : Anuradha (ruled by Saturn)
+  Sentiment : BULLISH
+  Research-based trading, long-term investments
+
+Vara (Day)  : Monday (ruled by Moon)
+  Sentiment : NEUTRAL
+
+Eclipse     : No eclipse nearby. Next: 2026-03-03 (Total Lunar)
+
+Rahu Kaal   : Clear — next Rahu Kaal at 07:30
+==================================================
+
+2026-04-06 12:36:40,489 | INFO | Telegram alert sent: <pre>=============================================...
+2026-04-06 12:36:40,490 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 12:36:40,490 | INFO | SCAN #1 — 12:36:40
+2026-04-06 12:36:40,490 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 12:37:12,626 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 12:37:59,683 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 12:38:00,755 | INFO | Telegram alert sent: 📊 <b>P&L Report — 12:36</b>
+Scan #1
+
+<b>Open Posit...
+2026-04-06 12:38:00,757 | INFO | Next scan at 12:51:40 | Monitoring positions every 120s
+2026-04-06 12:42:28,455 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 12:44:01,683 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 12:44</b>
+No open positions
+Capit...
+2026-04-06 12:50:02,439 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 12:50</b>
+No open positions
+Capit...
+2026-04-06 12:51:40,492 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 12:51:40,496 | INFO | SCAN #2 — 12:51:40
+2026-04-06 12:51:40,497 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 12:52:32,107 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 12:52:32,952 | INFO | Telegram alert sent: 📊 <b>P&L Report — 12:51</b>
+Scan #2
+
+<b>Open Posit...
+2026-04-06 12:52:32,957 | INFO | Next scan at 13:06:40 | Monitoring positions every 120s
+2026-04-06 12:58:33,876 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 12:58</b>
+No open positions
+Capit...
+2026-04-06 13:04:34,914 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:04</b>
+No open positions
+Capit...
+2026-04-06 13:06:40,499 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 13:06:40,503 | INFO | SCAN #3 — 13:06:40
+2026-04-06 13:06:40,504 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 13:07:23,119 | INFO | Signals: 0 BUY | 2 SELL | 44 HOLD
+2026-04-06 13:07:23,121 | INFO | NEW SELL triggers: ['RELIANCE.NS', 'JSWSTEEL.NS']
+2026-04-06 13:07:23,990 | INFO | Telegram alert sent: 🔔 <b>New SELL Triggers (Scan #3)</b>
+RELIANCE, JSW...
+2026-04-06 13:07:24,306 | INFO | ASTRO: SELL → SELL | Qty x1.0 | Score: 35/100 | Moon: WANING_GIBBOUS | Mercury: RETROGRADE | Nakshatra: Anuradha
+2026-04-06 13:07:24,306 | WARNING |   SHORT BLOCKED RELIANCE.NS: Circuit breaker: 3 consecutive losses
+2026-04-06 13:07:25,271 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 13:07:25,281 | INFO | ASTRO: SELL → SELL | Qty x1.0 | Score: 35/100 | Moon: WANING_GIBBOUS | Mercury: RETROGRADE | Nakshatra: Anuradha
+2026-04-06 13:07:25,282 | WARNING |   SHORT BLOCKED JSWSTEEL.NS: Circuit breaker: 3 consecutive losses
+2026-04-06 13:07:26,235 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 13:07:27,001 | INFO | Telegram alert sent: 📊 <b>P&L Report — 13:06</b>
+Scan #3
+
+<b>Open Posit...
+2026-04-06 13:07:27,009 | INFO | Next scan at 13:21:40 | Monitoring positions every 120s
+2026-04-06 13:13:27,955 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:13</b>
+No open positions
+Capit...
+2026-04-06 13:19:28,762 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:19</b>
+No open positions
+Capit...
+2026-04-06 13:21:40,498 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 13:21:40,501 | INFO | SCAN #4 — 13:21:40
+2026-04-06 13:21:40,502 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 13:22:21,126 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 13:22:21,960 | INFO | Telegram alert sent: 📊 <b>P&L Report — 13:21</b>
+Scan #4
+
+<b>Open Posit...
+2026-04-06 13:22:21,969 | INFO | Next scan at 13:36:40 | Monitoring positions every 120s
+2026-04-06 13:28:22,915 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:28</b>
+No open positions
+Capit...
+2026-04-06 13:34:23,887 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:34</b>
+No open positions
+Capit...
+2026-04-06 13:35:11,598 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 13:36:54,326 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 13:36:54,328 | INFO | SCAN #5 — 13:36:54
+2026-04-06 13:36:54,328 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 13:37:36,370 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 13:37:37,256 | INFO | Telegram alert sent: 📊 <b>P&L Report — 13:36</b>
+Scan #5
+
+<b>Open Posit...
+2026-04-06 13:37:37,264 | INFO | Next scan at 13:51:54 | Monitoring positions every 120s
+2026-04-06 13:43:38,124 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:43</b>
+No open positions
+Capit...
+2026-04-06 13:49:39,013 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:49</b>
+No open positions
+Capit...
+2026-04-06 13:51:54,331 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 13:51:54,336 | INFO | SCAN #6 — 13:51:54
+2026-04-06 13:51:54,336 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 13:52:34,220 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 13:52:35,110 | INFO | Telegram alert sent: 📊 <b>P&L Report — 13:51</b>
+Scan #6
+
+<b>Open Posit...
+2026-04-06 13:52:35,117 | INFO | Next scan at 14:06:54 | Monitoring positions every 120s
+2026-04-06 13:58:35,982 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 13:58</b>
+No open positions
+Capit...
+2026-04-06 14:06:19,954 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:06:37,567 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:06</b>
+No open positions
+Capit...
+2026-04-06 14:06:54,334 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 14:06:54,336 | INFO | SCAN #7 — 14:06:54
+2026-04-06 14:06:54,336 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 14:07:31,876 | INFO | Signals: 0 BUY | 2 SELL | 44 HOLD
+2026-04-06 14:07:31,877 | INFO | NEW SELL triggers: ['JSWSTEEL.NS', 'EICHERMOT.NS']
+2026-04-06 14:07:32,715 | INFO | Telegram alert sent: 🔔 <b>New SELL Triggers (Scan #7)</b>
+JSWSTEEL, EIC...
+2026-04-06 14:07:33,072 | INFO | ASTRO: SELL → SELL | Qty x1.0 | Score: 35/100 | Moon: WANING_GIBBOUS | Mercury: RETROGRADE | Nakshatra: Anuradha
+2026-04-06 14:07:33,072 | WARNING |   SHORT BLOCKED EICHERMOT.NS: Circuit breaker: 3 consecutive losses
+2026-04-06 14:07:33,935 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 14:07:33,939 | INFO | ASTRO: SELL → SELL | Qty x1.0 | Score: 35/100 | Moon: WANING_GIBBOUS | Mercury: RETROGRADE | Nakshatra: Anuradha
+2026-04-06 14:07:33,939 | WARNING |   SHORT BLOCKED JSWSTEEL.NS: Circuit breaker: 3 consecutive losses
+2026-04-06 14:07:34,792 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 14:07:35,621 | INFO | Telegram alert sent: 📊 <b>P&L Report — 14:06</b>
+Scan #7
+
+<b>Open Posit...
+2026-04-06 14:07:35,626 | INFO | Next scan at 14:21:54 | Monitoring positions every 120s
+2026-04-06 14:13:39,012 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:13</b>
+No open positions
+Capit...
+2026-04-06 14:19:39,909 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:19</b>
+No open positions
+Capit...
+2026-04-06 14:21:54,340 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 14:21:54,341 | INFO | SCAN #8 — 14:21:54
+2026-04-06 14:21:54,341 | INFO | ────────────────────────────────────────────────────────────
+
+1 Failed download:
+['NTPC.NS']: TypeError("'NoneType' object is not subscriptable")
+2026-04-06 14:23:23,245 | ERROR | Fetch errors:
+NTPC.NS: No data returned for NTPC.NS
+2026-04-06 14:23:23,246 | INFO | Signals: 0 BUY | 0 SELL | 45 HOLD
+2026-04-06 14:23:24,313 | INFO | Telegram alert sent: 📊 <b>P&L Report — 14:21</b>
+Scan #8
+
+<b>Open Posit...
+2026-04-06 14:23:24,318 | INFO | Next scan at 14:36:54 | Monitoring positions every 120s
+2026-04-06 14:27:02,299 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:28:15,701 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.telegram.org', port=443) at 0x10f28e5d0>, 'Connection to api.telegram.org timed out. (connect timeout=15)'))
+2026-04-06 14:28:20,830 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 14:28:25,847 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 14:30:16,616 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:30</b>
+No open positions
+Capit...
+2026-04-06 14:36:17,652 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:36</b>
+No open positions
+Capit...
+2026-04-06 14:36:54,350 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 14:36:54,353 | INFO | SCAN #9 — 14:36:54
+2026-04-06 14:36:54,354 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 14:37:31,030 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 14:37:32,702 | INFO | Telegram alert sent: 📊 <b>P&L Report — 14:36</b>
+Scan #9
+
+<b>Open Posit...
+2026-04-06 14:37:32,708 | INFO | Next scan at 14:51:54 | Monitoring positions every 120s
+2026-04-06 14:40:38,249 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:41:00,216 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:43:42,111 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:43</b>
+No open positions
+Capit...
+2026-04-06 14:49:52,270 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:49</b>
+No open positions
+Capit...
+2026-04-06 14:50:00,425 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:50:07,079 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 14:51:54,354 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 14:51:54,357 | INFO | SCAN #10 — 14:51:54
+2026-04-06 14:51:54,357 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 14:52:35,502 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 14:52:36,567 | INFO | Telegram alert sent: 📊 <b>P&L Report — 14:51</b>
+Scan #10
+
+<b>Open Posi...
+2026-04-06 14:52:36,574 | INFO | Next scan at 15:06:54 | Monitoring positions every 120s
+2026-04-06 14:56:21,037 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:56:41,710 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 14:57:13,349 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:57:52,463 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 14:58:38,516 | INFO | Telegram alert sent: 💓 <b>Heartbeat — 14:58</b>
+No open positions
+Capit...
+2026-04-06 15:00:38,519 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:00:38,521 | INFO | SCAN #11 — 15:00:38
+2026-04-06 15:00:38,521 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:01:18,630 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:01:19,493 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:00</b>
+Scan #11
+
+<b>Open Posi...
+2026-04-06 15:01:19,499 | INFO | Next scan at 15:15:38 | Monitoring positions every 120s
+2026-04-06 15:01:19,499 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:01:19,499 | INFO | SCAN #12 — 15:01:19
+2026-04-06 15:01:19,499 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:01:59,044 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:01:59,750 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:01</b>
+Scan #12
+
+<b>Open Posi...
+2026-04-06 15:01:59,757 | INFO | Next scan at 15:16:19 | Monitoring positions every 120s
+2026-04-06 15:01:59,757 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:01:59,757 | INFO | SCAN #13 — 15:01:59
+2026-04-06 15:01:59,757 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:02:37,967 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:02:38,814 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:01</b>
+Scan #13
+
+<b>Open Posi...
+2026-04-06 15:02:38,822 | INFO | Next scan at 15:16:59 | Monitoring positions every 120s
+2026-04-06 15:02:38,822 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:02:38,822 | INFO | SCAN #14 — 15:02:38
+2026-04-06 15:02:38,822 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:03:17,762 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:03:18,483 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:02</b>
+Scan #14
+
+<b>Open Posi...
+2026-04-06 15:03:18,491 | INFO | Next scan at 15:17:38 | Monitoring positions every 120s
+2026-04-06 15:03:18,491 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:03:18,491 | INFO | SCAN #15 — 15:03:18
+2026-04-06 15:03:18,491 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:03:57,097 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:03:57,825 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:03</b>
+Scan #15
+
+<b>Open Posi...
+2026-04-06 15:03:57,832 | INFO | Next scan at 15:18:18 | Monitoring positions every 120s
+2026-04-06 15:03:57,832 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:03:57,832 | INFO | SCAN #16 — 15:03:57
+2026-04-06 15:03:57,832 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:04:37,508 | INFO | Signals: 2 BUY | 0 SELL | 44 HOLD
+2026-04-06 15:04:37,509 | INFO | NEW BUY triggers: ['AXISBANK.NS', 'WIPRO.NS']
+2026-04-06 15:04:38,362 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #16)</b>
+AXISBANK, WIP...
+2026-04-06 15:04:38,666 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:04:38,666 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:04:38,666 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:04:38,666 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:04:39,590 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:04:39,598 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:04:39,598 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:04:39,598 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:04:39,598 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:04:40,435 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:04:41,333 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:03</b>
+Scan #16
+
+<b>Open Posi...
+2026-04-06 15:04:41,339 | INFO | Next scan at 15:18:57 | Monitoring positions every 120s
+2026-04-06 15:04:41,339 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:04:41,339 | INFO | SCAN #17 — 15:04:41
+2026-04-06 15:04:41,339 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:05:46,901 | INFO | Signals: 2 BUY | 0 SELL | 44 HOLD
+2026-04-06 15:05:47,180 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:05:47,180 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:05:47,180 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:05:47,180 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:05:47,926 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:05:47,936 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:05:47,936 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:05:47,937 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:05:47,937 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:05:48,689 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:05:49,609 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:04</b>
+Scan #17
+
+<b>Open Posi...
+2026-04-06 15:05:49,614 | INFO | Next scan at 15:19:41 | Monitoring positions every 120s
+2026-04-06 15:05:49,614 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:05:49,614 | INFO | SCAN #18 — 15:05:49
+2026-04-06 15:05:49,614 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:06:30,374 | INFO | Signals: 3 BUY | 0 SELL | 43 HOLD
+2026-04-06 15:06:30,375 | INFO | NEW BUY triggers: ['NESTLEIND.NS']
+2026-04-06 15:06:31,171 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #18)</b>
+NESTLEIND...
+2026-04-06 15:06:31,617 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:06:31,617 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:06:31,617 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:06:31,617 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:06:32,316 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:06:32,321 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:06:32,321 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:06:32,321 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:06:32,321 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:06:33,207 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:06:33,213 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:06:33,213 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:06:33,213 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:06:33,213 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:06:33,936 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:06:34,631 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:05</b>
+Scan #18
+
+<b>Open Posi...
+2026-04-06 15:06:34,634 | INFO | Next scan at 15:20:49 | Monitoring positions every 120s
+2026-04-06 15:06:34,634 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:06:34,634 | INFO | SCAN #19 — 15:06:34
+2026-04-06 15:06:34,634 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:07:16,423 | INFO | Signals: 4 BUY | 0 SELL | 42 HOLD
+2026-04-06 15:07:16,423 | INFO | NEW BUY triggers: ['TITAN.NS']
+2026-04-06 15:07:17,165 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #19)</b>
+TITAN...
+2026-04-06 15:07:17,746 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:07:17,746 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:07:17,746 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:07:17,746 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:07:18,670 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:07:18,674 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:07:18,674 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:07:18,674 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:07:18,674 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:07:19,423 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:07:19,427 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:07:19,427 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:07:19,427 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:07:19,427 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:07:20,252 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:07:20,257 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:07:20,257 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:07:20,257 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:07:20,257 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:07:21,039 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:07:21,898 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:06</b>
+Scan #19
+
+<b>Open Posi...
+2026-04-06 15:07:21,906 | INFO | Next scan at 15:21:34 | Monitoring positions every 120s
+2026-04-06 15:07:21,906 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:07:21,906 | INFO | SCAN #20 — 15:07:21
+2026-04-06 15:07:21,906 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:08:03,041 | INFO | Signals: 4 BUY | 1 SELL | 41 HOLD
+2026-04-06 15:08:03,043 | INFO | NEW SELL triggers: ['EICHERMOT.NS']
+2026-04-06 15:08:03,772 | INFO | Telegram alert sent: 🔔 <b>New SELL Triggers (Scan #20)</b>
+EICHERMOT...
+2026-04-06 15:08:04,358 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:08:04,358 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:08:04,358 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:08:04,358 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:08:05,340 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:08:05,349 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:08:05,350 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:08:05,350 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:08:05,350 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:08:09,108 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:08:09,115 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:08:09,116 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:08:09,116 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:08:09,116 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:08:10,128 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:08:10,137 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:08:10,138 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:08:10,138 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:08:10,138 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:08:10,892 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:08:12,382 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:07</b>
+Scan #20
+
+<b>Open Posi...
+2026-04-06 15:08:12,389 | INFO | Next scan at 15:22:21 | Monitoring positions every 120s
+2026-04-06 15:08:12,389 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:08:12,389 | INFO | SCAN #21 — 15:08:12
+2026-04-06 15:08:12,389 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:08:58,468 | INFO | Signals: 4 BUY | 1 SELL | 41 HOLD
+2026-04-06 15:08:59,022 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:08:59,022 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:08:59,022 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:08:59,022 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:08:59,769 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:08:59,780 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:08:59,780 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:08:59,780 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:08:59,780 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:09:00,685 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:09:00,695 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:09:00,695 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:09:00,695 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:09:00,696 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:09:01,452 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:09:01,456 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:09:01,456 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:09:01,456 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:09:01,456 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:09:02,215 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:09:03,095 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:08</b>
+Scan #21
+
+<b>Open Posi...
+2026-04-06 15:09:03,102 | INFO | Next scan at 15:23:12 | Monitoring positions every 120s
+2026-04-06 15:09:03,102 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:09:03,102 | INFO | SCAN #22 — 15:09:03
+2026-04-06 15:09:03,102 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:09:44,113 | INFO | Signals: 4 BUY | 1 SELL | 41 HOLD
+2026-04-06 15:09:44,723 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:09:44,723 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:09:44,723 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:09:44,723 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:09:45,577 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:09:45,584 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:09:45,584 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:09:45,584 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:09:45,584 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:09:46,518 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:09:46,526 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:09:46,526 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:09:46,526 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:09:46,526 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:09:47,450 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:09:47,457 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:09:47,457 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:09:47,457 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:09:47,457 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:09:48,332 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:09:49,181 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:09</b>
+Scan #22
+
+<b>Open Posi...
+2026-04-06 15:09:49,187 | INFO | Next scan at 15:24:03 | Monitoring positions every 120s
+2026-04-06 15:09:49,187 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:09:49,187 | INFO | SCAN #23 — 15:09:49
+2026-04-06 15:09:49,187 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:10:28,340 | INFO | Signals: 4 BUY | 1 SELL | 41 HOLD
+2026-04-06 15:10:28,893 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:10:28,893 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:10:28,893 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:10:28,893 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:10:29,759 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:10:29,768 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:10:29,768 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:10:29,768 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:10:29,768 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:10:30,606 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:10:30,616 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:10:30,616 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:10:30,616 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:10:30,616 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:10:31,528 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:10:31,537 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:10:31,537 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:10:31,537 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:10:31,537 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:10:32,351 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:10:33,086 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:09</b>
+Scan #23
+
+<b>Open Posi...
+2026-04-06 15:10:33,094 | INFO | Next scan at 15:24:49 | Monitoring positions every 120s
+2026-04-06 15:10:33,095 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:10:33,095 | INFO | SCAN #24 — 15:10:33
+2026-04-06 15:10:33,095 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:11:13,260 | INFO | Signals: 4 BUY | 2 SELL | 40 HOLD
+2026-04-06 15:11:13,261 | INFO | NEW SELL triggers: ['RELIANCE.NS']
+2026-04-06 15:11:14,017 | INFO | Telegram alert sent: 🔔 <b>New SELL Triggers (Scan #24)</b>
+RELIANCE...
+2026-04-06 15:11:14,593 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:11:14,593 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:11:14,593 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:11:14,593 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:11:15,471 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:11:15,481 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:11:15,481 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:11:15,481 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:11:15,481 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:11:16,316 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:11:16,327 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:11:16,327 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:11:16,327 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:11:16,327 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:11:17,174 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:11:17,185 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:11:17,185 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:11:17,185 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:11:17,185 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:11:18,024 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:11:18,883 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:10</b>
+Scan #24
+
+<b>Open Posi...
+2026-04-06 15:11:18,891 | INFO | Next scan at 15:25:33 | Monitoring positions every 120s
+2026-04-06 15:11:18,891 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:11:18,891 | INFO | SCAN #25 — 15:11:18
+2026-04-06 15:11:18,891 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:11:59,667 | INFO | Signals: 5 BUY | 2 SELL | 39 HOLD
+2026-04-06 15:11:59,668 | INFO | NEW BUY triggers: ['HINDALCO.NS']
+2026-04-06 15:12:00,537 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #25)</b>
+HINDALCO...
+2026-04-06 15:12:01,285 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:12:01,286 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:12:01,286 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:12:01,286 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:12:02,039 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:12:02,050 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:12:02,051 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:12:02,051 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:12:02,051 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:12:02,814 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:12:02,824 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:12:02,824 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:12:02,824 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:12:02,824 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:12:03,712 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:12:03,722 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:12:03,722 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:12:03,722 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:12:03,722 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:12:04,583 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:12:04,593 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:12:04,593 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:12:04,593 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:12:04,594 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:12:05,449 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:12:06,321 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:11</b>
+Scan #25
+
+<b>Open Posi...
+2026-04-06 15:12:06,332 | INFO | Next scan at 15:26:18 | Monitoring positions every 120s
+2026-04-06 15:12:06,333 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:12:06,333 | INFO | SCAN #26 — 15:12:06
+2026-04-06 15:12:06,333 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:13:04,190 | INFO | Signals: 5 BUY | 2 SELL | 39 HOLD
+2026-04-06 15:13:04,910 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:13:04,911 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:13:04,911 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:13:04,911 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:13:05,788 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:13:05,799 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:13:05,799 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:13:05,799 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:13:05,799 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:13:06,562 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:13:06,572 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:13:06,572 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:13:06,572 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:13:06,572 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:13:07,470 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:13:07,478 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:13:07,478 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:13:07,478 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:13:07,478 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:13:08,345 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:13:08,354 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:13:08,354 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:13:08,354 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:13:08,354 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:13:09,168 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:13:10,006 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:12</b>
+Scan #26
+
+<b>Open Posi...
+2026-04-06 15:13:10,014 | INFO | Next scan at 15:27:06 | Monitoring positions every 120s
+2026-04-06 15:13:10,015 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:13:10,015 | INFO | SCAN #27 — 15:13:10
+2026-04-06 15:13:10,015 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:14:06,908 | INFO | Signals: 5 BUY | 2 SELL | 39 HOLD
+2026-04-06 15:14:07,598 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:07,598 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:07,598 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:07,598 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:08,334 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:08,345 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:08,345 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:08,345 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:08,345 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:09,232 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:09,241 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:09,241 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:09,242 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:09,242 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:09,961 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:09,970 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:09,970 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:09,970 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:09,970 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:10,723 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:10,732 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:10,732 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:10,732 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:10,732 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:11,613 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:12,321 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:13</b>
+Scan #27
+
+<b>Open Posi...
+2026-04-06 15:14:12,329 | INFO | Next scan at 15:28:10 | Monitoring positions every 120s
+2026-04-06 15:14:12,329 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:14:12,329 | INFO | SCAN #28 — 15:14:12
+2026-04-06 15:14:12,329 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:14:50,767 | INFO | Signals: 6 BUY | 2 SELL | 38 HOLD
+2026-04-06 15:14:50,768 | INFO | NEW BUY triggers: ['INFY.NS']
+2026-04-06 15:14:51,505 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #28)</b>
+INFY...
+2026-04-06 15:14:52,375 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:52,375 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:52,376 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:52,376 | WARNING |   ASTRO BLOCKED TITAN.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:53,251 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:53,261 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:53,261 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:53,261 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:53,261 | WARNING |   ASTRO BLOCKED AXISBANK.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:54,187 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:54,198 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:54,198 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:54,198 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:54,198 | WARNING |   ASTRO BLOCKED WIPRO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:54,967 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:54,975 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:54,975 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:54,975 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:54,976 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:55,825 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:55,833 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:55,833 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:55,833 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:55,833 | WARNING |   ASTRO BLOCKED NESTLEIND.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:56,576 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:56,583 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-06 15:14:56,583 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-06 15:14:56,583 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 35/100 | Reasons: Mercury Retrograde (day 22)
+2026-04-06 15:14:56,583 | WARNING |   ASTRO BLOCKED INFY.NS: Mercury Retrograde (day 22)
+2026-04-06 15:14:57,431 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-06 15:14:58,162 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:14</b>
+Scan #28
+
+<b>Open Posi...
+2026-04-06 15:14:58,167 | INFO | Next scan at 15:29:12 | Monitoring positions every 120s
+2026-04-06 15:14:58,167 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:14:58,167 | INFO | SCAN #29 — 15:14:58
+2026-04-06 15:14:58,167 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:15:38,943 | INFO | Signals: 0 BUY | 1 SELL | 45 HOLD
+2026-04-06 15:15:39,816 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:14</b>
+Scan #29
+
+<b>Open Posi...
+2026-04-06 15:15:39,823 | INFO | Next scan at 15:29:58 | Monitoring positions every 120s
+2026-04-06 15:15:39,823 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:15:39,823 | INFO | SCAN #30 — 15:15:39
+2026-04-06 15:15:39,823 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:16:21,752 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:16:22,592 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:15</b>
+Scan #30
+
+<b>Open Posi...
+2026-04-06 15:16:22,599 | INFO | Next scan would be after market close. Waiting for 3:30 PM...
+2026-04-06 15:16:22,600 | INFO | Portfolio state saved to logs/portfolio_state.json
+2026-04-06 15:16:22,600 | INFO | 
+============================================================
+2026-04-06 15:16:22,600 | INFO | AUTO MODE COMPLETE — PAPER
+2026-04-06 15:16:22,600 | INFO | Total scans: 30
+2026-04-06 15:16:22,600 | INFO | Portfolio: INR 100,238.64
+2026-04-06 15:16:22,600 | INFO | Trades today: 0
+2026-04-06 15:16:22,600 | INFO | Daily PnL: INR +0.00
+2026-04-06 15:16:22,600 | INFO | Open positions: 0
+2026-04-06 15:16:22,600 | INFO | ============================================================
+2026-04-06 15:16:23,349 | INFO | Telegram alert sent: 🏁 <b>MARKET CLOSED — Daily Summary</b>
+
+Mode: PAPE...
+2026-04-06 15:16:23,351 | INFO | Waiting for next market day...
+2026-04-06 15:16:23,352 | INFO | ============================================================
+2026-04-06 15:16:23,352 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 15:16:23,352 | INFO | Scan interval: 15 min
+2026-04-06 15:16:23,352 | INFO | Astro: ON
+2026-04-06 15:16:23,352 | INFO | ============================================================
+2026-04-06 15:16:23,354 | INFO | Fetching NSE holidays from live API...
+2026-04-06 15:16:23,699 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 15:16:24,449 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 15:16:28,688 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 15:16:29,612 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 15:17:03,252 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 15:21:52,187 | INFO | Telegram alert sent: ⏰ No reply received. Defaulting to <b>PAPER TRADE ...
+2026-04-06 15:21:52,189 | INFO | Mode selection timeout — defaulting to PAPER
+2026-04-06 15:21:52,191 | INFO | Mode: PAPER | Capital: ₹100,239 | Positions: 0
+2026-04-06 15:21:53,034 | INFO | Telegram alert sent: 🚀 <b>Trading Bot Started — PAPER</b>
+
+<b>Portfolio...
+2026-04-06 15:21:53,042 | INFO | 
+==================================================
+ASTRO DAILY REPORT — 2026-04-06 15:21
+==================================================
+Moon Phase  : WANING_GIBBOUS (81.4% lit)
+  Bias      : BEARISH
+  Next New  : 11 days
+  Next Full : 25 days
+
+Mercury     : RETROGRADE
+  Mercury RETROGRADE (day 22) — reduce exposure 50%, skip new buys
+
+Nakshatra   : Anuradha (ruled by Saturn)
+  Sentiment : BULLISH
+  Research-based trading, long-term investments
+
+Vara (Day)  : Monday (ruled by Moon)
+  Sentiment : NEUTRAL
+
+Eclipse     : No eclipse nearby. Next: 2026-03-03 (Total Lunar)
+
+Rahu Kaal   : Clear — next Rahu Kaal at 07:30
+==================================================
+
+2026-04-06 15:21:53,775 | INFO | Telegram alert sent: <pre>=============================================...
+2026-04-06 15:21:53,778 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:21:53,779 | INFO | SCAN #1 — 15:21:53
+2026-04-06 15:21:53,779 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:22:33,550 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:22:34,419 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:21</b>
+Scan #1
+
+<b>Open Posit...
+2026-04-06 15:22:34,423 | INFO | Next scan would be after market close. Waiting for 3:30 PM...
+2026-04-06 15:22:34,423 | INFO | Portfolio state saved to logs/portfolio_state.json
+2026-04-06 15:22:34,424 | INFO | 
+============================================================
+2026-04-06 15:22:34,424 | INFO | AUTO MODE COMPLETE — PAPER
+2026-04-06 15:22:34,424 | INFO | Total scans: 1
+2026-04-06 15:22:34,424 | INFO | Portfolio: INR 100,238.64
+2026-04-06 15:22:34,424 | INFO | Trades today: 0
+2026-04-06 15:22:34,424 | INFO | Daily PnL: INR +0.00
+2026-04-06 15:22:34,424 | INFO | Open positions: 0
+2026-04-06 15:22:34,424 | INFO | ============================================================
+2026-04-06 15:22:35,312 | INFO | Telegram alert sent: 🏁 <b>MARKET CLOSED — Daily Summary</b>
+
+Mode: PAPE...
+2026-04-06 15:22:35,314 | INFO | Waiting for next market day...
+2026-04-06 15:22:35,314 | INFO | ============================================================
+2026-04-06 15:22:35,314 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 15:22:35,315 | INFO | Scan interval: 15 min
+2026-04-06 15:22:35,315 | INFO | Astro: ON
+2026-04-06 15:22:35,315 | INFO | ============================================================
+2026-04-06 15:22:35,316 | INFO | Fetching NSE holidays from live API...
+2026-04-06 15:22:35,634 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 15:22:36,494 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 15:22:38,179 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 15:22:38,955 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 15:25:12,073 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 15:25:51,486 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 15:27:45,615 | INFO | Telegram alert sent: ⏰ No reply received. Defaulting to <b>PAPER TRADE ...
+2026-04-06 15:27:45,618 | INFO | Mode selection timeout — defaulting to PAPER
+2026-04-06 15:27:45,620 | INFO | Mode: PAPER | Capital: ₹100,239 | Positions: 0
+2026-04-06 15:27:46,429 | INFO | Telegram alert sent: 🚀 <b>Trading Bot Started — PAPER</b>
+
+<b>Portfolio...
+2026-04-06 15:27:46,436 | INFO | 
+==================================================
+ASTRO DAILY REPORT — 2026-04-06 15:27
+==================================================
+Moon Phase  : WANING_GIBBOUS (81.4% lit)
+  Bias      : BEARISH
+  Next New  : 11 days
+  Next Full : 25 days
+
+Mercury     : RETROGRADE
+  Mercury RETROGRADE (day 22) — reduce exposure 50%, skip new buys
+
+Nakshatra   : Anuradha (ruled by Saturn)
+  Sentiment : BULLISH
+  Research-based trading, long-term investments
+
+Vara (Day)  : Monday (ruled by Moon)
+  Sentiment : NEUTRAL
+
+Eclipse     : No eclipse nearby. Next: 2026-03-03 (Total Lunar)
+
+Rahu Kaal   : Clear — next Rahu Kaal at 07:30
+==================================================
+
+2026-04-06 15:27:47,205 | INFO | Telegram alert sent: <pre>=============================================...
+2026-04-06 15:27:47,207 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-06 15:27:47,207 | INFO | SCAN #1 — 15:27:47
+2026-04-06 15:27:47,207 | INFO | ────────────────────────────────────────────────────────────
+2026-04-06 15:28:46,238 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-06 15:28:47,120 | INFO | Telegram alert sent: 📊 <b>P&L Report — 15:27</b>
+Scan #1
+
+<b>Open Posit...
+2026-04-06 15:28:47,123 | INFO | Next scan would be after market close. Waiting for 3:30 PM...
+2026-04-06 15:28:47,124 | INFO | Portfolio state saved to logs/portfolio_state.json
+2026-04-06 15:28:47,124 | INFO | 
+============================================================
+2026-04-06 15:28:47,124 | INFO | AUTO MODE COMPLETE — PAPER
+2026-04-06 15:28:47,124 | INFO | Total scans: 1
+2026-04-06 15:28:47,124 | INFO | Portfolio: INR 100,238.64
+2026-04-06 15:28:47,124 | INFO | Trades today: 0
+2026-04-06 15:28:47,124 | INFO | Daily PnL: INR +0.00
+2026-04-06 15:28:47,125 | INFO | Open positions: 0
+2026-04-06 15:28:47,125 | INFO | ============================================================
+2026-04-06 15:28:48,218 | INFO | Telegram alert sent: 🏁 <b>MARKET CLOSED — Daily Summary</b>
+
+Mode: PAPE...
+2026-04-06 15:28:48,220 | INFO | Waiting for next market day...
+2026-04-06 15:28:48,220 | INFO | ============================================================
+2026-04-06 15:28:48,220 | INFO | AUTOTRADE BOT — INDIA MARKET
+2026-04-06 15:28:48,221 | INFO | Scan interval: 15 min
+2026-04-06 15:28:48,221 | INFO | Astro: ON
+2026-04-06 15:28:48,221 | INFO | ============================================================
+2026-04-06 15:28:48,222 | INFO | Fetching NSE holidays from live API...
+2026-04-06 15:28:48,596 | INFO | NSE holidays fetched & cached: 20 holidays
+2026-04-06 15:28:49,278 | INFO | Telegram alert sent: 📅 NSE holidays refreshed from live API (20 holiday...
+2026-04-06 15:28:53,670 | INFO | Telegram command handler started — type /help in Telegram
+2026-04-06 15:28:54,368 | INFO | Telegram alert sent: 📱 <b>Phone commands active from 9:00 AM</b>
+Type /...
+2026-04-06 15:33:59,090 | INFO | Telegram alert sent: ⏰ No reply received. Defaulting to <b>PAPER TRADE ...
+2026-04-06 15:33:59,096 | INFO | Mode selection timeout — defaulting to PAPER
+2026-04-06 15:33:59,099 | INFO | Mode: PAPER | Capital: ₹100,239 | Positions: 0
+2026-04-06 15:33:59,996 | INFO | Telegram alert sent: 🚀 <b>Trading Bot Started — PAPER</b>
+
+<b>Portfolio...
+2026-04-06 15:34:00,006 | INFO | 
+==================================================
+ASTRO DAILY REPORT — 2026-04-06 15:33
+==================================================
+Moon Phase  : WANING_GIBBOUS (81.3% lit)
+  Bias      : BEARISH
+  Next New  : 11 days
+  Next Full : 25 days
+
+Mercury     : RETROGRADE
+  Mercury RETROGRADE (day 22) — reduce exposure 50%, skip new buys
+
+Nakshatra   : Anuradha (ruled by Saturn)
+  Sentiment : BULLISH
+  Research-based trading, long-term investments
+
+Vara (Day)  : Monday (ruled by Moon)
+  Sentiment : NEUTRAL
+
+Eclipse     : No eclipse nearby. Next: 2026-03-03 (Total Lunar)
+
+Rahu Kaal   : Clear — next Rahu Kaal at 07:30
+==================================================
+
+2026-04-06 15:34:00,707 | INFO | Telegram alert sent: <pre>=============================================...
+2026-04-06 15:34:00,709 | INFO | Market closed. Stopping auto mode.
+2026-04-06 15:34:00,712 | INFO | Portfolio state saved to logs/portfolio_state.json
+2026-04-06 15:34:00,712 | INFO | 
+============================================================
+2026-04-06 15:34:00,712 | INFO | AUTO MODE COMPLETE — PAPER
+2026-04-06 15:34:00,712 | INFO | Total scans: 0
+2026-04-06 15:34:00,713 | INFO | Portfolio: INR 100,238.64
+2026-04-06 15:34:00,713 | INFO | Trades today: 0
+2026-04-06 15:34:00,713 | INFO | Daily PnL: INR +0.00
+2026-04-06 15:34:00,713 | INFO | Open positions: 0
+2026-04-06 15:34:00,713 | INFO | ============================================================
+2026-04-06 15:34:01,546 | INFO | Telegram alert sent: 🏁 <b>MARKET CLOSED — Daily Summary</b>
+
+Mode: PAPE...
+2026-04-06 15:34:01,550 | INFO | Waiting for next market day...
+2026-04-06 15:34:01,550 | INFO | Market closed for today. Sleeping until 2026-04-07 09:15 (17h 40m)
+2026-04-06 15:34:02,395 | INFO | Telegram alert sent: ⏰ Market closed for today.
+Sleeping until 2026-04-...
+2026-04-06 15:53:21,708 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 15:53:44,991 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 15:54:49,081 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 15:59:26,520 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:25:50,150 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:38:26,203 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:38:34,742 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:38:36,791 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:44:11,946 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:44:15,181 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.telegram.org', port=443) at 0x10f28fd90>, 'Connection to api.telegram.org timed out. (connect timeout=15)'))
+2026-04-06 16:44:15,200 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:44:17,630 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:44:49,365 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:44:49,885 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:44:53,858 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:44:56,303 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.telegram.org', port=443) at 0x10ff28cd0>, 'Connection to api.telegram.org timed out. (connect timeout=15)'))
+2026-04-06 16:45:19,405 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:48:24,412 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:48:25,276 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 16:58:46,141 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 17:02:06,713 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 17:46:50,205 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 18:17:44,698 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 18:22:22,952 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 18:29:58,903 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 19:03:22,668 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:03:23,188 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:03:23,262 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:03:23,547 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:21:10,230 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:21:10,515 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:21:10,604 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:21:10,813 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:23:02,431 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:23:02,669 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:23:02,907 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:23:03,001 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 19:23:07,456 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:23:07,680 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:23:07,915 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:23:08,014 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:47,445 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:47,656 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:47,885 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:47,991 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:52,459 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:52,664 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:52,893 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:53,005 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:57,471 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:57,677 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:57,907 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:40:58,018 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:02,490 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:02,692 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:02,916 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:03,033 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:07,509 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:07,706 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:07,930 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:08,047 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:12,523 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:12,720 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:12,942 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:41:13,055 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:56:50,553 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:56:50,748 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:56:50,969 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 19:56:51,084 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:12:35,340 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:12:35,534 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:12:35,752 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:12:35,872 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:25:36,342 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:25:36,538 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:25:36,755 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:25:36,876 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-06 20:43:44,428 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 20:43:44,459 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 20:43:44,469 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 20:43:44,496 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 20:54:28,273 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 21:07:49,587 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 21:07:49,592 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-06 21:07:49,592 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-06 21:07:49,594 | INFO | Command received: /help
+2026-04-06 21:07:49,595 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 21:07:49,598 | INFO | Executing command: /help
+2026-04-06 21:07:50,335 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-06 21:07:50,338 | INFO | Command /help executed successfully
+2026-04-06 21:07:50,689 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-06 21:07:50,689 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-06 21:07:50,689 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-06 21:07:50,689 | INFO | Command received: /help
+2026-04-06 21:07:50,690 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-06 21:07:50,690 | INFO | Executing command: /help
+2026-04-06 21:07:51,438 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-06 21:07:51,439 | INFO | Command /help executed successfully
+2026-04-06 21:36:40,481 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 21:36:49,859 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 21:58:30,984 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 21:58:30,988 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 21:58:30,989 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 22:17:46,671 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 22:17:46,796 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 22:17:47,249 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 22:17:47,307 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 22:34:17,110 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 22:34:17,111 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 22:56:48,256 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 22:56:49,854 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 22:56:55,165 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 22:56:56,092 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 23:37:05,155 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 23:37:05,542 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 23:37:05,680 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 23:37:09,410 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-06 23:54:48,859 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 23:54:48,860 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 23:54:48,861 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-06 23:54:48,860 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 00:22:00,760 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 00:22:00,765 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 00:22:01,058 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 00:22:01,086 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 01:19:12,549 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 01:19:12,553 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 01:19:12,557 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 01:19:12,571 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 01:58:58,599 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 01:58:58,601 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 01:58:58,603 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 01:58:58,642 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 02:47:15,424 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 02:47:15,438 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 02:47:15,526 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 02:47:15,951 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 03:31:49,836 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 03:31:49,917 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 03:31:50,352 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 03:31:50,402 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 04:32:43,650 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 04:32:43,695 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 04:32:43,754 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 04:32:44,184 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 05:12:06,535 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 05:12:06,614 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 05:12:07,053 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 05:28:58,617 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 05:33:54,124 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 05:33:54,125 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 05:33:54,809 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 06:25:09,969 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 06:34:44,422 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 06:34:44,648 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 06:34:45,103 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 07:24:44,865 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 07:24:45,015 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 07:24:45,428 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 07:24:45,492 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 08:23:26,729 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 08:23:26,766 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 08:23:26,799 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 08:23:27,350 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 08:48:34,928 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 08:48:35,548 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 08:48:39,955 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 08:48:40,559 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=11035841&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:06:05,214 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.telegram.org', port=443) at 0x1101b39d0>, 'Connection to api.telegram.org timed out. (connect timeout=15)'))
+2026-04-07 09:06:05,819 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=11035841&timeout=10&allowed_updates=message (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.telegram.org', port=443) at 0x1101b3d90>, 'Connection to api.telegram.org timed out. (connect timeout=15)'))
+2026-04-07 09:06:06,562 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:06:07,171 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=11035841&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:17:10,636 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:17:11,236 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=11035841&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:17:11,986 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:17:12,600 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=11035841&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:17:15,656 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:17:16,254 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=11035841&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:17:16,993 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8592539764:AAHFpuGVgZSjnBKVxyKqwjAAxWZ_W7X_vnk/getUpdates?offset=0&timeout=10&allowed_updates=message (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-04-07 09:19:55,181 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 09:19:55,702 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 09:19:55,824 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 09:19:56,085 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 09:20:00,761 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:00,765 | INFO | DEBUG: Update - chat_id=7368296583, text=/Help, match=True
+2026-04-07 09:20:00,765 | INFO | DEBUG: Command matched! Handling: /Help
+2026-04-07 09:20:00,765 | INFO | Command received: /Help
+2026-04-07 09:20:00,766 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:00,766 | INFO | Executing command: /help
+2026-04-07 09:20:01,394 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:01,395 | INFO | DEBUG: Update - chat_id=7368296583, text=/Help, match=True
+2026-04-07 09:20:01,395 | INFO | DEBUG: Command matched! Handling: /Help
+2026-04-07 09:20:01,395 | INFO | Command received: /Help
+2026-04-07 09:20:01,395 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:01,395 | INFO | Executing command: /help
+2026-04-07 09:20:01,459 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:01,459 | INFO | DEBUG: Update - chat_id=7368296583, text=/Help, match=True
+2026-04-07 09:20:01,459 | INFO | DEBUG: Command matched! Handling: /Help
+2026-04-07 09:20:01,459 | INFO | Command received: /Help
+2026-04-07 09:20:01,459 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:01,459 | INFO | Executing command: /help
+2026-04-07 09:20:01,612 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 09:20:01,614 | INFO | Command /help executed successfully
+2026-04-07 09:20:01,750 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:01,751 | INFO | DEBUG: Update - chat_id=7368296583, text=/Help, match=True
+2026-04-07 09:20:01,751 | INFO | DEBUG: Command matched! Handling: /Help
+2026-04-07 09:20:01,751 | INFO | Command received: /Help
+2026-04-07 09:20:01,751 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:01,751 | INFO | Executing command: /help
+2026-04-07 09:20:02,200 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 09:20:02,202 | INFO | Command /help executed successfully
+2026-04-07 09:20:02,329 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 09:20:02,333 | INFO | Command /help executed successfully
+2026-04-07 09:20:02,590 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 09:20:02,593 | INFO | Command /help executed successfully
+2026-04-07 09:20:10,149 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:10,151 | INFO | DEBUG: Update - chat_id=7368296583, text=/status, match=True
+2026-04-07 09:20:10,152 | INFO | DEBUG: Command matched! Handling: /status
+2026-04-07 09:20:10,152 | INFO | Command received: /status
+2026-04-07 09:20:10,152 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:10,152 | INFO | Executing command: /status
+2026-04-07 09:20:10,767 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:10,768 | INFO | DEBUG: Update - chat_id=7368296583, text=/status, match=True
+2026-04-07 09:20:10,768 | INFO | DEBUG: Command matched! Handling: /status
+2026-04-07 09:20:10,768 | INFO | Command received: /status
+2026-04-07 09:20:10,768 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:10,769 | INFO | Executing command: /status
+2026-04-07 09:20:10,912 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:10,912 | INFO | DEBUG: Update - chat_id=7368296583, text=/status, match=True
+2026-04-07 09:20:10,913 | INFO | DEBUG: Command matched! Handling: /status
+2026-04-07 09:20:10,913 | INFO | Command received: /status
+2026-04-07 09:20:10,913 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:10,913 | INFO | Executing command: /status
+2026-04-07 09:20:11,012 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 Bot Status — 09:20</b>
+━...
+2026-04-07 09:20:11,014 | INFO | Command /status executed successfully
+2026-04-07 09:20:11,232 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:11,232 | INFO | DEBUG: Update - chat_id=7368296583, text=/status, match=True
+2026-04-07 09:20:11,232 | INFO | DEBUG: Command matched! Handling: /status
+2026-04-07 09:20:11,232 | INFO | Command received: /status
+2026-04-07 09:20:11,232 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:11,232 | INFO | Executing command: /status
+2026-04-07 09:20:11,464 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 Bot Status — 09:20</b>
+━...
+2026-04-07 09:20:11,466 | INFO | Command /status executed successfully
+2026-04-07 09:20:11,607 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 Bot Status — 09:20</b>
+━...
+2026-04-07 09:20:11,609 | INFO | Command /status executed successfully
+2026-04-07 09:20:12,064 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 Bot Status — 09:20</b>
+━...
+2026-04-07 09:20:12,067 | INFO | Command /status executed successfully
+2026-04-07 09:20:18,437 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:18,439 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:20:18,439 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:20:18,439 | INFO | Command received: /scan
+2026-04-07 09:20:18,439 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:18,440 | INFO | Executing command: /scan
+2026-04-07 09:20:19,276 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:20:19,283 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:20:19,284 | INFO | SCAN #2 — 09:20:19
+2026-04-07 09:20:19,284 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:20:19,891 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:19,892 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:20:19,892 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:20:19,892 | INFO | Command received: /scan
+2026-04-07 09:20:19,892 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:19,893 | INFO | Executing command: /scan
+2026-04-07 09:20:20,030 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:20,043 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:20:20,059 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:20:20,064 | INFO | Command received: /scan
+2026-04-07 09:20:20,073 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:20,080 | INFO | Executing command: /scan
+2026-04-07 09:20:20,114 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:20:20,114 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:20:20,118 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:20:20,125 | INFO | Command received: /scan
+2026-04-07 09:20:20,148 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:20:20,154 | INFO | Executing command: /scan
+2026-04-07 09:20:20,759 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:20:20,763 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:20:20,763 | INFO | SCAN #31 — 09:20:20
+2026-04-07 09:20:20,763 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:20:20,888 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:20:20,890 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:20:20,891 | INFO | SCAN #2 — 09:20:20
+2026-04-07 09:20:20,891 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:20:20,970 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:20:20,972 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:20:20,972 | INFO | SCAN #1 — 09:20:20
+2026-04-07 09:20:20,972 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:20:55,508 | INFO | Signals: 2 BUY | 0 SELL | 44 HOLD
+2026-04-07 09:20:55,512 | INFO | NEW BUY triggers: ['JSWSTEEL.NS', 'SUNPHARMA.NS']
+2026-04-07 09:20:56,298 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #2)</b>
+JSWSTEEL, SUNP...
+2026-04-07 09:20:56,558 | INFO | Signals: 2 BUY | 0 SELL | 44 HOLD
+2026-04-07 09:20:56,558 | INFO | NEW BUY triggers: ['HINDALCO.NS', 'JSWSTEEL.NS']
+2026-04-07 09:20:56,664 | INFO | Signals: 2 BUY | 0 SELL | 44 HOLD
+2026-04-07 09:20:56,686 | INFO | NEW BUY triggers: ['HINDALCO.NS', 'JSWSTEEL.NS']
+2026-04-07 09:20:57,094 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:57,096 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:57,097 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:57,097 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:57,097 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:57,098 | WARNING |   ASTRO BLOCKED JSWSTEEL.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:57,104 | INFO | Signals: 2 BUY | 0 SELL | 44 HOLD
+2026-04-07 09:20:57,104 | INFO | NEW BUY triggers: ['HINDALCO.NS', 'JSWSTEEL.NS']
+2026-04-07 09:20:57,383 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #31)</b>
+HINDALCO, JSW...
+2026-04-07 09:20:57,456 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #2)</b>
+HINDALCO, JSWS...
+2026-04-07 09:20:57,983 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:57,983 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:57,984 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:57,984 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:57,985 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:57,985 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,050 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:20:58,182 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:58,203 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:58,235 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:58,235 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:58,235 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,235 | WARNING |   ASTRO BLOCKED SUNPHARMA.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,383 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:58,383 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:58,383 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:58,384 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:58,384 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,384 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,386 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:58,386 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:58,386 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:58,386 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:58,386 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,386 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,898 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:20:58,908 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:58,908 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:58,908 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:58,908 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:58,909 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:58,909 | WARNING |   ASTRO BLOCKED JSWSTEEL.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:59,105 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:20:59,201 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:20:59,225 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:59,225 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:59,225 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:59,226 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:59,226 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:59,226 | WARNING |   ASTRO BLOCKED JSWSTEEL.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:59,275 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:20:59,288 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:20:59,288 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:20:59,289 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:20:59,289 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:20:59,289 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:59,289 | WARNING |   ASTRO BLOCKED JSWSTEEL.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:20:59,714 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:20:59,877 | INFO | Telegram alert sent: 📊 <b>P&L Report — 09:20</b>
+Scan #2
+
+<b>Open Posit...
+2026-04-07 09:20:59,884 | INFO | Manual scan completed via Telegram command
+2026-04-07 09:20:59,884 | INFO | Command /scan executed successfully
+2026-04-07 09:21:00,049 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:21:00,096 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:21:00,542 | INFO | Telegram alert sent: 📊 <b>P&L Report — 09:20</b>
+Scan #1
+
+<b>Open Posit...
+2026-04-07 09:21:00,544 | INFO | Manual scan completed via Telegram command
+2026-04-07 09:21:00,544 | INFO | Command /scan executed successfully
+2026-04-07 09:21:00,919 | INFO | Telegram alert sent: 📊 <b>P&L Report — 09:20</b>
+Scan #31
+
+<b>Open Posi...
+2026-04-07 09:21:00,925 | INFO | Manual scan completed via Telegram command
+2026-04-07 09:21:00,925 | INFO | Command /scan executed successfully
+2026-04-07 09:21:00,975 | INFO | Telegram alert sent: 📊 <b>P&L Report — 09:20</b>
+Scan #2
+
+<b>Open Posit...
+2026-04-07 09:21:00,981 | INFO | Manual scan completed via Telegram command
+2026-04-07 09:21:00,981 | INFO | Command /scan executed successfully
+2026-04-07 09:21:16,817 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:21:16,819 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-07 09:21:17,147 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:21:17,147 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-07 09:22:04,236 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:22:04,239 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-07 09:22:04,709 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:22:04,710 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-07 09:22:04,754 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:22:04,754 | INFO | DEBUG: Update - chat_id=, text=, match=False
+2026-04-07 09:47:17,787 | ERROR | Telegram poll error: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2026-04-07 09:54:56,990 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:54:56,995 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 09:54:56,995 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 09:54:56,996 | INFO | Command received: /help
+2026-04-07 09:54:56,996 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:54:56,998 | INFO | Executing command: /help
+2026-04-07 09:54:57,798 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 09:54:57,800 | INFO | Command /help executed successfully
+2026-04-07 09:55:01,824 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:55:01,825 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:55:01,825 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:55:01,825 | INFO | Command received: /scan
+2026-04-07 09:55:01,825 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:55:01,825 | INFO | Executing command: /scan
+2026-04-07 09:55:02,547 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:55:02,551 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:55:02,553 | INFO | SCAN #2 — 09:55:02
+2026-04-07 09:55:02,553 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:55:03,748 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:55:03,749 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:55:03,753 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:55:03,753 | INFO | Command received: /scan
+2026-04-07 09:55:03,753 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:55:03,753 | INFO | Executing command: /scan
+2026-04-07 09:55:04,095 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:55:04,107 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:55:04,107 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:55:04,107 | INFO | Command received: /scan
+2026-04-07 09:55:04,113 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:55:04,126 | INFO | Executing command: /scan
+2026-04-07 09:55:04,380 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 09:55:04,380 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 09:55:04,380 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 09:55:04,380 | INFO | Command received: /scan
+2026-04-07 09:55:04,380 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 09:55:04,380 | INFO | Executing command: /scan
+2026-04-07 09:55:04,593 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:55:04,615 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:55:04,615 | INFO | SCAN #3 — 09:55:04
+2026-04-07 09:55:04,615 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:55:04,988 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:55:04,990 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:55:04,990 | INFO | SCAN #32 — 09:55:04
+2026-04-07 09:55:04,990 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:55:05,294 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 09:55:05,325 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 09:55:05,375 | INFO | SCAN #3 — 09:55:05
+2026-04-07 09:55:05,400 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 09:55:39,945 | INFO | Signals: 3 BUY | 0 SELL | 43 HOLD
+2026-04-07 09:55:39,963 | INFO | NEW BUY triggers: ['DRREDDY.NS', 'CIPLA.NS']
+2026-04-07 09:55:41,012 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #2)</b>
+DRREDDY, CIPLA...
+2026-04-07 09:55:41,174 | INFO | Signals: 3 BUY | 0 SELL | 43 HOLD
+2026-04-07 09:55:41,174 | INFO | NEW BUY triggers: ['TATASTEEL.NS']
+2026-04-07 09:55:42,197 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #3)</b>
+TATASTEEL...
+2026-04-07 09:55:42,224 | INFO | Signals: 3 BUY | 0 SELL | 43 HOLD
+2026-04-07 09:55:42,225 | INFO | NEW BUY triggers: ['COALINDIA.NS']
+2026-04-07 09:55:43,496 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #32)</b>
+COALINDIA...
+2026-04-07 09:55:44,473 | INFO | Signals: 3 BUY | 0 SELL | 43 HOLD
+2026-04-07 09:55:44,504 | INFO | NEW BUY triggers: ['ONGC.NS', 'TATASTEEL.NS']
+2026-04-07 09:55:45,546 | INFO | Telegram alert sent: 🔔 <b>New BUY Triggers (Scan #3)</b>
+ONGC, TATASTEE...
+2026-04-07 09:55:48,101 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:48,131 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:48,160 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:48,160 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:48,179 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:48,198 | WARNING |   ASTRO BLOCKED DRREDDY.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:49,242 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:49,467 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:49,482 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:49,482 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:49,482 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:49,482 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:49,482 | WARNING |   ASTRO BLOCKED CIPLA.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,010 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:50,016 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:50,028 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:50,035 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:50,035 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,060 | WARNING |   ASTRO BLOCKED JSWSTEEL.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,330 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:50,369 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:50,394 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:50,649 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:50,650 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:50,650 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:50,650 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:50,650 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,650 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,844 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:50,844 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:50,844 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:50,844 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:50,844 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,844 | WARNING |   ASTRO BLOCKED TATASTEEL.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,958 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:50,960 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:50,961 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:50,961 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:50,961 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:50,961 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:50,961 | WARNING |   ASTRO BLOCKED SUNPHARMA.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:51,189 | INFO | Telegram alert sent: ❌ Scan failed: float() argument must be a string o...
+2026-04-07 09:55:51,203 | INFO | Command /scan executed successfully
+2026-04-07 09:55:51,506 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:51,524 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:51,524 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:51,524 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:51,525 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:51,525 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:51,525 | WARNING |   ASTRO BLOCKED JSWSTEEL.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:51,650 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:51,661 | INFO |   ASTRO Moon: WANING_GIBBOUS (bearish) — reducing size
+2026-04-07 09:55:51,662 | INFO |   ASTRO Mercury: RETROGRADE — blocking new BUY
+2026-04-07 09:55:51,662 | INFO |   ASTRO Nakshatra: Jyeshtha (bearish) — blocking BUY
+2026-04-07 09:55:51,662 | INFO |   ASTRO Rahu Kaal: YAMAGANDAM active (09:00-10:30) — avoid new trades
+2026-04-07 09:55:51,662 | WARNING | ASTRO BLOCKED: BUY → HOLD | Score: 0/100 | Reasons: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:51,662 | WARNING |   ASTRO BLOCKED HINDALCO.NS: Mercury Retrograde (day 23) | Bearish Nakshatra: Jyeshtha (Conflict, power struggles) | Rahu Kaal active (15:00-16:30)
+2026-04-07 09:55:51,820 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:51,825 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:51,825 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:52,414 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:52,425 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:52,425 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:52,496 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📊 YTB BOT</b>
+⛔ <b>BLOCKED...
+2026-04-07 09:55:52,500 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:52,500 | ERROR | Manual scan failed: float() argument must be a string or a real number, not 'Series'
+2026-04-07 09:55:52,653 | INFO | Telegram alert sent: ❌ Scan failed: float() argument must be a string o...
+2026-04-07 09:55:52,664 | INFO | Command /scan executed successfully
+2026-04-07 09:55:53,384 | INFO | Telegram alert sent: ❌ Scan failed: float() argument must be a string o...
+2026-04-07 09:55:53,400 | INFO | Command /scan executed successfully
+2026-04-07 09:55:53,409 | INFO | Telegram alert sent: ❌ Scan failed: float() argument must be a string o...
+2026-04-07 09:55:53,420 | INFO | Command /scan executed successfully
+2026-04-07 10:25:51,272 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 10:25:51,275 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 10:25:51,370 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 10:35:29,553 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 10:35:29,554 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 10:35:29,940 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 10:35:31,690 | ERROR | Telegram poll error: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=15)
+2026-04-07 10:54:10,649 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:10,653 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:54:10,654 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:54:10,655 | INFO | Command received: /help
+2026-04-07 10:54:10,655 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:10,656 | INFO | Executing command: /help
+2026-04-07 10:54:11,320 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:11,320 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:54:11,321 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:54:11,321 | INFO | Command received: /help
+2026-04-07 10:54:11,321 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:11,321 | INFO | Executing command: /help
+2026-04-07 10:54:11,529 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:54:11,533 | INFO | Command /help executed successfully
+2026-04-07 10:54:11,640 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:11,640 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:54:11,640 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:54:11,640 | INFO | Command received: /help
+2026-04-07 10:54:11,641 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:11,641 | INFO | Executing command: /help
+2026-04-07 10:54:11,749 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:11,750 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:54:11,750 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:54:11,750 | INFO | Command received: /help
+2026-04-07 10:54:11,750 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:11,751 | INFO | Executing command: /help
+2026-04-07 10:54:12,113 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:54:12,116 | INFO | Command /help executed successfully
+2026-04-07 10:54:12,475 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:54:12,477 | INFO | Command /help executed successfully
+2026-04-07 10:54:12,590 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:54:12,592 | INFO | Command /help executed successfully
+2026-04-07 10:54:24,402 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:24,403 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 10:54:24,403 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 10:54:24,403 | INFO | Command received: /scan
+2026-04-07 10:54:24,403 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:24,403 | INFO | Executing command: /scan
+2026-04-07 10:54:24,768 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:24,768 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 10:54:24,768 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 10:54:24,768 | INFO | Command received: /scan
+2026-04-07 10:54:24,769 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:24,769 | INFO | Executing command: /scan
+2026-04-07 10:54:24,967 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:24,968 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 10:54:24,968 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 10:54:24,968 | INFO | Command received: /scan
+2026-04-07 10:54:24,968 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:24,968 | INFO | Executing command: /scan
+2026-04-07 10:54:25,263 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 10:54:25,266 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 10:54:25,267 | INFO | SCAN #4 — 10:54:25
+2026-04-07 10:54:25,267 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 10:54:25,536 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 10:54:25,537 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 10:54:25,537 | INFO | SCAN #3 — 10:54:25
+2026-04-07 10:54:25,537 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 10:54:25,843 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 10:54:25,846 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 10:54:25,846 | INFO | SCAN #33 — 10:54:25
+2026-04-07 10:54:25,846 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 10:54:28,173 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:54:28,210 | INFO | DEBUG: Update - chat_id=7368296583, text=/scan, match=True
+2026-04-07 10:54:28,260 | INFO | DEBUG: Command matched! Handling: /scan
+2026-04-07 10:54:28,284 | INFO | Command received: /scan
+2026-04-07 10:54:28,284 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:54:28,284 | INFO | Executing command: /scan
+2026-04-07 10:54:29,324 | INFO | Telegram alert sent: 🔍 <b>Scanning all 46 stocks...</b> (this takes ~60...
+2026-04-07 10:54:29,332 | INFO | 
+────────────────────────────────────────────────────────────
+2026-04-07 10:54:29,375 | INFO | SCAN #4 — 10:54:29
+2026-04-07 10:54:29,391 | INFO | ────────────────────────────────────────────────────────────
+2026-04-07 10:55:03,175 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-07 10:55:03,184 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-07 10:55:03,616 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-07 10:55:04,101 | INFO | Telegram alert sent: 📊 <b>P&L Report — 10:54</b>
+Scan #33
+
+<b>Open Posi...
+2026-04-07 10:55:04,106 | INFO | Manual scan completed via Telegram command
+2026-04-07 10:55:04,106 | INFO | Telegram alert sent: 📊 <b>P&L Report — 10:54</b>
+Scan #3
+
+<b>Open Posit...
+2026-04-07 10:55:04,107 | INFO | Command /scan executed successfully
+2026-04-07 10:55:04,111 | INFO | Manual scan completed via Telegram command
+2026-04-07 10:55:04,113 | INFO | Command /scan executed successfully
+2026-04-07 10:55:04,709 | INFO | Telegram alert sent: 📊 <b>P&L Report — 10:54</b>
+Scan #4
+
+<b>Open Posit...
+2026-04-07 10:55:04,736 | INFO | Manual scan completed via Telegram command
+2026-04-07 10:55:04,755 | INFO | Command /scan executed successfully
+2026-04-07 10:55:04,968 | INFO | Signals: 0 BUY | 0 SELL | 46 HOLD
+2026-04-07 10:55:05,908 | INFO | Telegram alert sent: 📊 <b>P&L Report — 10:54</b>
+Scan #4
+
+<b>Open Posit...
+2026-04-07 10:55:05,920 | INFO | Manual scan completed via Telegram command
+2026-04-07 10:55:05,921 | INFO | Command /scan executed successfully

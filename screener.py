@@ -27,7 +27,7 @@ def screen_stock(ticker: str) -> dict | None:
     Returns dict with analysis if data available, None on error.
     """
     try:
-        data = fetch_stock_data(ticker, period="6mo")
+        data = fetch_stock_data(ticker, period="730d", interval="1h")
     except Exception as e:
         print(f"  Skipping {ticker}: {e}")
         return None

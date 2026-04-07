@@ -44,85 +44,119 @@ def generate_signal(data: pd.DataFrame) -> str:
 
 def _signal_old(data: pd.DataFrame) -> str:
     """Original SMA-based signal (v1)."""
-    close = data["Close"].squeeze()
-    volume = data["Volume"].squeeze()
+    try:
+        # Ensure data is valid
+        if data is None or data.empty or len(data) < config.SMA_SLOW:
+            return "HOLD"
 
-    sma_fast = calculate_sma(close, config.SMA_FAST)
-    sma_slow = calculate_sma(close, config.SMA_SLOW)
-    rsi = calculate_rsi(close, config.RSI_PERIOD)
-    vol_ratio = calculate_volume_ratio(volume)
+        close = data["Close"].squeeze()
+        volume = data["Volume"].squeeze()
 
-    latest_rsi = rsi.iloc[-1]
-    if pd.isna(latest_rsi) or np.isinf(latest_rsi):
+        # Ensure they're Series, not DataFrames
+        if isinstance(close, pd.DataFrame):
+            close = close.iloc[:, 0]
+        if isinstance(volume, pd.DataFrame):
+            volume = volume.iloc[:, 0]
+
+        sma_fast = calculate_sma(close, config.SMA_FAST)
+        sma_slow = calculate_sma(close, config.SMA_SLOW)
+        rsi = calculate_rsi(close, config.RSI_PERIOD)
+        vol_ratio = calculate_volume_ratio(volume)
+
+        latest_rsi = rsi.iloc[-1]
+        if pd.isna(latest_rsi) or np.isinf(latest_rsi):
+            return "HOLD"
+
+        current_price = close.iloc[-1]
+        current_sma_fast = sma_fast.iloc[-1]
+        current_sma_slow = sma_slow.iloc[-1]
+        latest_vol_ratio = vol_ratio.iloc[-1]
+
+        if (current_sma_fast > current_sma_slow
+                and latest_rsi > config.RSI_BUY_THRESHOLD
+                and latest_vol_ratio > config.VOLUME_RATIO_MIN):
+            return "BUY"
+
+        if current_price < current_sma_fast or latest_rsi < config.RSI_SELL_THRESHOLD:
+            return "SELL"
+
         return "HOLD"
-
-    current_price = close.iloc[-1]
-    current_sma_fast = sma_fast.iloc[-1]
-    current_sma_slow = sma_slow.iloc[-1]
-    latest_vol_ratio = vol_ratio.iloc[-1]
-
-    if (current_sma_fast > current_sma_slow
-            and latest_rsi > config.RSI_BUY_THRESHOLD
-            and latest_vol_ratio > config.VOLUME_RATIO_MIN):
-        return "BUY"
-
-    if current_price < current_sma_fast or latest_rsi < config.RSI_SELL_THRESHOLD:
-        return "SELL"
-
-    return "HOLD"
+    except Exception as e:
+        # Log but don't crash — return HOLD on any error
+        return "HOLD"
 
 
 def _signal_new(data: pd.DataFrame) -> str:
     """Enhanced EMA + MACD + ADX + Crossover signal (v2)."""
-    close = data["Close"].squeeze()
-    high = data["High"].squeeze()
-    low = data["Low"].squeeze()
-    volume = data["Volume"].squeeze()
+    try:
+        # Ensure data is valid
+        if data is None or data.empty or len(data) < config.SMA_SLOW:
+            return "HOLD"
 
-    # Indicators
-    ema_fast = calculate_ema(close, config.SMA_FAST)
-    ema_slow = calculate_ema(close, config.SMA_SLOW)
-    rsi = calculate_rsi(close, config.RSI_PERIOD)
-    vol_ratio = calculate_volume_ratio(volume)
-    macd_line, signal_line, macd_hist = calculate_macd(close)
-    adx = calculate_adx(high, low, close)
-    crossover = detect_crossover(ema_fast, ema_slow)
+        close = data["Close"].squeeze()
+        high = data["High"].squeeze()
+        low = data["Low"].squeeze()
+        volume = data["Volume"].squeeze()
 
-    # Latest values
-    latest_rsi = rsi.iloc[-1]
-    if pd.isna(latest_rsi) or np.isinf(latest_rsi):
+        # Ensure they're Series, not DataFrames
+        if isinstance(close, pd.DataFrame):
+            close = close.iloc[:, 0]
+        if isinstance(high, pd.DataFrame):
+            high = high.iloc[:, 0]
+        if isinstance(low, pd.DataFrame):
+            low = low.iloc[:, 0]
+        if isinstance(volume, pd.DataFrame):
+            volume = volume.iloc[:, 0]
+
+        # Indicators
+        ema_fast = calculate_ema(close, config.SMA_FAST)
+        ema_slow = calculate_ema(close, config.SMA_SLOW)
+        rsi = calculate_rsi(close, config.RSI_PERIOD)
+        vol_ratio = calculate_volume_ratio(volume)
+        macd_line, signal_line, macd_hist = calculate_macd(close)
+        adx = calculate_adx(high, low, close)
+        crossover = detect_crossover(ema_fast, ema_slow)
+
+        # Latest values
+        latest_rsi = rsi.iloc[-1]
+        if pd.isna(latest_rsi) or np.isinf(latest_rsi):
+            return "HOLD"
+
+        latest_vol_ratio = vol_ratio.iloc[-1]
+        latest_macd_hist = macd_hist.iloc[-1]
+        latest_adx = adx.iloc[-1]
+        current_price = close.iloc[-1]
+        current_ema_fast = ema_fast.iloc[-1]
+        current_ema_slow = ema_slow.iloc[-1]
+
+        if pd.isna(latest_adx) or pd.isna(latest_macd_hist):
+            return "HOLD"
+
+        lookback = getattr(config, "CROSSOVER_LOOKBACK", 3)
+        adx_min = getattr(config, "ADX_MIN", 20)
+
+        # ── BUY — uptrend confirmed by all tools ──
+        recent_crossover = crossover.iloc[-lookback:].max() >= 1
+        uptrend          = current_ema_fast > current_ema_slow
+        macd_bullish     = latest_macd_hist > 0
+        rsi_ok           = latest_rsi > config.RSI_BUY_THRESHOLD
+        volume_ok        = latest_vol_ratio > config.VOLUME_RATIO_MIN
+        trend_strong     = latest_adx > adx_min
+
+        if (recent_crossover or uptrend) and macd_bullish and rsi_ok and volume_ok and trend_strong:
+            return "BUY"
+
+        # ── SELL — downtrend confirmed by same tools (symmetric with BUY) ──
+        recent_death_cross = crossover.iloc[-lookback:].min() <= -1
+        downtrend          = current_ema_fast < current_ema_slow
+        macd_bearish       = latest_macd_hist < 0
+        rsi_weak           = latest_rsi < config.RSI_SELL_THRESHOLD
+        trend_strong_down  = latest_adx > adx_min  # trend must be strong for short too
+
+        if (recent_death_cross or downtrend) and macd_bearish and rsi_weak and volume_ok and trend_strong_down:
+            return "SELL"
+
         return "HOLD"
-
-    latest_vol_ratio = vol_ratio.iloc[-1]
-    latest_macd_hist = macd_hist.iloc[-1]
-    latest_adx = adx.iloc[-1]
-    current_price = close.iloc[-1]
-    current_ema_fast = ema_fast.iloc[-1]
-    current_ema_slow = ema_slow.iloc[-1]
-
-    if pd.isna(latest_adx) or pd.isna(latest_macd_hist):
+    except Exception as e:
+        # Log but don't crash — return HOLD on any error
         return "HOLD"
-
-    lookback = getattr(config, "CROSSOVER_LOOKBACK", 3)
-    adx_min = getattr(config, "ADX_MIN", 20)
-
-    # ── BUY ──
-    recent_crossover = crossover.iloc[-lookback:].max() >= 1
-    uptrend = current_ema_fast > current_ema_slow
-    macd_bullish = latest_macd_hist > 0
-    rsi_ok = latest_rsi > config.RSI_BUY_THRESHOLD
-    volume_ok = latest_vol_ratio > config.VOLUME_RATIO_MIN
-    trend_strong = latest_adx > adx_min
-
-    if (recent_crossover or uptrend) and macd_bullish and rsi_ok and volume_ok and trend_strong:
-        return "BUY"
-
-    # ── SELL ──
-    below_ema = current_price < current_ema_fast
-    rsi_weak = latest_rsi < config.RSI_SELL_THRESHOLD
-    macd_bearish = latest_macd_hist < 0
-
-    if below_ema and (rsi_weak or macd_bearish):
-        return "SELL"
-
-    return "HOLD"
