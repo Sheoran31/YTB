@@ -1,27 +1,30 @@
+# Virtual environment
+venv/
+env/
+
 # Python cache
 __pycache__/
-*.pyc
-*.pyo
-
-# Virtual environments
-venv/
-.env
-
-# Large data files
-data/raw/
-
-# API keys and credentials
-*.key
-credentials.json
-secrets.json
+*.py[cod]
+*$py.class
+*.so
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
+.AppleDouble
+Thumbs.db
 
-# Logs (keep structure, ignore contents)
-logs/*.log
-logs/*.csv
+# Logs & State (runtime files)
+*.log
+auto_live.log
+logs/portfolio_state.json
+logs/nse_holidays_cache.json
+
+# Environment variables (local only, don't commit credentials)
+.env.local
+.env.*.local
