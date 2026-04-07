@@ -35,7 +35,8 @@ class CommandHandler:
         self.running = True
         self._offset = 0
         self._mode = "paper"
-        self._processed_update_ids = set()  # Prevent duplicate message handling
+        self._last_command_time = {}  # Track last execution time per command
+        self._command_cooldown_sec = 3  # Prevent same command twice in 3 seconds
 
     def set_mode(self, mode: str):
         self._mode = mode
@@ -96,24 +97,12 @@ class CommandHandler:
             if updates:
                 logger.info(f"DEBUG: Received {len(updates)} updates, expected chat: {self.alert.chat_id}")
             for update in updates:
-                update_id = update["update_id"]
-                self._offset = update_id + 1
-
-                # Skip if already processed
-                if update_id in self._processed_update_ids:
-                    logger.debug(f"Skipping duplicate update_id: {update_id}")
-                    continue
-
+                self._offset = update["update_id"] + 1
                 msg = update.get("message", {})
                 chat_id = str(msg.get("chat", {}).get("id", ""))
                 text = (msg.get("text") or "").strip()
-                logger.info(f"DEBUG: Update - chat_id={chat_id}, text={text[:30]}, match={chat_id == self.alert.chat_id}")
                 if chat_id == self.alert.chat_id and text.startswith("/"):
-                    logger.info(f"DEBUG: Command matched! Handling: {text}")
-                    self._processed_update_ids.add(update_id)
-                    # Keep only last 100 processed to avoid memory leak
-                    if len(self._processed_update_ids) > 100:
-                        self._processed_update_ids = set(sorted(self._processed_update_ids)[-50:])
+                    logger.info(f"Command detected: {text}")
                     self._handle_command(text)
         except Exception as e:
             logger.error(f"Telegram poll error: {e}")
@@ -124,7 +113,15 @@ class CommandHandler:
         cmd = parts[0].lower().split("@")[0]
         args = parts[1:] if len(parts) > 1 else []
         logger.info(f"Command received: {text}")
-        logger.info(f"Alert enabled: {self.alert.enabled}, Token: {self.alert.bot_token is not None}, Chat ID: {self.alert.chat_id}")
+
+        # Check cooldown — prevent duplicate commands within 3 seconds
+        now = time_module.time()
+        last_time = self._last_command_time.get(cmd, 0)
+        if now - last_time < self._command_cooldown_sec:
+            logger.warning(f"Command {cmd} ignored — cooldown active (last executed {now - last_time:.1f}s ago)")
+            return
+
+        self._last_command_time[cmd] = now
 
         dispatch = {
             "/status":    self._cmd_status,

@@ -2170,3 +2170,43 @@ Scan #4
 <b>Open Posit...
 2026-04-07 10:55:05,920 | INFO | Manual scan completed via Telegram command
 2026-04-07 10:55:05,921 | INFO | Command /scan executed successfully
+2026-04-07 10:59:36,399 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:59:36,403 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:59:36,403 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:59:36,404 | INFO | Command received: /help
+2026-04-07 10:59:36,404 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:59:36,404 | INFO | Executing command: /help
+2026-04-07 10:59:36,548 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:59:36,549 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:59:36,549 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:59:36,550 | INFO | Command received: /help
+2026-04-07 10:59:36,550 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:59:36,550 | INFO | Executing command: /help
+2026-04-07 10:59:36,674 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:59:36,674 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:59:36,675 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:59:36,675 | INFO | Command received: /help
+2026-04-07 10:59:36,675 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:59:36,675 | INFO | Executing command: /help
+2026-04-07 10:59:36,740 | INFO | DEBUG: Received 1 updates, expected chat: 7368296583
+2026-04-07 10:59:36,741 | INFO | DEBUG: Update - chat_id=7368296583, text=/help, match=True
+2026-04-07 10:59:36,741 | INFO | DEBUG: Command matched! Handling: /help
+2026-04-07 10:59:36,741 | INFO | Command received: /help
+2026-04-07 10:59:36,741 | INFO | Alert enabled: True, Token: True, Chat ID: 7368296583
+2026-04-07 10:59:36,741 | INFO | Executing command: /help
+2026-04-07 10:59:37,313 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:59:37,315 | INFO | Command /help executed successfully
+2026-04-07 10:59:37,355 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:59:37,358 | INFO | Command /help executed successfully
+2026-04-07 10:59:37,515 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:59:37,517 | INFO | Command /help executed successfully
+2026-04-07 10:59:37,611 | INFO | Telegram alert sent: ━━━━━━━━━━━━━━━━━━━━
+<b>📱 Bot Commands</b>
+━━━━━━━...
+2026-04-07 10:59:37,612 | INFO | Command /help executed successfully
